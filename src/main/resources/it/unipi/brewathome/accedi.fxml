@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="172.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+      <VBox alignment="TOP_CENTER" layoutX="186.0" layoutY="70.0" prefHeight="260.0" prefWidth="197.0" styleClass="container">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Accedi" />
+            <Group>
+               <children>
+                  <TextField alignment="CENTER" style="-fx-border-color: black;" text="esempio" />
+                  <Label layoutX="16.0" layoutY="-8.0" style="-fx-background-color: white;" text="e-mail">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Group>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </VBox>
+   </children>
+</Pane>
