@@ -63,7 +63,7 @@ public class RicetteController implements Initializable {
             scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);    // Vertical scroll bar
             scroll.setContent(flow);
         
-
+            flow.setPrefWidth(scroll.getWidth()-10);
             ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
                 flow.setPrefWidth(scroll.getWidth()-10);
             };
