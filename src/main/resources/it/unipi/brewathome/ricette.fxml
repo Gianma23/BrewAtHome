@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<GridPane fx:id="grid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.brewathome.RicetteController">
+  <columnConstraints>
+    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="10.833333" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="100.0" minWidth="10.0" percentWidth="5.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="33.33" minWidth="10.0" percentWidth="1.6777777" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="100.0" minWidth="10.0" percentWidth="5.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="33.33" minWidth="10.0" percentWidth="1.6777777" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="100.0" minWidth="10.0" percentWidth="5.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="33.33" minWidth="10.0" percentWidth="1.6777777" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="100.0" minWidth="10.0" percentWidth="5.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="33.33" minWidth="10.0" percentWidth="1.6777777" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="100.0" minWidth="10.0" percentWidth="5.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="33.33" minWidth="10.0" percentWidth="1.6777777" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="100.0" minWidth="10.0" percentWidth="5.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="33.33" minWidth="10.0" percentWidth="1.6777777" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="100.0" minWidth="10.0" percentWidth="5.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="33.33" minWidth="10.0" percentWidth="1.6777777" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="100.0" minWidth="10.0" percentWidth="5.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="33.33" minWidth="10.0" percentWidth="1.6777777" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="100.0" minWidth="10.0" percentWidth="5.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="33.33" minWidth="10.0" percentWidth="1.6777777" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="100.0" minWidth="10.0" percentWidth="5.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="33.33" minWidth="10.0" percentWidth="1.6777777" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="100.0" minWidth="10.0" percentWidth="5.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="33.33" minWidth="10.0" percentWidth="1.6777777" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="100.0" minWidth="10.0" percentWidth="5.0" />
+      <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="10.833333" />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="72.0" valignment="CENTER" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: green;" GridPane.rowIndex="1" />
+      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: green;" GridPane.columnIndex="24" GridPane.rowIndex="1" />
+   </children>
+</GridPane>

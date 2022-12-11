@@ -4,23 +4,21 @@
  */
 package it.unipi.brewathome;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.fxml.Initializable;
+import java.io.IOException;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 
 /**
  * FXML Controller class
  *
  * @author Utente
  */
-public class AccediController implements Initializable {
+public class AccediController {
 
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+    @FXML private Button buttonAccedi;
     
+    @FXML 
+    private void login() throws IOException {
+            App.setRoot("ricette");
+    }
 }
