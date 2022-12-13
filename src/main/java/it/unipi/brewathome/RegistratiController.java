@@ -13,17 +13,18 @@ import javafx.scene.control.Button;
  *
  * @author Utente
  */
-public class AccediController {
+public class RegistratiController {
+
 
     @FXML private Button buttonAccedi;
     
     @FXML 
-    private void login() throws IOException {
-            App.setRoot("ricette");
+    private void register() throws IOException {
+        App.setRoot("accedi");
     }
     
     @FXML
-    private void openRegistrati() throws IOException {
-        App.setRoot("registrati");
+    private void openAccedi() throws IOException {
+        App.setRoot("accedi");
     }
 }
