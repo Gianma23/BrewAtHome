@@ -5,6 +5,7 @@
 package it.unipi.brewathome;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -19,7 +20,8 @@ public class AccediController {
     
     @FXML 
     private void login() throws IOException {
-            App.setRoot("ricette");
+
+        App.setRoot("ricette");
     }
     
     @FXML

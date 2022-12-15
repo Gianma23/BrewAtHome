@@ -1,3 +1,15 @@
 .container {
-    -fx-background-color: gray;
+    -fx-background-color: -md-sys-color-surface;
+}
+
+.input-text {
+    -fx-background-color: 0, 0;
+    -fx-border-color: -md-sys-color-outline;
+    -fx-view-order: 1;
+    -fx-border-radius: 4;
+}
+
+.btn {
+    -fx-background-color: -md-sys-color-primary;
+    -fx-background-radius: 100;
 }
