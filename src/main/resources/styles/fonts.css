@@ -1,14 +1,99 @@
 @font-face {
-    src: url('/fonts/Montserrat-Regular.ttf');
-    font-weight: regular;
+    src: url(/fonts/Montserrat-Bold.ttf);
 }
 @font-face {
-    src: url('/fonts/Montserrat-Bold.ttf');
-    font-weight: bold;
+    font-weight: normal;
+    src: url(/fonts/Roboto-Regular.ttf);
+}
+@font-face {
+    font-weight: 500;
+    src: url(/fonts/Roboto-Regular.ttf);
+}
+* {
+    -fx-font-family: Roboto;
+    -fx-font-weight: normal;
+}
+.display-large {
+    -fx-font-family: Montserrat;
+    -fx-font-size: 57;
+}
+
+.display-medium {
+    -fx-font-family: Montserrat;
+    -fx-font-size: 45;
+}
+
+.display-small {
+    -fx-font-family: Montserrat;
+    -fx-font-size: 36;
 }
 
 .headline-large {
-    -fx-font-family: 'Montserrat';
-    -fx-font-size: 50;
+    -fx-font-family: Montserrat;
     -fx-font-weight: bold;
+    -fx-font-size: 32;
+}
+
+.headline-medium {
+    -fx-font-family: Montserrat;
+    -fx-font-size: 28;
+}
+
+.headline-small {
+    -fx-font-family: Montserrat;
+    -fx-font-size: 24;
+}
+
+.title-large {
+    -fx-font-family: Roboto;
+    -fx-font-weight: normal;
+    -fx-font-size: 22;
+}
+
+.title-medium {
+    -fx-font-family: Roboto;
+    -fx-font-weight: 500;
+    -fx-font-size: 16;
+}
+
+.title-small {
+    -fx-font-family: Roboto;
+    -fx-font-weight: 500;
+    -fx-font-size: 14;
+}
+
+.label-large {
+    -fx-font-family: Roboto;
+    -fx-font-weight: 500;
+    -fx-font-size: 14;
+}
+
+.label-medium {
+    -fx-font-family: Roboto;
+    -fx-font-weight: 500;
+    -fx-font-size: 12;
+}
+
+.label-small {
+    -fx-font-family: Roboto;
+    -fx-font-weight: 500;
+    -fx-font-size: 11;
+}
+
+.body-large {
+    -fx-font-family: Roboto;
+    -fx-font-weight: normal;
+    -fx-font-size: 16;
+}
+
+.body-medium {
+    -fx-font-family: Roboto;
+    -fx-font-weight: normal;
+    -fx-font-size: 14;
+}
+
+.body-small {
+    -fx-font-family: Roboto;
+    -fx-font-weight: normal;
+    -fx-font-size: 12;
 }

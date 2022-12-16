@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
@@ -38,13 +39,19 @@
   </columnConstraints>
   <rowConstraints>
       <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="72.0" valignment="CENTER" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
+    <RowConstraints fillHeight="false" minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <ScrollPane fx:id="scroll" fitToWidth="true" hbarPolicy="NEVER" GridPane.columnIndex="1" GridPane.columnSpan="23" GridPane.rowIndex="1">
+      <ScrollPane fx:id="scroll" fitToWidth="true" hbarPolicy="NEVER" translateY="72.0" GridPane.columnIndex="1" GridPane.columnSpan="23" GridPane.rowIndex="1">
          <content>
             <FlowPane fx:id="flow" columnHalignment="CENTER" />
          </content>
       </ScrollPane>
+      <AnchorPane prefHeight="72.0" GridPane.columnIndex="1" GridPane.columnSpan="23" GridPane.rowIndex="1">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="display-medium" text="Ricette" AnchorPane.bottomAnchor="0.0" />
+            <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Button" AnchorPane.rightAnchor="0.0" />
+         </children>
+      </AnchorPane>
    </children>
 </GridPane>

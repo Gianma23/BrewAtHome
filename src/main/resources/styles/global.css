@@ -9,7 +9,22 @@
     -fx-border-radius: 4;
 }
 
+.search-box {
+    -fx-background-color: white, white;
+    -fx-border-color: -md-sys-color-outline;
+    -fx-view-order: 1;
+    -fx-background-radius: 100;
+}
+
 .btn {
     -fx-background-color: -md-sys-color-primary;
     -fx-background-radius: 100;
+}
+
+.top-bar {
+    -fx-background-color: -md-sys-color-primary-container;
+}
+
+.card {
+    -fx-background-color: -md-sys-color-surface-variant;
 }

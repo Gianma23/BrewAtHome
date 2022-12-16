@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -47,13 +48,20 @@ public class RicetteController implements Initializable {
             flow.setAlignment(Pos.CENTER);
 
             for (int i = 0; i < 28; i++) {
-                flow.getChildren().add(generateRectangle());
+                FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("card_ricetta.fxml"));
+                Parent card = fxmlLoader.load();
+                flow.getChildren().add(card);
             }
+            
         }
         catch (IOException ioe) {
             System.err.println(ioe.getMessage());
         }
     }    
+    
+    private void caricaRicette() {
+        
+    }
     
     public Rectangle generateRectangle() {
 
@@ -68,4 +76,5 @@ public class RicetteController implements Initializable {
 
         return rect2;
     }
+    
 }

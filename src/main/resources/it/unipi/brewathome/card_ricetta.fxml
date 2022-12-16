@@ -14,12 +14,8 @@
 <?import javafx.scene.text.Font?>
 
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="827.0" prefWidth="80.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="192.0" prefWidth="360.0" styleClass="card" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button mnemonicParsing="false" text="Button" />
-      <Button mnemonicParsing="false" text="Button" />
-      <Button mnemonicParsing="false" text="Button" />
-      <Button mnemonicParsing="false" text="Button" />
-      <Button mnemonicParsing="false" text="Button" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="sium" />
    </children>
 </VBox>

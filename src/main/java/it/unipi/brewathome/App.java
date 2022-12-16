@@ -20,7 +20,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
 
 /**
  * JavaFX App
@@ -44,7 +43,8 @@ public class App extends Application {
         
         scene = new Scene(loadFXML("accedi"));
         App.addStyle(scene, "style.css");
-        scene.getStylesheets().add(getClass().getResource("/styles/fonts.css").toExternalForm());
+        App.addStyle(scene, "fonts.css");
+        App.addStyle(scene, "global.css");
                      
         // listener sul cambio di root
         ChangeListener<Parent> listener = (observable, oldValue, newValue) -> {
@@ -106,7 +106,7 @@ public class App extends Application {
     }
     
     public static void addStyle(Scene scene, String stylesheet) {
-        String css = App.class.getResource("/styles/" + "style.css").toExternalForm();
+        String css = App.class.getResource("/styles/" + stylesheet).toExternalForm();
         scene.getStylesheets().add(css);
     }
 
