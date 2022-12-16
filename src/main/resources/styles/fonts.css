@@ -1,0 +1,14 @@
+@font-face {
+    src: url('/fonts/Montserrat-Regular.ttf');
+    font-weight: regular;
+}
+@font-face {
+    src: url('/fonts/Montserrat-Bold.ttf');
+    font-weight: bold;
+}
+
+.headline-large {
+    -fx-font-family: 'Montserrat';
+    -fx-font-size: 50;
+    -fx-font-weight: bold;
+}

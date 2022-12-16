@@ -20,7 +20,6 @@ public class AccediController {
     
     @FXML 
     private void login() throws IOException {
-
         App.setRoot("ricette");
     }
     

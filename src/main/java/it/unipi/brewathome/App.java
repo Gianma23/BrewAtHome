@@ -20,6 +20,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 
 /**
  * JavaFX App
@@ -29,16 +30,22 @@ public class App extends Application {
     private static Scene scene;
     private static boolean canResize = false;
     private static final String BASE_URL= "http://localhost:8080";
+    private static final String DB_NAME = "gianmaria_saggini";
     
     @Override
     public void start(Stage stage) throws IOException {  
-             
+            
+        // mi connnetto al database e creo le tabelle
+        DatabaseConnector dbConnector = new DatabaseConnector(DB_NAME);
+        dbConnector.createTables();
+        
+        // carico gli stili di colore css
         loadStyle();
-             
+        
         scene = new Scene(loadFXML("accedi"));
-        String css = App.class.getResource("/styles/style.css").toExternalForm();
-        scene.getStylesheets().add(css);
-                
+        App.addStyle(scene, "style.css");
+        scene.getStylesheets().add(getClass().getResource("/styles/fonts.css").toExternalForm());
+                     
         // listener sul cambio di root
         ChangeListener<Parent> listener = (observable, oldValue, newValue) -> {
             if(canResize) {
@@ -97,6 +104,11 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
+    
+    public static void addStyle(Scene scene, String stylesheet) {
+        String css = App.class.getResource("/styles/" + "style.css").toExternalForm();
+        scene.getStylesheets().add(css);
+    }
 
     private void loadStyle() throws IOException {
         HttpURLConnection httpClient = (HttpURLConnection) new URL(BASE_URL + "/style/colors").openConnection();
@@ -116,7 +128,6 @@ public class App extends Application {
         Gson gson = new Gson();
         JsonElement json = gson.fromJson(content.toString(), JsonElement.class);
         JsonArray colors = json.getAsJsonObject().get("entities").getAsJsonArray();
-        System.out.println(colors);
         
         StringBuilder cssString = new StringBuilder("* {\n");
         for(JsonElement color : colors) {

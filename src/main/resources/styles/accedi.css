@@ -3,7 +3,7 @@
 }
 
 .input-text {
-    -fx-background-color: 0, 0;
+    -fx-background-color: transparent, transparent;
     -fx-border-color: -md-sys-color-outline;
     -fx-view-order: 1;
     -fx-border-radius: 4;
