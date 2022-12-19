@@ -2,13 +2,20 @@
     -fx-background-color: -md-sys-color-surface;
 }
 
+/* input text */
+.label {
+    -fx-background-color: -md-sys-color-surface;
+}
+
 .input-text {
     -fx-background-color: transparent, transparent;
     -fx-border-color: -md-sys-color-outline;
     -fx-view-order: 1;
     -fx-border-radius: 4;
 }
-
+.input-text:focused {
+    -fx-padding: 0 0 0 12;
+}
 .search-box {
     -fx-background-color: white, white;
     -fx-border-color: -md-sys-color-outline;
@@ -28,3 +35,4 @@
 .card {
     -fx-background-color: -md-sys-color-surface-variant;
 }
+

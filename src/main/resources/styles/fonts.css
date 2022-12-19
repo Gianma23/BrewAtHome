@@ -2,17 +2,12 @@
     src: url(/fonts/Montserrat-Bold.ttf);
 }
 @font-face {
-    font-weight: normal;
     src: url(/fonts/Roboto-Regular.ttf);
 }
 @font-face {
-    font-weight: 500;
-    src: url(/fonts/Roboto-Regular.ttf);
+    src: url(/fonts/Roboto-Medium.ttf);
 }
-* {
-    -fx-font-family: Roboto;
-    -fx-font-weight: normal;
-}
+
 .display-large {
     -fx-font-family: Montserrat;
     -fx-font-size: 57;
@@ -30,7 +25,6 @@
 
 .headline-large {
     -fx-font-family: Montserrat;
-    -fx-font-weight: bold;
     -fx-font-size: 32;
 }
 
@@ -51,32 +45,27 @@
 }
 
 .title-medium {
-    -fx-font-family: Roboto;
-    -fx-font-weight: 500;
+    -fx-font-family: 'Roboto Medium';
     -fx-font-size: 16;
 }
 
 .title-small {
-    -fx-font-family: Roboto;
-    -fx-font-weight: 500;
+    -fx-font-family: 'Roboto Medium';
     -fx-font-size: 14;
 }
 
 .label-large {
-    -fx-font-family: Roboto;
-    -fx-font-weight: 500;
+    -fx-font-family: 'Roboto Medium';
     -fx-font-size: 14;
 }
 
 .label-medium {
-    -fx-font-family: Roboto;
-    -fx-font-weight: 500;
+    -fx-font-family: 'Roboto Medium';
     -fx-font-size: 12;
 }
 
 .label-small {
-    -fx-font-family: Roboto;
-    -fx-font-weight: 500;
+    -fx-font-family: 'Roboto Medium';
     -fx-font-size: 11;
 }
 

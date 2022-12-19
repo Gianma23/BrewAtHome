@@ -48,7 +48,6 @@ public class RegistratiController {
         System.out.println("Post parameters : " + urlParameters);
         System.out.println("Response Code : " + responseCode);
 
-
         
         App.setRoot("accedi");
     }

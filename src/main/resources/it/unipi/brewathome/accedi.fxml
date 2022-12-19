@@ -45,12 +45,16 @@
                         <Insets left="4.0" right="4.0" />
                      </padding>
                   </Label>
-                  <TextField prefHeight="56.0" promptText="esempio@gmail.com" styleClass="input-text">
+                  <TextField prefHeight="56.0" promptText="esempio@gmail.com">
                      <font>
                         <Font size="16.0" />
                      </font>
+                     <styleClass>
+                        <String fx:value="input-text" />
+                        <String fx:value="body-large" />
+                     </styleClass>
                      <padding>
-                        <Insets left="12.0" right="12.0" />
+                        <Insets left="12.0" />
                      </padding>
                   </TextField>
                </children>
@@ -62,15 +66,22 @@
                         <Font size="12.0" />
                      </font>
                   </Label>
-                  <TextField alignment="CENTER" prefHeight="56.0" promptText="****" styleClass="input-text">
+                  <TextField prefHeight="56.0" promptText="****">
                      <font>
                         <Font size="16.0" />
                      </font>
+                     <styleClass>
+                        <String fx:value="input-text" />
+                        <String fx:value="body-large" />
+                     </styleClass>
                   </TextField>
-                  <Hyperlink styleClass="body-small" text="Password dimenticata?" />
                </children>
             </VBox>
-            <Button fx:id="buttonAccedi" alignment="CENTER" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="1000.0" styleClass="btn" text="Accedi" />
+            <Button fx:id="buttonAccedi" alignment="CENTER" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="1000.0" text="Accedi">
+               <styleClass>
+                  <String fx:value="label-large" />
+                  <String fx:value="btn" />
+               </styleClass></Button>
             <Hyperlink onAction="#openRegistrati" styleClass="body-small" text="Non sei registrato? Registrati" />
          </children>
          <padding>
