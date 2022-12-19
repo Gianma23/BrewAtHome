@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
@@ -18,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="container" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.brewathome.AccediController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="container" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.brewathome.AccediController">
    <children>
       <ImageView fitHeight="100.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -28,7 +23,7 @@
             <Rectangle2D />
          </viewport>
       </ImageView>
-      <VBox alignment="CENTER" prefWidth="500.0" spacing="24.0">
+      <VBox fx:id="inputsContainer" alignment="CENTER" prefWidth="500.0" spacing="24.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headline-large" text="Accedi">
                <font>
@@ -45,7 +40,7 @@
                         <Insets left="4.0" right="4.0" />
                      </padding>
                   </Label>
-                  <TextField prefHeight="56.0" promptText="esempio@gmail.com">
+                  <TextField fx:id="email" prefHeight="56.0" promptText="esempio@gmail.com">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -66,7 +61,7 @@
                         <Font size="12.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="56.0" promptText="****">
+                  <TextField fx:id="password" prefHeight="56.0" promptText="****">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -82,6 +77,7 @@
                   <String fx:value="label-large" />
                   <String fx:value="btn" />
                </styleClass></Button>
+            <Text fx:id="message" strokeType="OUTSIDE" strokeWidth="0.0" />
             <Hyperlink onAction="#openRegistrati" styleClass="body-small" text="Non sei registrato? Registrati" />
          </children>
          <padding>

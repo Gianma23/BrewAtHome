@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import javafx.scene.control.TextField;
 
 /**
  * FXML Controller class
@@ -18,23 +19,25 @@ import java.net.URL;
  */
 public class RegistratiController {
 
-
     @FXML private Button buttonAccedi;
+    @FXML private TextField email;
+    @FXML private TextField password;
+    @FXML private TextField confirmPassword;
     
     @FXML 
     private void register() throws IOException {
         
+        if(!password.getText().equals(confirmPassword.getText())) {
+            //TODO set error message
+            return;
+        }
                 
-        String url = "http://localhost:8080/account/add";
+        String url = App.BASE_URL + "/auth/register";
 
         HttpURLConnection httpClient = (HttpURLConnection) new URL(url).openConnection();
-        String urlParameters = "email=pippo&password=password123";
+        String urlParameters = "email=" + email.getText() + "&password=" + password.getText();
         //add reuqest header
         httpClient.setRequestMethod("POST");
-        httpClient.setRequestProperty("User-Agent", "Mozilla/5.0");
-        httpClient.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        httpClient.setRequestProperty("Content-Length", Integer.toString(urlParameters.length()));
-        httpClient.setUseCaches(false);
 
         // Send post request
         httpClient.setDoOutput(true);
@@ -47,9 +50,9 @@ public class RegistratiController {
         System.out.println("\nSending 'POST' request to URL : " + url);
         System.out.println("Post parameters : " + urlParameters);
         System.out.println("Response Code : " + responseCode);
-
         
-        App.setRoot("accedi");
+        if (200 <= responseCode && responseCode <= 299)
+            App.setRoot("accedi");
     }
     
     @FXML

@@ -26,9 +26,11 @@ import javafx.scene.layout.GridPane;
  */
 public class App extends Application {
 
+    private static String token;
     private static Scene scene;
     private static boolean canResize = false;
-    private static final String BASE_URL= "http://localhost:8080";
+    
+    public static final String BASE_URL= "http://localhost:8080";
     private static final String DB_NAME = "gianmaria_saggini";
     
     @Override
@@ -49,9 +51,9 @@ public class App extends Application {
         // listener sul cambio di root
         ChangeListener<Parent> listener = (observable, oldValue, newValue) -> {
             if(canResize) {
+                putSizeListener(stage, newValue);
                 stage.setResizable(true);
                 stage.setMaximized(true);
-                putSizeListener(stage, newValue);
             }
             else {
                 stage.sizeToScene();
@@ -66,11 +68,19 @@ public class App extends Application {
         stage.show();   
     }
 
-    static void setRoot(String fxml) throws IOException {
+    public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
     
-    static void setCanResize(boolean canResize) {
+    public static void setToken(String token) {
+        App.token = token;
+    }
+    
+    public static String getToken() {
+        return token;
+    }
+    
+    public static void setCanResize(boolean canResize) {
         App.canResize = canResize;
     }
     
@@ -154,5 +164,4 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
-
 }

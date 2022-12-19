@@ -4,10 +4,13 @@
  */
 package it.unipi.brewathome;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
+import org.apache.ibatis.jdbc.ScriptRunner;
 
 /**
  *
@@ -32,15 +35,12 @@ public class DatabaseConnector {
     
     public void createTables() {
         try {
-            Statement st = connection.createStatement();
-            st.executeUpdate("CREATE TABLE IF NOT EXISTS `account` (" +
-                            "    email VARCHAR(45) NOT NULL," +
-                            "    password VARCHAR(128) NOT NULL," +
-                            "    PRIMARY KEY(email)" +
-                            ")ENGINE = InnoDB DEFAULT CHARSET = latin1;");
+            ScriptRunner sr = new ScriptRunner(connection);
+            BufferedReader reader = new BufferedReader(new FileReader(getClass().getResource("/mysql/tables.sql").getPath()));
+            sr.runScript(reader);
         }
-        catch (SQLException sqle) {
-            sqle.printStackTrace();
+        catch (IOException ioe) {
+            ioe.printStackTrace();
         }
     }
 }
