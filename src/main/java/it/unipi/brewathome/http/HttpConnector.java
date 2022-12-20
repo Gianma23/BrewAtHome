@@ -1,9 +1,10 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package it.unipi.brewathome;
+package it.unipi.brewathome.http;
 
+import it.unipi.brewathome.App;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -11,33 +12,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Control;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 /**
- * FXML Controller class
  *
  * @author Utente
  */
-public class AccediController {
-
-    @FXML private VBox inputsContainer;
-    @FXML private Button buttonAccedi;
-    @FXML private TextField email;
-    @FXML private TextField password;
-    @FXML private Text message;
+public class HttpConnector {
     
-    @FXML 
-    private void login() throws IOException, InterruptedException {
-        
-        String url = App.BASE_URL + "/auth/login";
+    private static final String BASE_URL = "http://localhost:8080";
+    
+    public static HttpResponse postRequest(String uri, String urlParameters) throws IOException {
+        String url = App.BASE_URL + uri;
 
         HttpURLConnection httpClient = (HttpURLConnection) new URL(url).openConnection();
-        String urlParameters = "email=" + email.getText() + "&password=" + password.getText();
         httpClient.setRequestMethod("POST");
 
         httpClient.setDoOutput(true);
@@ -70,19 +57,6 @@ public class AccediController {
 
         in.close();
         
-        message.setText("");
-        
-        if (200 <= responseCode && responseCode <= 299) {
-            App.setToken(response.toString());
-            App.setRoot("ricette");
-            System.out.println(App.getToken());
-        }
-        else 
-            message.setText(response.toString());
-    }
-    
-    @FXML
-    private void openRegistrati() throws IOException {
-        App.setRoot("registrati");
+        return new HttpResponse(responseCode, response.toString());
     }
 }

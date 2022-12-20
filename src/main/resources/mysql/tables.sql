@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS account (
 
 
 CREATE TABLE IF NOT EXISTS ricetta (
-	id INT NOT NULL AUTO_INCREMENT,
+    id INT NOT NULL AUTO_INCREMENT,
     account_id VARCHAR(45) NOT NULL,
     nome VARCHAR(45) DEFAULT 'Nome ricetta',
     autore VARCHAR(45),

@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
-<GridPane fx:id="grid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.brewathome.RicetteController">
+<GridPane fx:id="grid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="900.0" prefWidth="1440.0" styleClass="grid" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.brewathome.RicetteController">
   <columnConstraints>
     <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="10.833333" />
       <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="100.0" minWidth="10.0" percentWidth="5.0" />
@@ -42,15 +45,27 @@
     <RowConstraints fillHeight="false" minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <ScrollPane fx:id="scroll" fitToWidth="true" hbarPolicy="NEVER" translateY="72.0" GridPane.columnIndex="1" GridPane.columnSpan="23" GridPane.rowIndex="1">
+      <ScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefWidth="1128.0" styleClass="scroll" translateY="72.0" GridPane.columnIndex="1" GridPane.columnSpan="23" GridPane.rowIndex="1">
          <content>
-            <FlowPane fx:id="flow" columnHalignment="CENTER" />
+            <FlowPane fx:id="flow" columnHalignment="CENTER" styleClass="flow-container" />
          </content>
       </ScrollPane>
       <AnchorPane prefHeight="72.0" GridPane.columnIndex="1" GridPane.columnSpan="23" GridPane.rowIndex="1">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="display-medium" text="Ricette" AnchorPane.bottomAnchor="0.0" />
-            <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Button" AnchorPane.rightAnchor="0.0" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="display-medium" text="Ricette" AnchorPane.topAnchor="24.0" />
+            <HBox AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">
+               <children>
+                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="icon_btn">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../img/add_iconpx.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
          </children>
       </AnchorPane>
    </children>

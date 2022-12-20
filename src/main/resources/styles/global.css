@@ -1,5 +1,10 @@
-.container {
+.container, .grid {
     -fx-background-color: -md-sys-color-surface;
+}
+
+.scroll, .flow-container {
+    -fx-background-color: -md-sys-color-surface;
+    -fx-border-color: -md-sys-color-surface;
 }
 
 /* input text */
@@ -21,18 +26,49 @@
     -fx-border-color: -md-sys-color-outline;
     -fx-view-order: 1;
     -fx-background-radius: 100;
-}
-
-.btn {
-    -fx-background-color: -md-sys-color-primary;
-    -fx-background-radius: 100;
+    -fx-border-radius: 100;
 }
 
 .top-bar {
     -fx-background-color: -md-sys-color-primary-container;
 }
 
+/* BUTTONS */
+
+.btn {
+    -fx-background-color: -md-sys-color-primary;
+    -fx-background-radius: 100;
+    -fx-border-radius: 100;
+    -fx-font-family: 'Roboto Medium';
+    -fx-font-size: 14;
+}
+
+.btn--outlined {
+    -fx-background-color: -md-sys-color-surface;
+    -fx-fill: -md-sys-color-tertiary;
+    -fx-border-color: -md-sys-color-outline;
+}
+
+.btn_nav {
+    -fx-background-color: transparent;
+}
+.btn_nav--active {
+    -fx-background-color: -md-sys-color-secondary-container;
+    -fx-background-radius: 100;
+}
+.icon_btn {
+    -fx-background-color: -md-sys-color-secondary-container;
+    -fx-background-radius: 100;
+}
+
+/* CARDS */
+
 .card {
     -fx-background-color: -md-sys-color-surface-variant;
+    -fx-background-radius: 12;
+}
+
+.card .parametri {
+    -fx-fill: -md-sys-color-on-surface-variant;
 }
 
