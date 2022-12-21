@@ -4,19 +4,16 @@
  */
 package it.unipi.brewathome.controllers;
 
+import com.google.gson.Gson;
 import it.unipi.brewathome.App;
+import it.unipi.brewathome.App;
+import it.unipi.brewathome.AuthRequest;
+import it.unipi.brewathome.AuthRequest;
 import it.unipi.brewathome.http.HttpConnector;
 import it.unipi.brewathome.http.HttpResponse;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -37,14 +34,18 @@ public class AccediController {
     @FXML 
     private void login() throws IOException, InterruptedException {
         
-        HttpResponse response = HttpConnector.postRequest("/auth/login", "email=" + email.getText() + "&password=" + password.getText());
+        Gson gson = new Gson();
+        AuthRequest request = new AuthRequest(email.getText(), password.getText());
+        
+        HttpResponse response = HttpConnector.postRequest("/auth/login", "request="+gson.toJson(request));
+        String responseHeader = response.getResponseHeader();
         String responseBody = response.getResponseBody();
         int responseCode = response.getResponseCode();
         
         message.setText("");
         
         if (200 <= responseCode && responseCode <= 299) {
-            App.setToken(responseBody);
+            App.setToken(responseHeader);
             App.setRoot("ricette");
         }
         else 

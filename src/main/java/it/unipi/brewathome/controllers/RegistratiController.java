@@ -4,7 +4,11 @@
  */
 package it.unipi.brewathome.controllers;
 
+import com.google.gson.Gson;
 import it.unipi.brewathome.App;
+import it.unipi.brewathome.AuthRequest;
+import it.unipi.brewathome.http.HttpConnector;
+import it.unipi.brewathome.http.HttpResponse;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import javafx.fxml.FXML;
@@ -33,24 +37,12 @@ public class RegistratiController {
             return;
         }
                 
-        String url = App.BASE_URL + "/auth/register";
-
-        HttpURLConnection httpClient = (HttpURLConnection) new URL(url).openConnection();
-        String urlParameters = "email=" + email.getText() + "&password=" + password.getText();
-        //add reuqest header
-        httpClient.setRequestMethod("POST");
-
-        // Send post request
-        httpClient.setDoOutput(true);
-        try (DataOutputStream wr = new DataOutputStream(httpClient.getOutputStream())) {
-            wr.writeBytes(urlParameters);
-            wr.flush();
-        }
-
-        int responseCode = httpClient.getResponseCode();
-        System.out.println("\nSending 'POST' request to URL : " + url);
-        System.out.println("Post parameters : " + urlParameters);
-        System.out.println("Response Code : " + responseCode);
+        Gson gson = new Gson();
+        AuthRequest request = new AuthRequest(email.getText(), password.getText());
+        
+        HttpResponse response = HttpConnector.postRequest("/auth/register", "request="+gson.toJson(request));
+        String responseBody = response.getResponseBody();
+        int responseCode = response.getResponseCode();
         
         if (200 <= responseCode && responseCode <= 299)
             App.setRoot("accedi");

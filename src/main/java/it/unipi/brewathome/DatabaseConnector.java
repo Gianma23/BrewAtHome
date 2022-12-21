@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 /**
@@ -18,29 +19,33 @@ import org.apache.ibatis.jdbc.ScriptRunner;
  */
 public class DatabaseConnector {
     
-    private final Connection connection;
+    private static final String DB_URL = "jdbc:mysql://localhost:3306";
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "root";
+    private static final String DB_NAME = "gianmaria_saggini";
+    private static boolean isPopulated = false;
     
-    public DatabaseConnector(String dbName) {
-        Connection temp_co;
-        try {
-            Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName, "root","");
-            temp_co = co;
-        }
-        catch (SQLException sqle) {
-            sqle.printStackTrace();
-            temp_co = null;
-        }
-        connection = temp_co;
+    
+    private DatabaseConnector() {
     }
     
-    public void createTables() {
-        try {
-            ScriptRunner sr = new ScriptRunner(connection);
-            BufferedReader reader = new BufferedReader(new FileReader(getClass().getResource("/mysql/tables.sql").getPath()));
+    
+    public static void createTables() {
+        try (Connection co = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            BufferedReader reader = new BufferedReader(new FileReader(DatabaseConnector.class.getResource("/mysql/tables.sql").getPath()));) {
+            
+            ScriptRunner sr = new ScriptRunner(co);
             sr.runScript(reader);
         }
-        catch (IOException ioe) {
+        catch (IOException | SQLException ioe) {
             ioe.printStackTrace();
         }
+    }
+    
+    public static void populateTables() {
+        if(isPopulated)
+            return;
+        
+        isPopulated = true;
     }
 }

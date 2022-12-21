@@ -9,12 +9,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.unipi.brewathome.App;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
+import it.unipi.brewathome.http.HttpConnector;
+import it.unipi.brewathome.http.HttpResponse;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -25,9 +22,9 @@ import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * FXML Controller class
@@ -36,6 +33,7 @@ import javafx.scene.text.Text;
  */
 public class RicetteController implements Initializable {
 
+    private static final Logger logger =LogManager.getLogger(RicetteController.class);
     @FXML private GridPane grid;
     @FXML private FlowPane flow;
     @FXML private ScrollPane scroll;
@@ -65,73 +63,47 @@ public class RicetteController implements Initializable {
     }    
     
     private void caricaRicette() throws IOException {
-        String url = App.BASE_URL + "/recipes/all";
-
-        HttpURLConnection httpClient = (HttpURLConnection) new URL(url).openConnection();
-        String urlParameters = "token=" + App.getToken();
-        httpClient.setRequestMethod("POST");
-
-        httpClient.setDoOutput(true);
-        try (DataOutputStream wr = new DataOutputStream(httpClient.getOutputStream())) {
-            wr.writeBytes(urlParameters);
-            wr.flush();
-        }
-        catch(IOException ioe) {
-            ioe.printStackTrace();
-        }
-
-        int responseCode = httpClient.getResponseCode();
-        System.out.println("\nSending 'POST' request to URL : " + url);
-        System.out.println("Post parameters : " + urlParameters);
-        System.out.println("Response Code : " + responseCode);
         
-        InputStream inputStream;
-        if (200 <= responseCode && responseCode <= 299) {
-            inputStream = httpClient.getInputStream();
-        } else {
-            inputStream = httpClient.getErrorStream();
-        }
-        BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
-
-        StringBuilder response = new StringBuilder();
-        String currentLine;
-
-        while ((currentLine = in.readLine()) != null) 
-            response.append(currentLine);
-        in.close();
-        
-        System.err.println(response.toString());
+        HttpResponse response = HttpConnector.getRequestWithToken("/recipes/all", "", App.getToken());
+        String responseBody = response.getResponseBody();
         
         Gson gson = new Gson();
-        JsonElement json = gson.fromJson(response.toString(), JsonElement.class);
+        JsonElement json = gson.fromJson(responseBody, JsonElement.class);
         JsonArray recipes = json.getAsJsonArray();
         
         for(JsonElement recipe : recipes) {
-                FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("card_ricetta.fxml"));
-                Parent card = fxmlLoader.load();
-                
-                JsonObject recipeObj = recipe.getAsJsonObject();
-                
-                String nomeText = recipeObj.get("nome").getAsString();
-                Text nome = (Text) card.lookup(".nome");
-                nome.setText(nomeText);
-                        
-                flow.getChildren().add(card);
+            System.out.println(recipe);
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("card_ricetta.fxml"));
+            Parent card = fxmlLoader.load();
+
+            JsonObject recipeObj = recipe.getAsJsonObject();
+
+            String nomeText = recipeObj.get("nome").getAsString();
+            Text nome = (Text) card.lookup(".nome");
+            nome.setText(nomeText);
+
+            if(!recipeObj.get("stileId").isJsonNull()) {
+                String stileText = recipeObj.get("stileId").getAsString();
+                Text stile = (Text) card.lookup(".stile");
+                stile.setText(stileText);
+            }
+
+            String abv = recipeObj.get("abv").getAsString();
+            String og = recipeObj.get("og").getAsString();
+            String fg = recipeObj.get("fg").getAsString();      
+            String ibu = recipeObj.get("ibu").getAsString();    
+            Text stile = (Text) card.lookup(".parametri");
+            stile.setText("ABV: " + abv + "%, OG: " + og + ", FG: " + fg + ", IBU: " + ibu);
+
+            flow.getChildren().add(card);
         }
     }
     
-    public Rectangle generateRectangle() {
+    @FXML
+    private void creaRicetta() throws IOException { 
+        
+        HttpResponse response = HttpConnector.putRequestWithToken("/recipes/add", "recipe={\"ciao\":\"ciao\"}", App.getToken());
 
-        Rectangle rect2 = new Rectangle(10, 10, 10, 10);
-        rect2.setId("app");
-        rect2.setArcHeight(8);
-        rect2.setArcWidth(8);
-        rect2.setStrokeWidth(1);
-        rect2.setStroke(Color.WHITE);
-        rect2.setWidth(320);
-        rect2.setHeight(180);
-
-        return rect2;
+        App.setRoot("modifica_ricetta");
     }
-    
 }

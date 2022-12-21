@@ -45,7 +45,7 @@
 
 .btn--outlined {
     -fx-background-color: -md-sys-color-surface;
-    -fx-fill: -md-sys-color-tertiary;
+    -fx-text-fill: -md-sys-color-tertiary;
     -fx-border-color: -md-sys-color-outline;
 }
 

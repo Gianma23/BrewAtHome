@@ -30,19 +30,19 @@ public class App extends Application {
     private static Scene scene;
     private static boolean canResize = false;
     
-    public static final String BASE_URL= "http://localhost:8080";
-    private static final String DB_NAME = "gianmaria_saggini";
-    
+    public static final String BASE_URL = "http://localhost:8080";
+
     @Override
     public void start(Stage stage) throws IOException {  
             
-        // mi connnetto al database e creo le tabelle
-        DatabaseConnector dbConnector = new DatabaseConnector(DB_NAME);
-        dbConnector.createTables();
+        // creo il database e le tabelle
+        DatabaseConnector.createTables();
+        DatabaseConnector.populateTables();
         
         // carico gli stili di colore css
         loadStyle();
         
+        // aggiungo gli stili alla scena
         scene = new Scene(loadFXML("accedi"));
         App.addStyle(scene, "style.css");
         App.addStyle(scene, "fonts.css");
