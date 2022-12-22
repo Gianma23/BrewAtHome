@@ -32,7 +32,7 @@ public class AccediController {
     @FXML private Text message;
     
     @FXML 
-    private void login() throws IOException, InterruptedException {
+    private void login() throws IOException {
         
         Gson gson = new Gson();
         AuthRequest request = new AuthRequest(email.getText(), password.getText());

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
@@ -8,7 +9,6 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
@@ -45,27 +45,29 @@
     <RowConstraints fillHeight="false" minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <ScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefWidth="1128.0" styleClass="scroll" translateY="72.0" GridPane.columnIndex="1" GridPane.columnSpan="23" GridPane.rowIndex="1">
+      <ScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefWidth="1128.0" styleClass="scroll" GridPane.columnIndex="1" GridPane.columnSpan="23" GridPane.rowIndex="1" GridPane.valignment="TOP">
          <content>
-            <FlowPane fx:id="flow" columnHalignment="CENTER" styleClass="flow-container" />
+            <FlowPane fx:id="flow" columnHalignment="CENTER" hgap="24.0" styleClass="flow-container" vgap="24.0">
+               <padding>
+                  <Insets bottom="24.0" top="24.0" />
+               </padding></FlowPane>
          </content>
+         <padding>
+            <Insets top="72.0" />
+         </padding>
       </ScrollPane>
       <AnchorPane prefHeight="72.0" GridPane.columnIndex="1" GridPane.columnSpan="23" GridPane.rowIndex="1">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="display-medium" text="Ricette" AnchorPane.topAnchor="24.0" />
-            <HBox AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">
-               <children>
-                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#creaRicetta" prefHeight="40.0" prefWidth="40.0" styleClass="icon_btn">
-                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../img/add_iconpx.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-               </children>
-            </HBox>
+            <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#creaRicetta" prefHeight="40.0" prefWidth="40.0" styleClass="icon_btn" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="24.0">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../img/add_iconpx.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </AnchorPane>
    </children>

@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import it.unipi.brewathome.http.HttpConnector;
+import it.unipi.brewathome.http.HttpResponse;
 import java.io.BufferedReader;
 import java.io.File;
 import javafx.application.Application;
@@ -12,10 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.ColumnConstraints;
@@ -29,8 +28,6 @@ public class App extends Application {
     private static String token;
     private static Scene scene;
     private static boolean canResize = false;
-    
-    public static final String BASE_URL = "http://localhost:8080";
 
     @Override
     public void start(Stage stage) throws IOException {  
@@ -53,7 +50,7 @@ public class App extends Application {
             if(canResize) {
                 putSizeListener(stage, newValue);
                 stage.setResizable(true);
-                stage.setMaximized(true);
+                stage.setMaximized(false);
             }
             else {
                 stage.sizeToScene();
@@ -121,22 +118,14 @@ public class App extends Application {
     }
 
     private void loadStyle() throws IOException {
-        HttpURLConnection httpClient = (HttpURLConnection) new URL(BASE_URL + "/style/colors").openConnection();
-        httpClient.setRequestMethod("GET");
         
-        /* Prendo la stringa json dal servizio */
-        
-        String inputLine;
-        StringBuffer content = new StringBuffer();
-        BufferedReader in = new BufferedReader(new InputStreamReader(httpClient.getInputStream()));
-        while((inputLine = in.readLine()) != null)
-            content.append(inputLine);
-        in.close();
+        HttpResponse response = HttpConnector.getRequest("/style/colors", "");
+        String responseBody = response.getResponseBody();
         
         /* Converto in json e produco il css */
         
         Gson gson = new Gson();
-        JsonElement json = gson.fromJson(content.toString(), JsonElement.class);
+        JsonElement json = gson.fromJson(responseBody, JsonElement.class);
         JsonArray colors = json.getAsJsonObject().get("entities").getAsJsonArray();
         
         StringBuilder cssString = new StringBuilder("* {\n");

@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS account (
     password VARCHAR(128) NOT NULL,
 
     PRIMARY KEY(email)
-)ENGINE = InnoDB DEFAULT CHARSET = latin1 COLLATE latin1_general_ci;
+)ENGINE = InnoDB DEFAULT CHARSET = latin1;
 
 
 CREATE TABLE IF NOT EXISTS ricetta (
@@ -15,13 +15,51 @@ CREATE TABLE IF NOT EXISTS ricetta (
     tipo VARCHAR(45) DEFAULT 'All Grain',
     attrezzatura_id INT DEFAULT 0,
     stile_id INT DEFAULT 0,
-    abv INT DEFAULT 0,
-    og INT DEFAULT 0,
-    fg INT DEFAULT 0,
-    ebc INT DEFAULT 0,
-    ibu INT DEFAULT 0,
-    ultima_modifica TIMESTAMP NOT NULL,
+    abv INT,
+    og INT,
+    fg INT,
+    ebc INT,
+    ibu INT,
+    ultima_modifica TIMESTAMP DEFAULT NOW(),
     
     PRIMARY KEY(id),
-	CONSTRAINT fk_ricetta_account FOREIGN KEY (account_id) REFERENCES account(email)
-)ENGINE = InnoDB DEFAULT CHARSET = latin1 COLLATE latin1_general_ci;
+    CONSTRAINT fk_ricetta_account FOREIGN KEY (account_id) REFERENCES account(email)
+)ENGINE = InnoDB DEFAULT CHARSET = latin1;
+
+
+CREATE TABLE IF NOT EXISTS fermentabile (
+    id INT NOT NULL AUTO_INCREMENT,
+    ricetta_id INT NOT NULL,
+    nome VARCHAR(45) NOT NULL,
+    quantita INT NOT NULL,
+    categoria VARCHAR(45) NOT NULL,
+    fornitore VARCHAR(45),
+    provenienza VARCHAR(45),
+    tipo VARCHAR(45) NOT NULL,
+    colore INT NOT NULL,
+    potenziale INT NOT NULL,
+    rendimento INT DEFAULT 75,
+    non_fermentabile BOOLEAN DEFAULT false,
+    
+    PRIMARY KEY(id),
+    CONSTRAINT fk_fermentabile_ricetta FOREIGN KEY (ricetta_id) REFERENCES ricetta(id)
+)ENGINE = InnoDB DEFAULT CHARSET = latin1;
+
+
+CREATE TABLE IF NOT EXISTS luppolo (
+    id INT NOT NULL AUTO_INCREMENT,
+    ricetta_id INT NOT NULL,
+    quantita INT NOT NULL,
+    nome VARCHAR(45) NOT NULL,
+    categoria VARCHAR(45) NOT NULL,
+    fornitore VARCHAR(45),
+    provenienza VARCHAR(45),
+    tipo VARCHAR(45) NOT NULL,
+    colore INT NOT NULL,
+    potenziale INT NOT NULL,
+    rendimento INT DEFAULT 75,
+    non_fermentabile BOOLEAN DEFAULT false,
+    
+    PRIMARY KEY(id),
+    CONSTRAINT fk_fermentabile_ricetta FOREIGN KEY (ricetta_id) REFERENCES ricetta(id)
+)ENGINE = InnoDB DEFAULT CHARSET = latin1;

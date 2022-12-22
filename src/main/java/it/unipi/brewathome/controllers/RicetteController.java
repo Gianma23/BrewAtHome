@@ -13,15 +13,16 @@ import it.unipi.brewathome.http.HttpConnector;
 import it.unipi.brewathome.http.HttpResponse;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,7 +41,7 @@ public class RicetteController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) { 
-        try {   
+        try {
             App.setCanResize(true);
             
             FXMLLoader loadTopBar = new FXMLLoader(App.class.getResource("topBar.fxml"));
@@ -49,13 +50,8 @@ public class RicetteController implements Initializable {
             FXMLLoader loadLeftBar = new FXMLLoader(App.class.getResource("leftBar.fxml"));
             Parent leftBar = loadLeftBar.load();
             grid.add(leftBar, 0, 1, 1, 1);
-            
-            flow.setVgap(24);
-            flow.setHgap(24);
-            flow.setAlignment(Pos.CENTER_LEFT);
 
-            caricaRicette();
-            
+            caricaRicette();        
         }
         catch (IOException ioe) {
             System.err.println(ioe.getMessage());
@@ -72,9 +68,8 @@ public class RicetteController implements Initializable {
         JsonArray recipes = json.getAsJsonArray();
         
         for(JsonElement recipe : recipes) {
-            System.out.println(recipe);
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("card_ricetta.fxml"));
-            Parent card = fxmlLoader.load();
+            VBox card = (VBox) fxmlLoader.load();
 
             JsonObject recipeObj = recipe.getAsJsonObject();
 
@@ -94,7 +89,10 @@ public class RicetteController implements Initializable {
             String ibu = recipeObj.get("ibu").getAsString();    
             Text stile = (Text) card.lookup(".parametri");
             stile.setText("ABV: " + abv + "%, OG: " + og + ", FG: " + fg + ", IBU: " + ibu);
-
+            
+            String ricettaId = recipeObj.get("id").getAsString();
+            card.setId(ricettaId);
+            
             flow.getChildren().add(card);
         }
     }
@@ -102,8 +100,11 @@ public class RicetteController implements Initializable {
     @FXML
     private void creaRicetta() throws IOException { 
         
-        HttpResponse response = HttpConnector.putRequestWithToken("/recipes/add", "recipe={\"ciao\":\"ciao\"}", App.getToken());
-
-        App.setRoot("modifica_ricetta");
+        HttpResponse response = HttpConnector.postRequestWithToken("/recipes/add", "", App.getToken());
+        int ricettaId = Integer.parseInt(response.getResponseBody());
+                
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("modifica_ricetta.fxml"));
+        ModificaRicettaController.setRicettaId(ricettaId); 
+        grid.getScene().setRoot(loader.load());
     }
 }

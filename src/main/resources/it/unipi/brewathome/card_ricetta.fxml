@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="192.0" prefWidth="360.0" styleClass="card" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="cardBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="192.0" prefWidth="360.0" styleClass="card" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.brewathome.controllers.CardRicettaController">
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nome Ricetta">
          <styleClass>
@@ -34,7 +34,7 @@
       </Text>
       <HBox alignment="BOTTOM_RIGHT" spacing="8.0" VBox.vgrow="ALWAYS">
          <children>
-            <Button mnemonicParsing="false" text="Modifica">
+            <Button mnemonicParsing="false" onAction="#modificaRicetta" text="Modifica">
                <styleClass>
                   <String fx:value="btn" />
                   <String fx:value="btn--outlined" />
