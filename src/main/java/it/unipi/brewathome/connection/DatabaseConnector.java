@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package it.unipi.brewathome;
+package it.unipi.brewathome.connection;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -19,10 +19,9 @@ import org.apache.ibatis.jdbc.ScriptRunner;
  */
 public class DatabaseConnector {
     
-    private static final String DB_URL = "jdbc:mysql://localhost:3306";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/gianmaria_saggini";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "root";
-    private static final String DB_NAME = "gianmaria_saggini";
     private static boolean isPopulated = false;
     
     
@@ -45,7 +44,8 @@ public class DatabaseConnector {
     public static void populateTables() {
         if(isPopulated)
             return;
-        
         isPopulated = true;
+        
+        
     }
 }

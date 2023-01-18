@@ -1,12 +1,12 @@
 package it.unipi.brewathome;
 
+import it.unipi.brewathome.connection.DatabaseConnector;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.unipi.brewathome.http.HttpConnector;
-import it.unipi.brewathome.http.HttpResponse;
-import java.io.BufferedReader;
+import it.unipi.brewathome.connection.HttpConnector;
+import it.unipi.brewathome.connection.responses.HttpResponse;
 import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -50,9 +50,9 @@ public class App extends Application {
             if(canResize) {
                 putSizeListener(stage, newValue);
                 stage.setResizable(true);
-                stage.setMaximized(false);
             }
             else {
+                stage.setResizable(false);
                 stage.sizeToScene();
             }
         };

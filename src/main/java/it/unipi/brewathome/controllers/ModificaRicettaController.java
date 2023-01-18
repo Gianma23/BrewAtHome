@@ -9,9 +9,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.unipi.brewathome.App;
-import it.unipi.brewathome.FermentabileTable;
-import it.unipi.brewathome.http.HttpConnector;
-import it.unipi.brewathome.http.HttpResponse;
+import it.unipi.brewathome.connection.responses.FermentabileResponse;
+import it.unipi.brewathome.connection.HttpConnector;
+import it.unipi.brewathome.connection.responses.HttpResponse;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -21,11 +21,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -35,7 +39,7 @@ import javafx.scene.layout.GridPane;
 public class ModificaRicettaController implements Initializable {
 
     private static int ricettaId;
-    private ObservableList<FermentabileTable> fermentabili;
+    private ObservableList<FermentabileResponse> fermentabili;
     
     @FXML private GridPane grid;
     @FXML private ScrollPane scroll;
@@ -44,7 +48,9 @@ public class ModificaRicettaController implements Initializable {
     @FXML private TableColumn columnNome;
     @FXML private TableColumn columnColore;
     @FXML private TableColumn columnCategoria;
-    
+    @FXML private Text textNomeRicetta;
+    @FXML private TextField fieldNomeRicetta;
+      
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {   
@@ -74,6 +80,39 @@ public class ModificaRicettaController implements Initializable {
         columnCategoria.setReorderable(false);
     }
   
+    @FXML
+    private void aggiungiFermentabile() throws IOException {
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("aggiungi_fermentabile.fxml"));
+        Scene scene = new Scene(loader.load(), 551, 624);
+        stage.setScene(scene);
+        stage.show();
+    }
+    
+    @FXML
+    private void aggiornaNome() {
+        System.out.println("sium");
+        String nome = fieldNomeRicetta.getText();
+        if(nome.equals(""))
+            textNomeRicetta.setText("Nome ricetta");
+        else
+            textNomeRicetta.setText(nome);
+    }
+    
+    @FXML
+    private void eliminaRicetta() {
+        
+    }
+    
+    @FXML
+    private void salvaRicetta() {
+        
+    }
+    
+    @FXML
+    private void esci() {
+        
+    }
     private void caricaFermentabili() throws IOException {
         // collego colonne con valori del JavaBean
         columnPeso.setCellValueFactory(new PropertyValueFactory<>("quantita"));
@@ -81,7 +120,7 @@ public class ModificaRicettaController implements Initializable {
         columnColore.setCellValueFactory(new PropertyValueFactory<>("colore"));
         columnCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
 
-        fermentabili = FXCollections.observableArrayList();    
+        fermentabili = FXCollections.observableArrayList();
         tableFermentabili.setItems(fermentabili);
             
         
@@ -93,12 +132,12 @@ public class ModificaRicettaController implements Initializable {
         for(JsonElement ricetta : ricette) {
             JsonObject ricettaObj = ricetta.getAsJsonObject();
             System.out.println(ricettaObj);
-            FermentabileTable fermentabileTable = new FermentabileTable(ricettaObj.get("nome").getAsString(),
+            FermentabileResponse fermentabileTable = new FermentabileResponse(ricettaObj.get("nome").getAsString(),
                                                                         ricettaObj.get("quantita").getAsInt(),
                                                                         ricettaObj.get("colore").getAsInt(),
                                                                         ricettaObj.get("categoria").getAsString());
             System.out.println(fermentabileTable);
-            fermentabili.add(fermentabileTable); 
+            fermentabili.add(fermentabileTable);
         }
     }
     

@@ -7,7 +7,8 @@ module it.brewathome.brewathome {
     requires org.mybatis;
     requires org.apache.logging.log4j;
     
-    opens it.unipi.brewathome to javafx.fxml, com.google.gson;
+    opens it.unipi.brewathome.connection.requests to com.google.gson;
+    opens it.unipi.brewathome to javafx.fxml;
     opens it.unipi.brewathome.controllers to javafx.fxml;
     exports it.unipi.brewathome;
 }

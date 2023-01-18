@@ -1,4 +1,3 @@
-USE gianmaria_saggini;
 CREATE TABLE IF NOT EXISTS account (
     email VARCHAR(45) NOT NULL,
     password VARCHAR(128) NOT NULL,
@@ -55,11 +54,24 @@ CREATE TABLE IF NOT EXISTS luppolo (
     fornitore VARCHAR(45),
     provenienza VARCHAR(45),
     tipo VARCHAR(45) NOT NULL,
-    colore INT NOT NULL,
-    potenziale INT NOT NULL,
-    rendimento INT DEFAULT 75,
-    non_fermentabile BOOLEAN DEFAULT false,
     
     PRIMARY KEY(id),
-    CONSTRAINT fk_fermentabile_ricetta FOREIGN KEY (ricetta_id) REFERENCES ricetta(id)
+    CONSTRAINT fk_luppolo_ricetta FOREIGN KEY (ricetta_id) REFERENCES ricetta(id)
+)ENGINE = InnoDB DEFAULT CHARSET = latin1;
+
+
+CREATE TABLE IF NOT EXISTS stile (
+    nome VARCHAR(45) NOT NULL,
+    abv_min INT,
+    abv_max INT,
+    og_min INT,
+    og_max INT,
+    fg_min INT,
+    fg_max INT,
+    srm_min INT,
+    srm_max INT,
+    ibu_min INT,
+    ibu_max INT,
+    
+    PRIMARY KEY(nome)
 )ENGINE = InnoDB DEFAULT CHARSET = latin1;

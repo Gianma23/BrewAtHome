@@ -6,9 +6,9 @@ package it.unipi.brewathome.controllers;
 
 import com.google.gson.Gson;
 import it.unipi.brewathome.App;
-import it.unipi.brewathome.AuthRequest;
-import it.unipi.brewathome.http.HttpConnector;
-import it.unipi.brewathome.http.HttpResponse;
+import it.unipi.brewathome.connection.requests.AuthRequest;
+import it.unipi.brewathome.connection.HttpConnector;
+import it.unipi.brewathome.connection.responses.HttpResponse;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import javafx.fxml.FXML;

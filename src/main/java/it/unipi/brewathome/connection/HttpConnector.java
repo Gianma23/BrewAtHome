@@ -2,15 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package it.unipi.brewathome.http;
+package it.unipi.brewathome.connection;
 
-import it.unipi.brewathome.App;
+import it.unipi.brewathome.connection.responses.HttpResponse;
 import it.unipi.brewathome.controllers.RicetteController;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import org.apache.logging.log4j.LogManager;
@@ -140,10 +140,9 @@ public class HttpConnector {
     private static void output(HttpURLConnection httpClient, String parameters) {
         
         httpClient.setDoOutput(true);
-        try (DataOutputStream wr = new DataOutputStream(httpClient.getOutputStream())) {
+        try (OutputStreamWriter wr = new OutputStreamWriter(httpClient.getOutputStream())) {
             
-            wr.writeBytes(parameters);
-            wr.flush();
+            wr.write(parameters);
         }
         catch(IOException ioe) {
             ioe.printStackTrace();

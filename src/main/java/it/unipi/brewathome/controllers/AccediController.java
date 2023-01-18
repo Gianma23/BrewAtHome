@@ -7,16 +7,17 @@ package it.unipi.brewathome.controllers;
 import com.google.gson.Gson;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.App;
-import it.unipi.brewathome.AuthRequest;
-import it.unipi.brewathome.AuthRequest;
-import it.unipi.brewathome.http.HttpConnector;
-import it.unipi.brewathome.http.HttpResponse;
+import it.unipi.brewathome.connection.requests.AuthRequest;
+import it.unipi.brewathome.connection.requests.AuthRequest;
+import it.unipi.brewathome.connection.HttpConnector;
+import it.unipi.brewathome.connection.responses.HttpResponse;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -45,6 +46,11 @@ public class AccediController {
         message.setText("");
         
         if (200 <= responseCode && responseCode <= 299) {
+            Stage stage = (Stage) email.getScene().getWindow();
+            stage.setWidth(1480);
+            stage.setHeight(900);
+            stage.centerOnScreen();
+            
             App.setToken(responseHeader);
             App.setRoot("ricette");
         }
