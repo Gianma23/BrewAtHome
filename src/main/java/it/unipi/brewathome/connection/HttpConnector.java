@@ -36,7 +36,7 @@ public class HttpConnector {
         int responseCode = httpClient.getResponseCode();
         String responseBody = input(httpClient, responseCode);
         
-        printConnection(url, urlParameters, responseCode);
+        printConnection("GET", url, urlParameters, responseCode);
         return new HttpResponse(responseCode, responseBody, "");
     }
     
@@ -52,7 +52,7 @@ public class HttpConnector {
         int responseCode = httpClient.getResponseCode();
         String responseBody = input(httpClient, responseCode);
         
-        printConnection(url, urlParameters, responseCode);
+        printConnection("GET", url, urlParameters, responseCode);
         return new HttpResponse(responseCode, responseBody, "");
     }
     
@@ -60,6 +60,7 @@ public class HttpConnector {
         String url = BASE_URL + uri;
 
         HttpURLConnection httpClient = (HttpURLConnection) new URL(url).openConnection();
+        httpClient.setRequestProperty("Content-Type", "application/json");
         httpClient.setRequestMethod("POST");
         
         // invio richiesta
@@ -72,7 +73,7 @@ public class HttpConnector {
         String responseBody = input(httpClient, responseCode);
         String responseHeader = httpClient.getHeaderField("Authorization");
         
-        printConnection(url, urlParameters, responseCode);
+        printConnection("POST", url, urlParameters, responseCode);
         return new HttpResponse(responseCode, responseBody, responseHeader);
     }
        
@@ -81,8 +82,9 @@ public class HttpConnector {
 
         HttpURLConnection httpClient = (HttpURLConnection) new URL(url).openConnection();
         httpClient.setRequestProperty("Authorization", token);
+        httpClient.setRequestProperty("Content-Type", "application/json");
         httpClient.setRequestMethod("POST");
- 
+
         // invio richiesta
         
         output(httpClient, urlParameters);
@@ -92,7 +94,7 @@ public class HttpConnector {
         int responseCode = httpClient.getResponseCode();
         String responseBody = input(httpClient, responseCode);
 
-        printConnection(url, urlParameters, responseCode);
+        printConnection("POST", url, urlParameters, responseCode);
         return new HttpResponse(responseCode, responseBody, "");
     }
     
@@ -112,7 +114,7 @@ public class HttpConnector {
         int responseCode = httpClient.getResponseCode();
         String responseBody = input(httpClient, responseCode);
         
-        printConnection(url, urlParameters, responseCode);
+        printConnection("PUT", url, urlParameters, responseCode);
         return new HttpResponse(responseCode, responseBody, "");
     }
         
@@ -149,8 +151,8 @@ public class HttpConnector {
         }
     }
     
-    private static void printConnection(String url, String urlParameters, int responseCode) {
-        logger.info("Sending POST request to URL : " + url);
+    private static void printConnection(String type, String url, String urlParameters, int responseCode) {
+        logger.info("Sending " + type + " request to URL : " + url);
         logger.info("parameters : " + urlParameters);
         logger.info("Response Code : " + responseCode);
     }

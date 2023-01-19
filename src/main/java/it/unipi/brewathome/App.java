@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 
@@ -60,6 +61,7 @@ public class App extends Application {
         
         stage.setScene(scene);
         stage.setTitle("Brew at Home");
+        stage.getIcons().add(new Image(App.class.getResource("/img/luppoli_icon.png").toString()));
         stage.setResizable(false);
         stage.sizeToScene();
         stage.show();   

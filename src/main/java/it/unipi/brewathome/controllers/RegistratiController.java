@@ -40,7 +40,7 @@ public class RegistratiController {
         Gson gson = new Gson();
         AuthRequest request = new AuthRequest(email.getText(), password.getText());
         
-        HttpResponse response = HttpConnector.postRequest("/auth/register", "request="+gson.toJson(request));
+        HttpResponse response = HttpConnector.postRequest("/auth/register", gson.toJson(request));
         String responseBody = response.getResponseBody();
         int responseCode = response.getResponseCode();
         

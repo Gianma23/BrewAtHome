@@ -38,7 +38,6 @@ CREATE TABLE IF NOT EXISTS fermentabile (
     colore INT NOT NULL,
     potenziale INT NOT NULL,
     rendimento INT DEFAULT 75,
-    non_fermentabile BOOLEAN DEFAULT false,
     
     PRIMARY KEY(id),
     CONSTRAINT fk_fermentabile_ricetta FOREIGN KEY (ricetta_id) REFERENCES ricetta(id)

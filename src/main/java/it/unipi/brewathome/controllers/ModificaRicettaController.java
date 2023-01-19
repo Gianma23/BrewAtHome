@@ -8,12 +8,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import enums.Tipo;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.responses.FermentabileResponse;
 import it.unipi.brewathome.connection.HttpConnector;
 import it.unipi.brewathome.connection.responses.HttpResponse;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,6 +24,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -50,6 +53,9 @@ public class ModificaRicettaController implements Initializable {
     @FXML private TableColumn columnCategoria;
     @FXML private Text textNomeRicetta;
     @FXML private TextField fieldNomeRicetta;
+    @FXML private TextField fieldAutore;
+    @FXML private ChoiceBox fieldTipo;
+    
       
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -62,14 +68,29 @@ public class ModificaRicettaController implements Initializable {
             grid.add(leftBar, 0, 1, 1, 1);
             
             // carico i fermentabili e i luppoli nella tabella
+            
+            columnPeso.setCellValueFactory(new PropertyValueFactory<>("quantita"));
+            columnNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+            columnColore.setCellValueFactory(new PropertyValueFactory<>("colore"));
+            columnCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
+
+            fermentabili = FXCollections.observableArrayList();
+            tableFermentabili.setItems(fermentabili);
+            
             caricaFermentabili();
             caricaLuppoli();
+                    
+            // colonna informazioni laterale
+            HttpConnector.getRequestWithToken("/recipes/info", "recipe=" + ricettaId, App.getToken());
+            fieldTipo.getItems().setAll(Arrays.asList(Tipo.values()));
+
         }
         catch (IOException ioe) {
             System.err.println(ioe.getMessage());
         }
-        
+
         // setto la larghezza delle colonne
+        
         columnPeso.prefWidthProperty().bind(tableFermentabili.widthProperty().multiply(0.2));
         columnNome.prefWidthProperty().bind(tableFermentabili.widthProperty().multiply(0.4));
         columnColore.prefWidthProperty().bind(tableFermentabili.widthProperty().multiply(0.1));
@@ -85,13 +106,21 @@ public class ModificaRicettaController implements Initializable {
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader(App.class.getResource("aggiungi_fermentabile.fxml"));
         Scene scene = new Scene(loader.load(), 551, 624);
+        //salvo per poi aggiornare la tabella
+        FermentabileController.setRicettaController(this);
+        
+        App.addStyle(scene, "style.css");
+        App.addStyle(scene, "fonts.css");
+        App.addStyle(scene, "global.css");
+        
         stage.setScene(scene);
+        stage.setTitle("Fermentabile");
+        stage.setResizable(false);
         stage.show();
     }
     
     @FXML
     private void aggiornaNome() {
-        System.out.println("sium");
         String nome = fieldNomeRicetta.getText();
         if(nome.equals(""))
             textNomeRicetta.setText("Nome ricetta");
@@ -113,16 +142,10 @@ public class ModificaRicettaController implements Initializable {
     private void esci() {
         
     }
-    private void caricaFermentabili() throws IOException {
-        // collego colonne con valori del JavaBean
-        columnPeso.setCellValueFactory(new PropertyValueFactory<>("quantita"));
-        columnNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        columnColore.setCellValueFactory(new PropertyValueFactory<>("colore"));
-        columnCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
-
-        fermentabili = FXCollections.observableArrayList();
-        tableFermentabili.setItems(fermentabili);
-            
+    
+    public void caricaFermentabili() throws IOException {
+        //svuoto la tabella
+        tableFermentabili.getItems().clear();
         
         HttpResponse response = HttpConnector.getRequestWithToken("/recipes/fermentables", "recipe=" + ricettaId, App.getToken());
         String responseBody = response.getResponseBody();
@@ -147,5 +170,9 @@ public class ModificaRicettaController implements Initializable {
     
     public static void setRicettaId(int ricettaId) {
         ModificaRicettaController.ricettaId = ricettaId;
+    }
+    
+    public static int getRicettaId() {
+        return ModificaRicettaController.ricettaId;
     }
 }

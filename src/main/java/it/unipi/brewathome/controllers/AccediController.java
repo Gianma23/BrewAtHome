@@ -38,21 +38,22 @@ public class AccediController {
         Gson gson = new Gson();
         AuthRequest request = new AuthRequest(email.getText(), password.getText());
         
-        HttpResponse response = HttpConnector.postRequest("/auth/login", "request="+gson.toJson(request));
+        HttpResponse response = HttpConnector.postRequest("/auth/login", gson.toJson(request));
         String responseHeader = response.getResponseHeader();
         String responseBody = response.getResponseBody();
         int responseCode = response.getResponseCode();
         
         message.setText("");
         
-        if (200 <= responseCode && responseCode <= 299) {
+        if (200 <= responseCode && responseCode <= 299) {        
             Stage stage = (Stage) email.getScene().getWindow();
-            stage.setWidth(1480);
-            stage.setHeight(900);
-            stage.centerOnScreen();
             
             App.setToken(responseHeader);
             App.setRoot("ricette");
+            
+            stage.setWidth(1480);
+            stage.setHeight(900);
+            stage.centerOnScreen();
         }
         else 
             message.setText(responseBody);

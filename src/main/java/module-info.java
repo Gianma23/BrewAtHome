@@ -10,5 +10,6 @@ module it.brewathome.brewathome {
     opens it.unipi.brewathome.connection.requests to com.google.gson;
     opens it.unipi.brewathome to javafx.fxml;
     opens it.unipi.brewathome.controllers to javafx.fxml;
+    opens it.unipi.brewathome.connection.responses to javafx.base;
     exports it.unipi.brewathome;
 }

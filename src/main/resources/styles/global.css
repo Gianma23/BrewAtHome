@@ -7,6 +7,9 @@
     -fx-border-color: -md-sys-color-surface;
 }
 
+.top-bar {
+    -fx-background-color: -md-sys-color-primary-container;
+}
 /* INPUT FIELDS */
 
 .label {
@@ -31,6 +34,24 @@
     -fx-border-radius: 4 4 0 0;
 }
 
+.choice-box .context-menu { 
+    -fx-background-color: -md-sys-color-surface-variant;
+}
+
+.choice-box > .label,
+.choice-box .menu-item > .label {
+    -fx-background-color: transparent;
+}
+
+.choice-box .menu-item:focused {
+    -fx-background-color: derive(-md-sys-color-on-surface, 0.92);
+}
+
+.choice-box .menu-item:focused > .label {
+    -fx-text-fill: black;
+    -fx-background-color: transparent;
+}
+
 .search-box {
     -fx-background-color: white, white;
     -fx-border-color: -md-sys-color-outline;
@@ -39,9 +60,6 @@
     -fx-border-radius: 100;
 }
 
-.top-bar {
-    -fx-background-color: -md-sys-color-primary-container;
-}
 
 /* BUTTONS */
 
@@ -81,11 +99,13 @@
 .icon_btn--alert {
     -fx-background-color: -md-sys-color-error;
     -fx-background-radius: 100;
+    -fx-text-fill: white;
 }
 
 .icon_btn--positive {
     -fx-background-color: -md-ref-palette-secondary70;
     -fx-background-radius: 100;
+    -fx-text-fill: white;
 }
 
 .icon_btn--standard {
