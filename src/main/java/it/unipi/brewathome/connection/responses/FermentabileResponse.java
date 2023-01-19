@@ -1,6 +1,9 @@
 package it.unipi.brewathome.connection.responses;
 
-public class FermentabileResponse {
+import java.io.Serializable;
+import java.util.Date;
+
+public class FermentabileResponse implements Serializable{
     
     private String nome;
     private int quantita; 
@@ -22,7 +25,7 @@ public class FermentabileResponse {
     public String getCategoria() {
         return categoria;
     }
-    
+
     public FermentabileResponse(String nome, int quantita, int colore, String categoria) {
         this.nome = nome;
         this.quantita = quantita;

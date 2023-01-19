@@ -1,24 +1,23 @@
 package it.unipi.brewathome.connection.requests;
 
-public class FermentabileRequest {
+public class LuppoloRequest {
     
     private int ricettaId;
     private String nome;
+    private int tempo;
     private int quantita; 
     private String categoria;
     private String fornitore;
     private String provenienza;
     private String tipo;
-    private int colore;
-    private int potenziale;
-    private int rendimento;
+    private double alpha;
 
     public int getRicettaId() {
         return ricettaId;
     }
 
-    public void setRicetta_id(int ricetta_id) {
-        this.ricettaId = ricetta_id;
+    public void setRicettaId(int ricettaId) {
+        this.ricettaId = ricettaId;
     }
 
     public String getNome() {
@@ -27,6 +26,14 @@ public class FermentabileRequest {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public int getTempo() {
+        return tempo;
+    }
+
+    public void setTempo(int tempo) {
+        this.tempo = tempo;
     }
 
     public int getQuantita() {
@@ -69,40 +76,25 @@ public class FermentabileRequest {
         this.tipo = tipo;
     }
 
-    public int getColore() {
-        return colore;
+    public double getAlpha() {
+        return alpha;
     }
 
-    public void setColore(int colore) {
-        this.colore = colore;
+    public void setAlpha(int alpha) {
+        this.alpha = alpha;
     }
 
-    public int getPotenziale() {
-        return potenziale;
-    }
-
-    public void setPotenziale(int potenziale) {
-        this.potenziale = potenziale;
-    }
-
-    public int getRendimento() {
-        return rendimento;
-    }
-
-    public void setRendimento(int rendimento) {
-        this.rendimento = rendimento;
-    }
-
-    public FermentabileRequest(int ricetta_id, String nome, int quantita, String categoria, String fornitore, String provenienza, String tipo, int colore, int potenziale, int rendimento) {
-        this.ricettaId = ricetta_id;
+    public LuppoloRequest(int ricettaId, String nome, int tempo, int quantita, String categoria, String fornitore, String provenienza, String tipo, double alpha) {
+        this.ricettaId = ricettaId;
         this.nome = nome;
+        this.tempo = tempo;
         this.quantita = quantita;
         this.categoria = categoria;
         this.fornitore = fornitore;
         this.provenienza = provenienza;
         this.tipo = tipo;
-        this.colore = colore;
-        this.potenziale = potenziale;
-        this.rendimento = rendimento;
+        this.alpha = alpha;
     }
+
+    
 }

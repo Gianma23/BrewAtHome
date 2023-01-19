@@ -48,11 +48,13 @@ CREATE TABLE IF NOT EXISTS luppolo (
     id INT NOT NULL AUTO_INCREMENT,
     ricetta_id INT NOT NULL,
     quantita INT NOT NULL,
+    tempo INT NOT NULL,
     nome VARCHAR(45) NOT NULL,
     categoria VARCHAR(45) NOT NULL,
     fornitore VARCHAR(45),
     provenienza VARCHAR(45),
     tipo VARCHAR(45) NOT NULL,
+    alpha DOUBLE NOT NULL,
     
     PRIMARY KEY(id),
     CONSTRAINT fk_luppolo_ricetta FOREIGN KEY (ricetta_id) REFERENCES ricetta(id)

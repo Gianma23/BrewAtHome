@@ -8,8 +8,8 @@ module it.brewathome.brewathome {
     requires org.apache.logging.log4j;
     
     opens it.unipi.brewathome.connection.requests to com.google.gson;
+    opens it.unipi.brewathome.connection.responses to com.google.gson, javafx.base;
     opens it.unipi.brewathome to javafx.fxml;
     opens it.unipi.brewathome.controllers to javafx.fxml;
-    opens it.unipi.brewathome.connection.responses to javafx.base;
     exports it.unipi.brewathome;
 }
