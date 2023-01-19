@@ -1,11 +1,13 @@
 package it.unipi.brewathome.connection.requests;
 
-public class FermentabileRequest {
+import java.io.Serializable;
+
+public class FermentabileRequest implements Serializable {
     
     private int ricettaId;
-    private String nome;
+    private String nome; 
     private int quantita; 
-    private String categoria;
+    private String categoria; 
     private String fornitore;
     private String provenienza;
     private String tipo;

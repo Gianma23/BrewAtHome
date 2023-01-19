@@ -2,7 +2,7 @@ package it.unipi.brewathome.connection.requests;
 
 public class LuppoloRequest {
     
-    private int ricettaId;
+    private int ricettaId; // non utilizzato in response
     private String nome;
     private int tempo;
     private int quantita; 

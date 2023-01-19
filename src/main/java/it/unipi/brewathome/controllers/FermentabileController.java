@@ -1,16 +1,24 @@
 package it.unipi.brewathome.controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.HttpConnector;
 import it.unipi.brewathome.connection.requests.FermentabileRequest;
 import it.unipi.brewathome.connection.responses.HttpResponse;
+import it.unipi.brewathome.enums.Tipo;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.Arrays;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -22,13 +30,14 @@ import javafx.stage.Stage;
 public class FermentabileController implements Initializable{
 
     private static ModificaRicettaController ricettaController;
+    private static FermentabileRequest updateFermentabile;
     
     @FXML private TextField fieldQuantita;
     @FXML private TextField fieldNome;
     @FXML private TextField fieldCategoria;
     @FXML private TextField fieldFornitore;
     @FXML private TextField fieldProvenienza;
-    @FXML private TextField fieldTipo;
+    @FXML private ChoiceBox fieldTipo;
     @FXML private TextField fieldColore;
     @FXML private TextField fieldPotenziale;
     @FXML private TextField fieldRendimento;
@@ -36,7 +45,23 @@ public class FermentabileController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     
+        // riempimento dropdown menu
+        fieldTipo.getItems().setAll(Arrays.asList(Tipo.values()));
         
+        if(updateFermentabile==null)
+            return;
+        
+        fieldQuantita.setText(String.valueOf(updateFermentabile.getQuantita()));
+        fieldNome.setText(updateFermentabile.getNome());
+        fieldCategoria.setText(updateFermentabile.getCategoria());
+        fieldFornitore.setText(updateFermentabile.getFornitore());
+        fieldProvenienza.setText(updateFermentabile.getProvenienza());
+        fieldTipo.getSelectionModel().select(Tipo.indexOf(updateFermentabile.getTipo()));
+        fieldColore.setText(String.valueOf(updateFermentabile.getColore()));
+        fieldPotenziale.setText(String.valueOf(updateFermentabile.getPotenziale()));
+        fieldRendimento.setText(String.valueOf(updateFermentabile.getRendimento()));
+        
+        updateFermentabile = null;
     }
     
     @FXML
@@ -49,7 +74,7 @@ public class FermentabileController implements Initializable{
                                                                   fieldCategoria.getText(),
                                                                   fieldFornitore.getText(),
                                                                   fieldProvenienza.getText(),
-                                                                  fieldTipo.getText(),
+                                                                  fieldTipo.getSelectionModel().getSelectedItem().toString(),
                                                                   Integer.parseInt(fieldColore.getText()),
                                                                   Integer.parseInt(fieldPotenziale.getText()),
                                                                   Integer.parseInt(fieldRendimento.getText()));                                                   
@@ -77,5 +102,9 @@ public class FermentabileController implements Initializable{
 
     public static void setRicettaController(ModificaRicettaController ricettaController) {
         FermentabileController.ricettaController = ricettaController;
+    }
+
+    public static void setUpdateFermentabile(FermentabileRequest updateFermentabile) {
+        FermentabileController.updateFermentabile = updateFermentabile;
     }
 }

@@ -3,13 +3,16 @@ package it.unipi.brewathome.controllers;
 import com.google.gson.Gson;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.HttpConnector;
+import it.unipi.brewathome.connection.requests.FermentabileRequest;
 import it.unipi.brewathome.connection.requests.LuppoloRequest;
+import it.unipi.brewathome.enums.Tipo;
 import java.io.IOException;
 import java.net.URL;
-import java.time.temporal.Temporal;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -21,20 +24,36 @@ import javafx.stage.Stage;
 public class LuppoloController implements Initializable{
 
     private static ModificaRicettaController ricettaController;
+    private static LuppoloRequest updateLuppolo;
     
     @FXML private TextField fieldQuantita;
     @FXML private TextField fieldNome;
     @FXML private TextField fieldCategoria;
     @FXML private TextField fieldFornitore;
     @FXML private TextField fieldProvenienza;
-    @FXML private TextField fieldTipo;
+    @FXML private ChoiceBox fieldTipo;
     @FXML private TextField fieldTempo;
     @FXML private TextField fieldAlpha;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    
         
+        // riempimento dropdown menu
+        fieldTipo.getItems().setAll(Arrays.asList(Tipo.values()));
+        
+        if(updateLuppolo==null)
+            return;
+        
+        fieldQuantita.setText(String.valueOf(updateLuppolo.getQuantita()));
+        fieldNome.setText(updateLuppolo.getNome());
+        fieldCategoria.setText(updateLuppolo.getCategoria());
+        fieldFornitore.setText(updateLuppolo.getFornitore());
+        fieldProvenienza.setText(updateLuppolo.getProvenienza());
+        fieldTipo.getSelectionModel().select(Tipo.indexOf(updateLuppolo.getTipo()));
+        fieldAlpha.setText(String.valueOf(updateLuppolo.getAlpha()));
+        fieldTempo.setText(String.valueOf(updateLuppolo.getTempo()));
+        
+        updateLuppolo = null;
     }
     
     @FXML
@@ -48,7 +67,7 @@ public class LuppoloController implements Initializable{
                                                         fieldCategoria.getText(),
                                                         fieldFornitore.getText(),
                                                         fieldProvenienza.getText(),
-                                                        fieldTipo.getText(),
+                                                        fieldTipo.getSelectionModel().getSelectedItem().toString(),
                                                         Double.parseDouble(fieldAlpha.getText()));                                                   
             Gson gson = new Gson();
             String body = gson.toJson(request);
@@ -74,5 +93,9 @@ public class LuppoloController implements Initializable{
 
     public static void setRicettaController(ModificaRicettaController ricettaController) {
         LuppoloController.ricettaController = ricettaController;
+    }
+
+    public static void setUpdateLuppolo(LuppoloRequest updateLuppolo) {
+        LuppoloController.updateLuppolo = updateLuppolo;
     }
 }

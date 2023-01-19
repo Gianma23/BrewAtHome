@@ -154,6 +154,6 @@ public class HttpConnector {
     private static void printConnection(String type, String url, String urlParameters, int responseCode) {
         logger.info("Sending " + type + " request to URL : " + url);
         logger.info("parameters : " + urlParameters);
-        logger.info("Response Code : " + responseCode);
+        logger.info("Response Code : " + responseCode + "\n");
     }
 }

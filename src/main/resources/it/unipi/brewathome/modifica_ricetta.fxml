@@ -136,7 +136,7 @@
                               <Insets left="16.0" top="12.0" />
                            </padding>
                         </AnchorPane>
-                        <TableView fx:id="tableFermentabili" maxHeight="-Infinity" minHeight="-Infinity" styleClass="table">
+                        <TableView fx:id="tableFermentabili" maxHeight="-Infinity" minHeight="-Infinity" onMouseClicked="#modificaFermentabile" styleClass="table">
                           <columns>
                             <TableColumn fx:id="columnPesoFermentabile" editable="false" prefWidth="75.0" resizable="false" sortable="false" text="Peso" />
                             <TableColumn fx:id="columnNomeFermentabile" editable="false" prefWidth="194.0" resizable="false" sortable="false" text="Nome" />
@@ -176,7 +176,7 @@
                               <Insets left="16.0" top="12.0" />
                            </padding>
                         </AnchorPane>
-                        <TableView fx:id="tableLuppoli" maxHeight="-Infinity" minHeight="-Infinity" styleClass="table">
+                        <TableView fx:id="tableLuppoli" maxHeight="-Infinity" minHeight="-Infinity" onMouseClicked="#modificaLuppolo" styleClass="table">
                            <columns>
                               <TableColumn fx:id="columnPesoLuppolo" editable="false" prefWidth="75.0" resizable="false" sortable="false" text="Peso" />
                               <TableColumn fx:id="columnNomeLuppolo" editable="false" prefWidth="225.0" resizable="false" sortable="false" text="Nome" />

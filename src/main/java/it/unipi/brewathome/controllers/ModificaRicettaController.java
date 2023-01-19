@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package it.unipi.brewathome.controllers;
 
 import com.google.gson.Gson;
@@ -12,15 +8,18 @@ import it.unipi.brewathome.enums.Tipo;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.responses.FermentabileResponse;
 import it.unipi.brewathome.connection.HttpConnector;
+import it.unipi.brewathome.connection.requests.FermentabileRequest;
+import it.unipi.brewathome.connection.requests.LuppoloRequest;
 import it.unipi.brewathome.connection.requests.RicettaRequest;
 import it.unipi.brewathome.connection.responses.HttpResponse;
-import it.unipi.brewathome.connection.responses.LuppoloResponse;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
@@ -37,6 +36,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -50,7 +50,9 @@ public class ModificaRicettaController implements Initializable {
 
     private static int ricettaId;
     private ObservableList<FermentabileResponse> fermentabili;
-    private ObservableList<LuppoloResponse> luppoli;
+    private List<FermentabileRequest> fermentabiliList;
+    private ObservableList<LuppoloRequest> luppoli;
+    private List<LuppoloRequest> luppoliList;
     
     @FXML private GridPane grid;
     @FXML private ScrollPane scroll;
@@ -95,16 +97,17 @@ public class ModificaRicettaController implements Initializable {
             
             fermentabili = FXCollections.observableArrayList();
             tableFermentabili.setItems(fermentabili);
+            fermentabiliList = new ArrayList(); 
             
             luppoli = FXCollections.observableArrayList();
             tableLuppoli.setItems(luppoli);
+            luppoliList = new ArrayList();
             
             caricaFermentabili();
             caricaLuppoli();
                     
             // colonna informazioni laterale
             caricaBarraLaterale();
-
             
             // sistemo dimensioni delle tabelle
             setDimensionTableFermentabili();
@@ -152,6 +155,28 @@ public class ModificaRicettaController implements Initializable {
     }
     
     @FXML
+    private void modificaFermentabile(MouseEvent event) throws IOException {
+        if (event.getClickCount() == 2) //Doppio click
+        {
+            int index = fermentabili.indexOf(tableFermentabili.getSelectionModel().getSelectedItem());
+            FermentabileRequest fermentabile = fermentabiliList.get(index);
+            FermentabileController.setUpdateFermentabile(fermentabile);
+            aggiungiFermentabile();
+        }
+    }
+    
+    @FXML
+    private void modificaLuppolo(MouseEvent event) throws IOException {
+        if (event.getClickCount() == 2) //Doppio click
+        {
+            int index = luppoli.indexOf(tableLuppoli.getSelectionModel().getSelectedItem());
+            LuppoloRequest luppolo = luppoliList.get(index);
+            LuppoloController.setUpdateLuppolo(luppolo);
+            aggiungiLuppolo();
+        }
+    }
+    
+    @FXML
     private void aggiornaNome() {
         String nome = fieldNomeRicetta.getText();
         if(nome.equals(""))
@@ -185,8 +210,7 @@ public class ModificaRicettaController implements Initializable {
         }
         catch (IOException ioe) {
             System.err.println(ioe.getMessage());
-        }
-        
+        } 
     }
     
     @FXML
@@ -195,8 +219,9 @@ public class ModificaRicettaController implements Initializable {
     }
     
     public void caricaFermentabili() throws IOException {
-        //svuoto la tabella
+        //svuoto la tabella e la lista
         tableFermentabili.getItems().clear();
+        fermentabiliList.clear();
         
         HttpResponse response = HttpConnector.getRequestWithToken("/recipes/fermentables", "recipe=" + ricettaId, App.getToken());
         String responseBody = response.getResponseBody();
@@ -205,10 +230,12 @@ public class ModificaRicettaController implements Initializable {
             return;
             
         Gson gson = new Gson();
-        JsonArray ricette = gson.fromJson(responseBody, JsonElement.class).getAsJsonArray();
-        for(JsonElement ricetta : ricette) {
-            FermentabileResponse fermentabileTable = gson.fromJson(ricetta, FermentabileResponse.class);
+        JsonArray fermentabiliArray = gson.fromJson(responseBody, JsonElement.class).getAsJsonArray();
+        for(JsonElement fermentabile : fermentabiliArray) {
+            FermentabileResponse fermentabileTable = gson.fromJson(fermentabile, FermentabileResponse.class);
             fermentabili.add(fermentabileTable);
+            FermentabileRequest ferm = gson.fromJson(fermentabile, FermentabileRequest.class);
+            fermentabiliList.add(ferm);
         }
     }
     
@@ -223,10 +250,12 @@ public class ModificaRicettaController implements Initializable {
             return;
             
         Gson gson = new Gson();
-        JsonArray ricette = gson.fromJson(responseBody, JsonElement.class).getAsJsonArray();
-        for(JsonElement ricetta : ricette) {
-            LuppoloResponse luppoloTable = gson.fromJson(ricetta, LuppoloResponse.class);
+        JsonArray luppoliArray = gson.fromJson(responseBody, JsonElement.class).getAsJsonArray();
+        for(JsonElement luppolo : luppoliArray) {
+            LuppoloRequest luppoloTable = gson.fromJson(luppolo, LuppoloRequest.class);
             luppoli.add(luppoloTable);
+            LuppoloRequest lup = gson.fromJson(luppolo, LuppoloRequest.class);
+            luppoliList.add(lup);
         }
     }
     
@@ -288,8 +317,8 @@ public class ModificaRicettaController implements Initializable {
         columnTempo.setReorderable(false);
         
         // sistemo altezza tabella
-        tableFermentabili.setFixedCellSize(25);
-        tableFermentabili.prefHeightProperty().bind(tableFermentabili.fixedCellSizeProperty().multiply(Bindings.size(tableFermentabili.getItems()).add(1.01)));
+        tableLuppoli.setFixedCellSize(25);
+        tableLuppoli.prefHeightProperty().bind(tableLuppoli.fixedCellSizeProperty().multiply(Bindings.size(tableLuppoli.getItems()).add(1.01)));
     }
     
     public static void setRicettaId(int ricettaId) {

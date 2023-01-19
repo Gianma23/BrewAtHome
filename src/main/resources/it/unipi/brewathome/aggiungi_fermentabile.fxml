@@ -3,6 +3,7 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -165,21 +166,15 @@
       </HBox>
       <StackPane alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="56.0">
          <children>
-            <TextField fx:id="fieldTipo" maxWidth="200.0" prefHeight="56.0">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <padding>
-                  <Insets left="16.0" top="16.0" />
-               </padding>
+            <ChoiceBox fx:id="fieldTipo" maxWidth="200.0" prefHeight="56.0">
                <styleClass>
                   <String fx:value="input-text--filled" />
                   <String fx:value="body-large" />
                </styleClass>
-               <StackPane.margin>
-                  <Insets />
-               </StackPane.margin>
-            </TextField>
+               <padding>
+                  <Insets top="16.0" />
+               </padding>
+            </ChoiceBox>
             <Label alignment="CENTER" style="-fx-background-color: transparent;" styleClass="body-small" text="Tipo" translateY="8.0">
                <font>
                   <Font size="12.0" />
