@@ -23,14 +23,14 @@
             <Insets bottom="12.0" />
          </VBox.margin>
       </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ABV OG FG IBU ">
-         <styleClass>
-            <String fx:value="body-medium" />
-            <String fx:value="parametri" />
-         </styleClass>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Descrizione">
          <VBox.margin>
             <Insets top="16.0" />
          </VBox.margin>
+         <styleClass>
+            <String fx:value="body-medium" />
+            <String fx:value="descrizione" />
+         </styleClass>
       </Text>
       <HBox alignment="BOTTOM_RIGHT" spacing="8.0" VBox.vgrow="ALWAYS">
          <children>

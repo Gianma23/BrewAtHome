@@ -12,20 +12,17 @@ import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
-/**
- *
- * @author Utente
- */
+
 public class DatabaseConnector {
     
     private static final String DB_URL = "jdbc:mysql://localhost:3306/gianmaria_saggini";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "root";
-    private static boolean isPopulated = false;
-    
     
     private DatabaseConnector() {
     }
@@ -43,14 +40,18 @@ public class DatabaseConnector {
     }
     
     public static void populateStyleTable() {
-        if(isPopulated)
-            return;
-        isPopulated = true;
         
         //parse del file
         try (Connection co = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              PreparedStatement ps = co.prepareStatement("INSERT INTO stile VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");)
         {
+            //controllo che la tabella sia vuota
+            Statement st = co.createStatement();
+            ResultSet result = st.executeQuery("SELECT EXISTS (SELECT 1 FROM stile);");
+            result.next();
+            if(result.getInt(1)==1)
+                return;
+            
             Path path = Path.of(DatabaseConnector.class.getResource("/bjcp-2021.json").toString().substring(6));
             String jsonFile = Files.readString(path);
 

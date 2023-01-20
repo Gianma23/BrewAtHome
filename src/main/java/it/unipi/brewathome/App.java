@@ -21,9 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 
-/**
- * JavaFX App
- */
+
 public class App extends Application {
 
     private static String token;

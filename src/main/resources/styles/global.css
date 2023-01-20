@@ -23,15 +23,14 @@
     -fx-border-radius: 4;
 }
 
-.input-text:focused {
-    -fx-padding: 0 0 0 12;
-}
-
 .input-text--filled {
     -fx-background-color: -md-sys-color-surface-variant;
     -fx-border-color: transparent transparent -md-sys-color-on-surface;
     -fx-background-radius: 0;
     -fx-border-radius: 4 4 0 0;
+}
+.input-text--filled .content {
+    -fx-background-color: -md-sys-color-surface-variant; 
 }
 
 .context-menu { 
@@ -44,7 +43,7 @@
 }
 
 .menu-item:focused {
-    -fx-background-color: derive(-md-sys-color-on-surface, 0.92);
+    -fx-background-color: derive(-md-sys-color-surface-variant, -0.08);
 }
 
 .menu-item:focused > .label {
@@ -126,14 +125,35 @@
 
 /* TABELLE */
 
-.table {
+.table-view {
     -fx-background-color: transparent;
     -fx-table-header-border-color: transparent;
 }
-.table .column-header,
-.table .column-header .label,
-.table .column-header .filler,
-.table .column-header-background .filler {
+
+.table-view .column-header,
+.table-view .column-header .label,
+.table-view .column-header .filler,
+.table-view .column-header-background .filler {
     -fx-background-color: transparent;
     -fx-border-width: 0;
+}
+
+.table-cell {
+    -fx-font-family: Roboto;
+    -fx-font-weight: normal;
+    -fx-font-size: 14;
+}
+
+.table-row-cell:focused .table-cell {
+    -fx-text-fill: -md-sys-color-on-surface;
+    -fx-background-color: derive(-md-sys-color-surface-variant, -0.08);
+}
+
+.table-row-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: -md-sys-color-outline transparent transparent;
+}
+
+.table-column {
+    -fx-alignment: CENTER-LEFT;
 }

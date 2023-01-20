@@ -6,15 +6,18 @@ public class RicettaRequest implements Serializable {
     
     private int id;
     private String nome;
+    private String descrizione;
     private String autore; 
     private String tipo;
-    private int attrezzaturaId;
     private String stileId;
+    private double volume;
+    private double rendimento;
     private int abv;
     private int og;
     private int fg;
     private int ebc;
     private int ibu;
+    private String ultimaModifica;
 
     public int getId() {
         return id;
@@ -30,6 +33,14 @@ public class RicettaRequest implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
     }
 
     public String getAutore() {
@@ -48,18 +59,26 @@ public class RicettaRequest implements Serializable {
         this.tipo = tipo;
     }
 
-    public int getAttrezzaturaId() {
-        return attrezzaturaId;
-    }
-
-    public void setAttrezzaturaId(int attrezzaturaId) {
-        this.attrezzaturaId = attrezzaturaId;
-    }
-
     public String getStileId() {
         return stileId;
     }
 
+    public double getVolume() {
+        return volume;
+    }
+
+    public void setVolume(double volume) {
+        this.volume = volume;
+    }
+
+    public double getRendimento() {
+        return rendimento;
+    }
+
+    public void setRendimento(double rendimento) {
+        this.rendimento = rendimento;
+    }
+    
     public void setStileId(String stileId) {
         this.stileId = stileId;
     }
@@ -104,13 +123,23 @@ public class RicettaRequest implements Serializable {
         this.ibu = ibu;
     }
 
-    public RicettaRequest(int id, String nome, String autore, String tipo, int attrezzaturaId, String stileId, int abv, int og, int fg, int ebc, int ibu) {
+    public String getUltimaModifica() {
+        return ultimaModifica;
+    }
+
+    public void setUltimaModifica(String ultimaModifica) {
+        this.ultimaModifica = ultimaModifica;
+    }
+
+    public RicettaRequest(int id, String nome, String descrizione, String autore, String tipo, String stileId, double volume, double rendimento, int abv, int og, int fg, int ebc, int ibu) {
         this.id = id;
         this.nome = nome;
+        this.descrizione = descrizione;
         this.autore = autore;
         this.tipo = tipo;
-        this.attrezzaturaId = attrezzaturaId;
         this.stileId = stileId;
+        this.volume = volume;
+        this.rendimento = rendimento;
         this.abv = abv;
         this.og = og;
         this.fg = fg;

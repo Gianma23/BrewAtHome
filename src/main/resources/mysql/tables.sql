@@ -6,14 +6,34 @@ CREATE TABLE IF NOT EXISTS account (
 )ENGINE = InnoDB DEFAULT CHARSET = latin1;
 
 
+CREATE TABLE IF NOT EXISTS stile (
+    nome VARCHAR(255) NOT NULL,
+    guida VARCHAR(45) NOT NULL,
+    abv_min DOUBLE,
+    abv_max DOUBLE,
+    og_min DOUBLE,
+    og_max DOUBLE,
+    fg_min DOUBLE,
+    fg_max DOUBLE,
+    srm_min DOUBLE,
+    srm_max DOUBLE,
+    ibu_min INT,
+    ibu_max INT,
+    
+    PRIMARY KEY(nome)
+)ENGINE = InnoDB DEFAULT CHARSET = latin1;
+
+
 CREATE TABLE IF NOT EXISTS ricetta (
     id INT NOT NULL AUTO_INCREMENT,
     account_id VARCHAR(45) NOT NULL,
     nome VARCHAR(45) DEFAULT 'Nome ricetta',
+    descrizione TEXT,
     autore VARCHAR(45),
     tipo VARCHAR(45) DEFAULT 'All Grain',
-    attrezzatura_id INT DEFAULT 0,
-    stile_id INT DEFAULT 0,
+    stile_id VARCHAR(255) DEFAULT 'American Light Lager',
+    volume DOUBLE DEFAULT 0,
+    rendimento DOUBLE DEFAULT 0,
     abv INT,
     og INT,
     fg INT,
@@ -22,7 +42,8 @@ CREATE TABLE IF NOT EXISTS ricetta (
     ultima_modifica TIMESTAMP DEFAULT NOW(),
     
     PRIMARY KEY(id),
-    CONSTRAINT fk_ricetta_account FOREIGN KEY (account_id) REFERENCES account(email) ON DELETE CASCADE
+    CONSTRAINT fk_ricetta_account FOREIGN KEY (account_id) REFERENCES account(email) ON DELETE CASCADE,
+    CONSTRAINT fk_ricetta_stile FOREIGN KEY (stile_id) REFERENCES stile(nome)
 )ENGINE = InnoDB DEFAULT CHARSET = latin1;
 
 
@@ -61,19 +82,3 @@ CREATE TABLE IF NOT EXISTS luppolo (
 )ENGINE = InnoDB DEFAULT CHARSET = latin1;
 
 
-CREATE TABLE IF NOT EXISTS stile (
-    nome VARCHAR(255) NOT NULL,
-    guida VARCHAR(45) NOT NULL,
-    abv_min DOUBLE,
-    abv_max DOUBLE,
-    og_min DOUBLE,
-    og_max DOUBLE,
-    fg_min DOUBLE,
-    fg_max DOUBLE,
-    srm_min DOUBLE,
-    srm_max DOUBLE,
-    ibu_min INT,
-    ibu_max INT,
-    
-    PRIMARY KEY(nome)
-)ENGINE = InnoDB DEFAULT CHARSET = latin1;

@@ -3,7 +3,6 @@ package it.unipi.brewathome.controllers;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import it.unipi.brewathome.enums.Tipo;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.responses.FermentabileResponse;
@@ -35,17 +34,15 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author Utente
- */
+
 public class ModificaRicettaController implements Initializable {
 
     private static int ricettaId;
@@ -57,8 +54,10 @@ public class ModificaRicettaController implements Initializable {
     
     @FXML private GridPane grid;
     @FXML private ScrollPane scroll;
+    
     @FXML private TableView tableFermentabili;
     @FXML private TableView tableLuppoli;
+    
     @FXML private TableColumn columnPesoFermentabile;
     @FXML private TableColumn columnNomeFermentabile;
     @FXML private TableColumn columnColore;
@@ -67,11 +66,20 @@ public class ModificaRicettaController implements Initializable {
     @FXML private TableColumn columnNomeLuppolo;
     @FXML private TableColumn columnAlpha;
     @FXML private TableColumn columnTempo;
+    
     @FXML private Text textNomeRicetta;
     @FXML private Text textUltimaModifica;
+    @FXML private Text textStile;
+    @FXML private Text textAbv;
+    
+    @FXML private TextArea fieldDescrizione;
     @FXML private TextField fieldNomeRicetta;
     @FXML private TextField fieldAutore;
+    @FXML private TextField fieldVolume;
+    @FXML private TextField fieldRendimento;
     @FXML private ChoiceBox fieldTipo;
+    
+    @FXML private Rectangle actualAbv;
     
       
     @Override
@@ -108,7 +116,7 @@ public class ModificaRicettaController implements Initializable {
             caricaLuppoli();
                     
             // colonna informazioni laterale
-            caricaBarraLaterale();
+            caricaInfoRicetta();
             
             // sistemo dimensioni delle tabelle
             setDimensionTableFermentabili();
@@ -213,13 +221,18 @@ public class ModificaRicettaController implements Initializable {
     private void salvaRicetta() {
         try {
             //TODO: controlli input
+            double volume = Double.parseDouble(fieldVolume.getText());
+            double rendimento = Double.parseDouble(fieldRendimento.getText());
+            
             System.out.println(fieldTipo.getSelectionModel().getSelectedItem());
             RicettaRequest request = new RicettaRequest(ricettaId,
                                                         fieldNomeRicetta.getText(),
+                                                        fieldDescrizione.getText(),
                                                         fieldAutore.getText(),
                                                         fieldTipo.getSelectionModel().getSelectedItem().toString(),
-                                                        0,
-                                                        "test",
+                                                        textStile.getText(),
+                                                        volume,
+                                                        rendimento,
                                                         0,0,0,0,0);                                                   
             Gson gson = new Gson();
             String body = gson.toJson(request);
@@ -278,7 +291,7 @@ public class ModificaRicettaController implements Initializable {
         }
     }
     
-    public void caricaBarraLaterale() throws IOException {
+    public void caricaInfoRicetta() throws IOException {
         
         // riempimento dropdown menu
         
@@ -290,20 +303,31 @@ public class ModificaRicettaController implements Initializable {
         String responseBody = response.getResponseBody();
         
         Gson gson = new Gson();
-        JsonObject recipeObj = gson.fromJson(responseBody, JsonElement.class).getAsJsonObject();
+        RicettaRequest ricetta = gson.fromJson(responseBody, RicettaRequest.class);
         
-        String nome = recipeObj.get("nome").getAsString();
+        String nome = ricetta.getNome();
         textNomeRicetta.setText(nome);
         fieldNomeRicetta.setText(nome);
         
-        if(!recipeObj.get("autore").isJsonNull())
-            fieldAutore.setText(recipeObj.get("autore").getAsString());
+        if(ricetta.getDescrizione()!=null)
+            fieldDescrizione.setText(ricetta.getDescrizione());
         
-        String tipo = recipeObj.get("tipo").getAsString();
-        System.out.println(recipeObj);
+        if(ricetta.getAutore()!=null)
+            fieldAutore.setText(ricetta.getAutore());
+        
+        String tipo = ricetta.getTipo();
         fieldTipo.getSelectionModel().select(Tipo.indexOf(tipo));
         
-        String ultimaModifica = recipeObj.get("ultimaModifica").getAsString();
+        String stile = ricetta.getStileId();
+        textStile.setText(stile);
+        
+        String volume = String.valueOf(ricetta.getVolume());
+        fieldVolume.setText(volume);
+        
+        String rendimento = String.valueOf(ricetta.getRendimento());
+        fieldRendimento.setText(rendimento);
+        
+        String ultimaModifica = ricetta.getUltimaModifica();
         LocalDate data = LocalDate.parse(ultimaModifica, DateTimeFormatter.ISO_DATE_TIME);
         textUltimaModifica.setText("Ultima modifica: " + data.getDayOfMonth() + " " + data.getMonth().getDisplayName(TextStyle.FULL, Locale.ITALY) + " " + data.getYear());
     }
@@ -312,7 +336,7 @@ public class ModificaRicettaController implements Initializable {
         // setto la larghezza delle colonne
         columnPesoFermentabile.prefWidthProperty().bind(tableFermentabili.widthProperty().multiply(0.2));
         columnNomeFermentabile.prefWidthProperty().bind(tableFermentabili.widthProperty().multiply(0.4));
-        columnColore.prefWidthProperty().bind(tableFermentabili.widthProperty().multiply(0.1));
+        columnColore.prefWidthProperty().bind(tableFermentabili.widthProperty().multiply(0.10));
         columnCategoria.prefWidthProperty().bind(tableFermentabili.widthProperty().multiply(0.28));
         columnPesoFermentabile.setReorderable(false);
         columnNomeFermentabile.setReorderable(false);
@@ -320,11 +344,11 @@ public class ModificaRicettaController implements Initializable {
         columnCategoria.setReorderable(false);
         
         // sistemo altezza tabella
-        tableFermentabili.setFixedCellSize(25);
-        tableFermentabili.prefHeightProperty().bind(tableFermentabili.fixedCellSizeProperty().multiply(Bindings.size(tableFermentabili.getItems()).add(1.01)));
+        tableFermentabili.setFixedCellSize(28);
+        tableFermentabili.prefHeightProperty().bind(tableFermentabili.fixedCellSizeProperty().multiply(Bindings.size(tableFermentabili.getItems()).add(1.3)));
     }
     
-        public void setDimensionTableLuppoli() {
+    public void setDimensionTableLuppoli() {
         // setto la larghezza delle colonne
         columnPesoLuppolo.prefWidthProperty().bind(tableLuppoli.widthProperty().multiply(0.2));
         columnNomeLuppolo.prefWidthProperty().bind(tableLuppoli.widthProperty().multiply(0.48));
@@ -336,8 +360,8 @@ public class ModificaRicettaController implements Initializable {
         columnTempo.setReorderable(false);
         
         // sistemo altezza tabella
-        tableLuppoli.setFixedCellSize(25);
-        tableLuppoli.prefHeightProperty().bind(tableLuppoli.fixedCellSizeProperty().multiply(Bindings.size(tableLuppoli.getItems()).add(1.01)));
+        tableLuppoli.setFixedCellSize(28);
+        tableLuppoli.prefHeightProperty().bind(tableLuppoli.fixedCellSizeProperty().multiply(Bindings.size(tableLuppoli.getItems()).add(1.3)));
     }
     
     public static void setRicettaId(int ricettaId) {

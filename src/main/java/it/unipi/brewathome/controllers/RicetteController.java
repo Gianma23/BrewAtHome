@@ -10,10 +10,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.HttpConnector;
+import it.unipi.brewathome.connection.requests.RicettaRequest;
 import it.unipi.brewathome.connection.responses.HttpResponse;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashSet;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -71,26 +71,26 @@ public class RicetteController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("card_ricetta.fxml"));
             VBox card = (VBox) fxmlLoader.load();
 
-            JsonObject recipeObj = recipe.getAsJsonObject();
+            RicettaRequest ricetta = gson.fromJson(recipe, RicettaRequest.class);
 
-            String nomeText = recipeObj.get("nome").getAsString();
+            String nomeText = ricetta.getNome();
             Text nome = (Text) card.lookup(".nome");
             nome.setText(nomeText);
 
-            if(!recipeObj.get("stileId").isJsonNull()) {
-                String stileText = recipeObj.get("stileId").getAsString();
-                Text stile = (Text) card.lookup(".stile");
-                stile.setText(stileText);
-            }
+            String stileText = ricetta.getStileId();
+            Text stile = (Text) card.lookup(".stile");
+            stile.setText(stileText);
 
-            String abv = recipeObj.get("abv").getAsString();
-            String og = recipeObj.get("og").getAsString();
-            String fg = recipeObj.get("fg").getAsString();      
-            String ibu = recipeObj.get("ibu").getAsString();    
-            Text stile = (Text) card.lookup(".parametri");
-            stile.setText("ABV: " + abv + "%, OG: " + og + ", FG: " + fg + ", IBU: " + ibu);
+            //TODO: decidere se tenere i parametri
+            //String abv = recipeObj.get("abv").getAsString();
+            //String og = recipeObj.get("og").getAsString();
+            //String fg = recipeObj.get("fg").getAsString();      
+            //String ibu = recipeObj.get("ibu").getAsString();    
+            String descText = ricetta.getDescrizione();
+            Text descrizione = (Text) card.lookup(".descrizione");
+            descrizione.setText(descText);
             
-            String ricettaId = recipeObj.get("id").getAsString();
+            String ricettaId = String.valueOf(ricetta.getId());
             card.setId(ricettaId);
             
             flow.getChildren().add(card);
