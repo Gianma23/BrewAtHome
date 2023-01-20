@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class FermentabileRequest implements Serializable {
     
+    private int id;
     private int ricettaId;
     private String nome; 
     private int quantita; 
@@ -15,6 +16,14 @@ public class FermentabileRequest implements Serializable {
     private int potenziale;
     private int rendimento;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public int getRicettaId() {
         return ricettaId;
     }
@@ -95,7 +104,8 @@ public class FermentabileRequest implements Serializable {
         this.rendimento = rendimento;
     }
 
-    public FermentabileRequest(int ricetta_id, String nome, int quantita, String categoria, String fornitore, String provenienza, String tipo, int colore, int potenziale, int rendimento) {
+    public FermentabileRequest(int id, int ricetta_id, String nome, int quantita, String categoria, String fornitore, String provenienza, String tipo, int colore, int potenziale, int rendimento) {
+        this.id = id;
         this.ricettaId = ricetta_id;
         this.nome = nome;
         this.quantita = quantita;

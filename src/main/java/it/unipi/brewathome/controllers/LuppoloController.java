@@ -25,6 +25,7 @@ public class LuppoloController implements Initializable{
 
     private static ModificaRicettaController ricettaController;
     private static LuppoloRequest updateLuppolo;
+    private int id;
     
     @FXML private TextField fieldQuantita;
     @FXML private TextField fieldNome;
@@ -52,6 +53,7 @@ public class LuppoloController implements Initializable{
         fieldTipo.getSelectionModel().select(Tipo.indexOf(updateLuppolo.getTipo()));
         fieldAlpha.setText(String.valueOf(updateLuppolo.getAlpha()));
         fieldTempo.setText(String.valueOf(updateLuppolo.getTempo()));
+        id = updateLuppolo.getId();
         
         updateLuppolo = null;
     }
@@ -60,7 +62,8 @@ public class LuppoloController implements Initializable{
     private void salva() {
         try {
             //TODO: controlli input
-            LuppoloRequest request = new LuppoloRequest(ModificaRicettaController.getRicettaId(),
+            LuppoloRequest request = new LuppoloRequest(id,
+                                                        ModificaRicettaController.getRicettaId(),
                                                         fieldNome.getText(),
                                                         Integer.parseInt(fieldTempo.getText()),
                                                         Integer.parseInt(fieldQuantita.getText()),
@@ -72,7 +75,7 @@ public class LuppoloController implements Initializable{
             Gson gson = new Gson();
             String body = gson.toJson(request);
             
-            HttpConnector.postRequestWithToken("/recipes/hops/add", body, App.getToken());
+            HttpConnector.postRequestWithToken("/hops/add", body, App.getToken());
             
             //ricarico la tabella
             ricettaController.caricaLuppoli();
@@ -86,7 +89,13 @@ public class LuppoloController implements Initializable{
     }
     
     @FXML
-    private void annulla() {
+    private void elimina() {
+        try {
+            HttpConnector.deleteRequestWithToken("/hops/remove", "id=" + id, App.getToken());
+        }
+        catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        }
         Stage stage = (Stage) fieldQuantita.getScene().getWindow();
         stage.close();
     }

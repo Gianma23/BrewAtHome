@@ -1,6 +1,8 @@
 package it.unipi.brewathome.connection.requests;
 
-public class RicettaRequest {
+import java.io.Serializable;
+
+public class RicettaRequest implements Serializable {
     
     private int id;
     private String nome;

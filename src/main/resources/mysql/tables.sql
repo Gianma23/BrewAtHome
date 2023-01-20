@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS ricetta (
     ultima_modifica TIMESTAMP DEFAULT NOW(),
     
     PRIMARY KEY(id),
-    CONSTRAINT fk_ricetta_account FOREIGN KEY (account_id) REFERENCES account(email)
+    CONSTRAINT fk_ricetta_account FOREIGN KEY (account_id) REFERENCES account(email) ON DELETE CASCADE
 )ENGINE = InnoDB DEFAULT CHARSET = latin1;
 
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS fermentabile (
     rendimento INT DEFAULT 75,
     
     PRIMARY KEY(id),
-    CONSTRAINT fk_fermentabile_ricetta FOREIGN KEY (ricetta_id) REFERENCES ricetta(id)
+    CONSTRAINT fk_fermentabile_ricetta FOREIGN KEY (ricetta_id) REFERENCES ricetta(id) ON DELETE CASCADE
 )ENGINE = InnoDB DEFAULT CHARSET = latin1;
 
 
@@ -57,20 +57,21 @@ CREATE TABLE IF NOT EXISTS luppolo (
     alpha DOUBLE NOT NULL,
     
     PRIMARY KEY(id),
-    CONSTRAINT fk_luppolo_ricetta FOREIGN KEY (ricetta_id) REFERENCES ricetta(id)
+    CONSTRAINT fk_luppolo_ricetta FOREIGN KEY (ricetta_id) REFERENCES ricetta(id) ON DELETE CASCADE
 )ENGINE = InnoDB DEFAULT CHARSET = latin1;
 
 
 CREATE TABLE IF NOT EXISTS stile (
-    nome VARCHAR(45) NOT NULL,
-    abv_min INT,
-    abv_max INT,
-    og_min INT,
-    og_max INT,
-    fg_min INT,
-    fg_max INT,
-    srm_min INT,
-    srm_max INT,
+    nome VARCHAR(255) NOT NULL,
+    guida VARCHAR(45) NOT NULL,
+    abv_min DOUBLE,
+    abv_max DOUBLE,
+    og_min DOUBLE,
+    og_max DOUBLE,
+    fg_min DOUBLE,
+    fg_max DOUBLE,
+    srm_min DOUBLE,
+    srm_max DOUBLE,
     ibu_min INT,
     ibu_max INT,
     

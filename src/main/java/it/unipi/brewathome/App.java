@@ -35,7 +35,7 @@ public class App extends Application {
             
         // creo il database e le tabelle
         DatabaseConnector.createTables();
-        DatabaseConnector.populateTables();
+        DatabaseConnector.populateStyleTable();
         
         // carico gli stili di colore css
         loadStyle();

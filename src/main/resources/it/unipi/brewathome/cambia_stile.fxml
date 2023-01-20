@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="546.0" prefWidth="334.0" spacing="20.0" styleClass="container" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.brewathome.controllers.StiliController">
+   <children>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headline-medium" text="Stili" />
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="476.0" prefWidth="318.0">
+         <content>
+            <ListView fx:id="listaStili" />
+         </content>
+      </ScrollPane>
+   </children>
+   <padding>
+      <Insets bottom="24.0" left="16.0" top="24.0" />
+   </padding>
+</VBox>

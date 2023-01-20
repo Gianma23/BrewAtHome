@@ -9,6 +9,7 @@ import it.unipi.brewathome.connection.requests.FermentabileRequest;
 import it.unipi.brewathome.connection.responses.HttpResponse;
 import it.unipi.brewathome.enums.Tipo;
 import java.io.IOException;
+import java.net.IDN;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -31,6 +32,7 @@ public class FermentabileController implements Initializable{
 
     private static ModificaRicettaController ricettaController;
     private static FermentabileRequest updateFermentabile;
+    private int id;
     
     @FXML private TextField fieldQuantita;
     @FXML private TextField fieldNome;
@@ -60,6 +62,7 @@ public class FermentabileController implements Initializable{
         fieldColore.setText(String.valueOf(updateFermentabile.getColore()));
         fieldPotenziale.setText(String.valueOf(updateFermentabile.getPotenziale()));
         fieldRendimento.setText(String.valueOf(updateFermentabile.getRendimento()));
+        id = updateFermentabile.getId();
         
         updateFermentabile = null;
     }
@@ -68,7 +71,8 @@ public class FermentabileController implements Initializable{
     private void salva() {
         try {
             //TODO: controlli input
-            FermentabileRequest request = new FermentabileRequest(ModificaRicettaController.getRicettaId(),
+            FermentabileRequest request = new FermentabileRequest(id,
+                                                                  ModificaRicettaController.getRicettaId(),
                                                                   fieldNome.getText(),
                                                                   Integer.parseInt(fieldQuantita.getText()),
                                                                   fieldCategoria.getText(),
@@ -78,10 +82,10 @@ public class FermentabileController implements Initializable{
                                                                   Integer.parseInt(fieldColore.getText()),
                                                                   Integer.parseInt(fieldPotenziale.getText()),
                                                                   Integer.parseInt(fieldRendimento.getText()));                                                   
+            //serializzazione dati
             Gson gson = new Gson();
             String body = gson.toJson(request);
-            
-            HttpConnector.postRequestWithToken("/recipes/fermentables/add", body, App.getToken());
+            HttpConnector.postRequestWithToken("/fermentables/add", body, App.getToken());
             
             //ricarico la tabella
             ricettaController.caricaFermentabili();
@@ -95,7 +99,13 @@ public class FermentabileController implements Initializable{
     }
     
     @FXML
-    private void annulla() {
+    private void elimina() {
+        try {
+            HttpConnector.deleteRequestWithToken("/fermentables/remove", "id=" + id, App.getToken());
+        }
+        catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        }
         Stage stage = (Stage) fieldQuantita.getScene().getWindow();
         stage.close();
     }

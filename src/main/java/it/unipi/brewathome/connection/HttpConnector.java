@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -117,6 +118,22 @@ public class HttpConnector {
         printConnection("PUT", url, urlParameters, responseCode);
         return new HttpResponse(responseCode, responseBody, "");
     }
+    
+    public static HttpResponse deleteRequestWithToken(String uri, String urlParameters, String token) throws IOException {
+        String url = BASE_URL + uri + "?" + urlParameters;
+
+        HttpURLConnection httpClient = (HttpURLConnection) new URL(url).openConnection();
+        httpClient.setRequestProperty("Authorization", token);
+        httpClient.setRequestMethod("DELETE");
+        
+        // lettura risposta
+        
+        int responseCode = httpClient.getResponseCode();
+        String responseBody = input(httpClient, responseCode);
+        
+        printConnection("DELETE", url, urlParameters, responseCode);
+        return new HttpResponse(responseCode, responseBody, "");
+    }
         
     // =============== METODI DI UTILITA ===============    
         
@@ -126,10 +143,9 @@ public class HttpConnector {
         
         try(InputStream inputStream = 
                 (200 <= responseCode && responseCode <= 299) ? httpClient.getInputStream() : httpClient.getErrorStream();
-            BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));) {
-
+            BufferedReader in = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));) 
+        {
             String currentLine;
-
             while ((currentLine = in.readLine()) != null) 
                 response.append(currentLine);
         }

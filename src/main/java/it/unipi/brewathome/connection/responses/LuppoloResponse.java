@@ -1,6 +1,8 @@
 package it.unipi.brewathome.connection.responses;
 
-public class LuppoloResponse {
+import java.io.Serializable;
+
+public class LuppoloResponse implements Serializable {
     
     private String nome;
     private int tempo;

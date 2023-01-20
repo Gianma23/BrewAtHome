@@ -1,7 +1,10 @@
 package it.unipi.brewathome.connection.requests;
 
-public class LuppoloRequest {
+import java.io.Serializable;
+
+public class LuppoloRequest implements Serializable {
     
+    private int id;
     private int ricettaId; // non utilizzato in response
     private String nome;
     private int tempo;
@@ -11,6 +14,14 @@ public class LuppoloRequest {
     private String provenienza;
     private String tipo;
     private double alpha;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getRicettaId() {
         return ricettaId;
@@ -84,7 +95,8 @@ public class LuppoloRequest {
         this.alpha = alpha;
     }
 
-    public LuppoloRequest(int ricettaId, String nome, int tempo, int quantita, String categoria, String fornitore, String provenienza, String tipo, double alpha) {
+    public LuppoloRequest(int id, int ricettaId, String nome, int tempo, int quantita, String categoria, String fornitore, String provenienza, String tipo, double alpha) {
+        this.id = id;
         this.ricettaId = ricettaId;
         this.nome = nome;
         this.tempo = tempo;

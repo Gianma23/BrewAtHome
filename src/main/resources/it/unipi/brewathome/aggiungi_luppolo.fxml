@@ -256,7 +256,7 @@
       </HBox>
       <AnchorPane prefHeight="41.0" prefWidth="519.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#annulla" prefHeight="40.0" text="Annulla" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Button mnemonicParsing="false" onAction="#elimina" prefHeight="40.0" text="Elimina" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                <styleClass>
                   <String fx:value="label-large" />
                   <String fx:value="icon_btn--alert" />
