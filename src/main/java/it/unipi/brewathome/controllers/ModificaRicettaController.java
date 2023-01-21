@@ -5,13 +5,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import it.unipi.brewathome.utils.Tipo;
 import it.unipi.brewathome.App;
-import it.unipi.brewathome.connection.responses.FermentabileResponse;
 import it.unipi.brewathome.connection.HttpConnector;
-import it.unipi.brewathome.connection.requests.FermentabileRequest;
-import it.unipi.brewathome.connection.requests.LuppoloRequest;
+import it.unipi.brewathome.connection.requests.Fermentabile;
+import it.unipi.brewathome.connection.requests.Luppolo;
 import it.unipi.brewathome.connection.requests.RicettaRequest;
 import it.unipi.brewathome.connection.responses.HttpResponse;
-import it.unipi.brewathome.connection.responses.LuppoloResponse;
+import it.unipi.brewathome.utils.BeerMath;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -24,11 +23,11 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ScrollPane;
@@ -41,16 +40,17 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class ModificaRicettaController implements Initializable {
 
+    private static final Logger logger =LogManager.getLogger(ModificaRicettaController.class.getName());
     private static int ricettaId;
-    //TODO: accorpare response e request
-    private ObservableList<FermentabileResponse> fermentabili;
-    private List<FermentabileRequest> fermentabiliList;
-    private ObservableList<LuppoloResponse> luppoli;
-    private List<LuppoloRequest> luppoliList;
+    private ObservableList<Fermentabile> fermentabili;
+    private ObservableList<Luppolo> luppoli;
+    private List<Luppolo> luppoliList;
     
     @FXML private GridPane grid;
     @FXML private ScrollPane scroll;
@@ -71,6 +71,8 @@ public class ModificaRicettaController implements Initializable {
     @FXML private Text textUltimaModifica;
     @FXML private Text textStile;
     @FXML private Text textAbv;
+    @FXML private Text textOg;
+    @FXML private Text textFg;
     
     @FXML private TextArea fieldDescrizione;
     @FXML private TextField fieldNomeRicetta;
@@ -79,18 +81,15 @@ public class ModificaRicettaController implements Initializable {
     @FXML private TextField fieldRendimento;
     @FXML private ChoiceBox fieldTipo;
     
-    @FXML private Rectangle actualAbv;
+    @FXML private Rectangle barAbv;
+    @FXML private Rectangle barOg;
+    @FXML private Rectangle barFg;
     
       
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {   
-            FXMLLoader loadTopBar = new FXMLLoader(App.class.getResource("topBar.fxml"));
-            Parent topBar = loadTopBar.load();
-            grid.add(topBar, 0, 0, 25, 1);
-            FXMLLoader loadLeftBar = new FXMLLoader(App.class.getResource("leftBar.fxml"));
-            Parent leftBar = loadLeftBar.load();
-            grid.add(leftBar, 0, 1, 1, 1);
+            App.addBars(grid);
             
             // carico i fermentabili e i luppoli nella tabella
             
@@ -106,95 +105,110 @@ public class ModificaRicettaController implements Initializable {
             
             fermentabili = FXCollections.observableArrayList();
             tableFermentabili.setItems(fermentabili);
-            fermentabiliList = new ArrayList(); 
-            
+
             luppoli = FXCollections.observableArrayList();
             tableLuppoli.setItems(luppoli);
             luppoliList = new ArrayList();
             
+            // carico info della ricetta
+            caricaInfoRicetta();
+
+            // aggiungo listener su statistiche birra
+            aggiornaStatsListener();
+            
             caricaFermentabili();
             caricaLuppoli();
-                    
-            // colonna informazioni laterale
-            caricaInfoRicetta();
             
             // sistemo dimensioni delle tabelle
             setDimensionTableFermentabili();
             setDimensionTableLuppoli();
         }
         catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
+            logger.error(ioe.getMessage());
         }
     }
   
     @FXML
-    private void aggiungiFermentabile() throws IOException {
-        Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("aggiungi_fermentabile.fxml"));
-        Scene scene = new Scene(loader.load(), 551, 624);
-        //salvo per poi aggiornare la tabella
-        FermentabileController.setRicettaController(this);
-        
-        App.addStyle(scene, "style.css");
-        App.addStyle(scene, "fonts.css");
-        App.addStyle(scene, "global.css");
-        
-        stage.setScene(scene);
-        stage.setTitle("Fermentabile");
-        stage.setResizable(false);
-        stage.show();
+    private void aggiungiFermentabile() {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("aggiungi_fermentabile.fxml"));
+            Scene scene = new Scene(loader.load(), 551, 624);
+            //salvo per poi aggiornare la tabella
+            FermentabileController.setRicettaController(this);
+
+            App.addStyle(scene, "style.css");
+            App.addStyle(scene, "fonts.css");
+            App.addStyle(scene, "global.css");
+
+            stage.setScene(scene);
+            stage.setTitle("Fermentabile");
+            stage.setResizable(false);
+            stage.show();
+        }
+        catch (IOException ioe) {
+            logger.error(ioe.getMessage());
+        }
     }
     
     @FXML
-    private void aggiungiLuppolo() throws IOException {
-        Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("aggiungi_luppolo.fxml"));
-        Scene scene = new Scene(loader.load(), 551, 624);
-        //salvo per poi aggiornare la tabella
-        LuppoloController.setRicettaController(this);
-        
-        App.addStyle(scene, "style.css");
-        App.addStyle(scene, "fonts.css");
-        App.addStyle(scene, "global.css");
-        
-        stage.setScene(scene);
-        stage.setTitle("Luppolo");
-        stage.setResizable(false);
-        stage.show();
+    private void aggiungiLuppolo() {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("aggiungi_luppolo.fxml"));
+            Scene scene = new Scene(loader.load(), 551, 624);
+            //salvo per poi aggiornare la tabella
+            LuppoloController.setRicettaController(this);
+
+            App.addStyle(scene, "style.css");
+            App.addStyle(scene, "fonts.css");
+            App.addStyle(scene, "global.css");
+
+            stage.setScene(scene);
+            stage.setTitle("Luppolo");
+            stage.setResizable(false);
+            stage.show();
+        }
+        catch (IOException ioe) {
+            logger.error(ioe.getMessage());
+        }
     }
     
     @FXML
-    private void modificaFermentabile() throws IOException {
-        int index = fermentabili.indexOf(tableFermentabili.getSelectionModel().getSelectedItem());
-        FermentabileRequest fermentabile = fermentabiliList.get(index);
+    private void modificaFermentabile() {
+        Fermentabile fermentabile = (Fermentabile) tableFermentabili.getSelectionModel().getSelectedItem();
         FermentabileController.setUpdateFermentabile(fermentabile);
         aggiungiFermentabile();
     }
     
     @FXML
-    private void modificaLuppolo() throws IOException {
-        int index = luppoli.indexOf(tableLuppoli.getSelectionModel().getSelectedItem());
-        LuppoloRequest luppolo = luppoliList.get(index);
+    private void modificaLuppolo() {
+        Luppolo luppolo = (Luppolo) tableLuppoli.getSelectionModel().getSelectedItem();
         LuppoloController.setUpdateLuppolo(luppolo);
         aggiungiLuppolo();
     }
     
     @FXML
-    private void cambiaStile() throws IOException {
-        Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("cambia_stile.fxml"));
-        Scene scene = new Scene(loader.load(), 551, 624);
-        //salvo per poi aggiornare la tabella
-        StiliController.setRicettaController(this);
-        
-        App.addStyle(scene, "style.css");
-        App.addStyle(scene, "fonts.css");
-        App.addStyle(scene, "global.css");
-        
-        stage.setScene(scene);
-        stage.setTitle("Stile");
-        stage.setResizable(false);
-        stage.show();
+    private void cambiaStile() {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("cambia_stile.fxml"));
+            Scene scene = new Scene(loader.load(), 551, 624);
+            //salvo per poi aggiornare la tabella
+            StiliController.setRicettaController(this);
+
+            App.addStyle(scene, "style.css");
+            App.addStyle(scene, "fonts.css");
+            App.addStyle(scene, "global.css");
+
+            stage.setScene(scene);
+            stage.setTitle("Stile");
+            stage.setResizable(false);
+            stage.show();
+        }
+        catch (IOException ioe) {
+            logger.error(ioe.getMessage());
+        }
     }
     
     @FXML
@@ -213,7 +227,7 @@ public class ModificaRicettaController implements Initializable {
             App.setRoot("ricette");
         }
         catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
+            logger.error(ioe.getMessage());
         } 
     }
     
@@ -221,10 +235,9 @@ public class ModificaRicettaController implements Initializable {
     private void salvaRicetta() {
         try {
             //TODO: controlli input
-            double volume = Double.parseDouble(fieldVolume.getText());
-            double rendimento = Double.parseDouble(fieldRendimento.getText());
+            double volume = Double.valueOf(fieldVolume.getText());
+            double rendimento = Double.valueOf(fieldRendimento.getText());
             
-            System.out.println(fieldTipo.getSelectionModel().getSelectedItem());
             RicettaRequest request = new RicettaRequest(ricettaId,
                                                         fieldNomeRicetta.getText(),
                                                         fieldDescrizione.getText(),
@@ -232,8 +245,7 @@ public class ModificaRicettaController implements Initializable {
                                                         fieldTipo.getSelectionModel().getSelectedItem().toString(),
                                                         textStile.getText(),
                                                         volume,
-                                                        rendimento,
-                                                        0,0,0,0,0);                                                   
+                                                        rendimento);                                                   
             Gson gson = new Gson();
             String body = gson.toJson(request);
             
@@ -241,10 +253,10 @@ public class ModificaRicettaController implements Initializable {
             App.setRoot("ricette");
         }
         catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
+            logger.error(ioe.getMessage());
         } 
     }
-    
+
     @FXML
     private void esci() throws IOException {
         App.setRoot("ricette");
@@ -255,7 +267,6 @@ public class ModificaRicettaController implements Initializable {
     public void caricaFermentabili() throws IOException {
         //svuoto la tabella e la lista
         tableFermentabili.getItems().clear();
-        fermentabiliList.clear();
         
         HttpResponse response = HttpConnector.getRequestWithToken("/fermentables/all", "recipe=" + ricettaId, App.getToken());
         String responseBody = response.getResponseBody();
@@ -266,10 +277,8 @@ public class ModificaRicettaController implements Initializable {
         Gson gson = new Gson();
         JsonArray fermentabiliArray = gson.fromJson(responseBody, JsonElement.class).getAsJsonArray();
         for(JsonElement fermentabile : fermentabiliArray) {
-            FermentabileResponse fermentabileTable = gson.fromJson(fermentabile, FermentabileResponse.class);
+            Fermentabile fermentabileTable = gson.fromJson(fermentabile, Fermentabile.class);
             fermentabili.add(fermentabileTable);
-            FermentabileRequest ferm = gson.fromJson(fermentabile, FermentabileRequest.class);
-            fermentabiliList.add(ferm);
         }
     }
     
@@ -286,14 +295,33 @@ public class ModificaRicettaController implements Initializable {
         Gson gson = new Gson();
         JsonArray luppoliArray = gson.fromJson(responseBody, JsonElement.class).getAsJsonArray();
         for(JsonElement luppolo : luppoliArray) {
-            LuppoloResponse luppoloTable = gson.fromJson(luppolo, LuppoloResponse.class);
+            Luppolo luppoloTable = gson.fromJson(luppolo, Luppolo.class);
             luppoli.add(luppoloTable);
-            LuppoloRequest lup = gson.fromJson(luppolo, LuppoloRequest.class);
+            Luppolo lup = gson.fromJson(luppolo, Luppolo.class);
             luppoliList.add(lup);
         }
     }
     
-    public void caricaInfoRicetta() throws IOException {
+    private void aggiornaStatsListener() {      
+
+        // listener cambio lista fermentabili
+        fermentabili.addListener((ListChangeListener<Fermentabile>) (e) -> {
+            
+            // calcolo OG
+            int sumGU = 0;
+            for(Fermentabile fermentabile : fermentabili) {
+                sumGU += BeerMath.calcolaGU(fermentabile.getPotenziale(), fermentabile.getQuantita());
+            }
+            double OG = BeerMath.calcolaOG(sumGU, Double.valueOf(fieldRendimento.getText()), Double.valueOf(fieldVolume.getText()));
+            textOg.setText(String.valueOf(OG));
+            
+            // calcolo FG
+            double FG = BeerMath.calcolaFG(OG, 75);
+            textFg.setText(String.valueOf(FG));
+        });
+    }
+    
+    private void caricaInfoRicetta() throws IOException {
         
         // riempimento dropdown menu
         
@@ -334,7 +362,7 @@ public class ModificaRicettaController implements Initializable {
         textUltimaModifica.setText("Ultima modifica: " + data.getDayOfMonth() + " " + data.getMonth().getDisplayName(TextStyle.FULL, Locale.ITALY) + " " + data.getYear());
     }
     
-    public void setDimensionTableFermentabili() {
+    private void setDimensionTableFermentabili() {
         // setto la larghezza delle colonne
         columnPesoFermentabile.prefWidthProperty().bind(tableFermentabili.widthProperty().multiply(0.2));
         columnNomeFermentabile.prefWidthProperty().bind(tableFermentabili.widthProperty().multiply(0.4));
@@ -350,7 +378,7 @@ public class ModificaRicettaController implements Initializable {
         tableFermentabili.prefHeightProperty().bind(tableFermentabili.fixedCellSizeProperty().multiply(Bindings.size(tableFermentabili.getItems()).add(1.3)));
     }
     
-    public void setDimensionTableLuppoli() {
+    private void setDimensionTableLuppoli() {
         // setto la larghezza delle colonne
         columnPesoLuppolo.prefWidthProperty().bind(tableLuppoli.widthProperty().multiply(0.2));
         columnNomeLuppolo.prefWidthProperty().bind(tableLuppoli.widthProperty().multiply(0.48));

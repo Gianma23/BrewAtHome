@@ -2,18 +2,19 @@ package it.unipi.brewathome.connection.requests;
 
 import java.io.Serializable;
 
-public class LuppoloRequest implements Serializable {
+public class Fermentabile implements Serializable {
     
     private int id;
-    private int ricettaId; // non utilizzato in response
-    private String nome;
-    private int tempo;
+    private int ricettaId;
+    private String nome; 
     private int quantita; 
-    private String categoria;
+    private String categoria; 
     private String fornitore;
     private String provenienza;
     private String tipo;
-    private double alpha;
+    private int colore;
+    private double potenziale;
+    private double rendimento;
 
     public int getId() {
         return id;
@@ -22,13 +23,13 @@ public class LuppoloRequest implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-
+    
     public int getRicettaId() {
         return ricettaId;
     }
 
-    public void setRicettaId(int ricettaId) {
-        this.ricettaId = ricettaId;
+    public void setRicetta_id(int ricetta_id) {
+        this.ricettaId = ricetta_id;
     }
 
     public String getNome() {
@@ -37,14 +38,6 @@ public class LuppoloRequest implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public int getTempo() {
-        return tempo;
-    }
-
-    public void setTempo(int tempo) {
-        this.tempo = tempo;
     }
 
     public int getQuantita() {
@@ -87,26 +80,41 @@ public class LuppoloRequest implements Serializable {
         this.tipo = tipo;
     }
 
-    public double getAlpha() {
-        return alpha;
+    public int getColore() {
+        return colore;
     }
 
-    public void setAlpha(int alpha) {
-        this.alpha = alpha;
+    public void setColore(int colore) {
+        this.colore = colore;
     }
 
-    public LuppoloRequest(int id, int ricettaId, String nome, int tempo, int quantita, String categoria, String fornitore, String provenienza, String tipo, double alpha) {
+    public double getPotenziale() {
+        return potenziale;
+    }
+
+    public void setPotenziale(double potenziale) {
+        this.potenziale = potenziale;
+    }
+
+    public double getRendimento() {
+        return rendimento;
+    }
+
+    public void setRendimento(double rendimento) {
+        this.rendimento = rendimento;
+    }
+
+    public Fermentabile(int id, int ricetta_id, String nome, int quantita, String categoria, String fornitore, String provenienza, String tipo, int colore, double potenziale, double rendimento) {
         this.id = id;
-        this.ricettaId = ricettaId;
+        this.ricettaId = ricetta_id;
         this.nome = nome;
-        this.tempo = tempo;
         this.quantita = quantita;
         this.categoria = categoria;
         this.fornitore = fornitore;
         this.provenienza = provenienza;
         this.tipo = tipo;
-        this.alpha = alpha;
+        this.colore = colore;
+        this.potenziale = potenziale;
+        this.rendimento = rendimento;
     }
-
-    
 }

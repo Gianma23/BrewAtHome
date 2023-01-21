@@ -3,8 +3,8 @@ package it.unipi.brewathome.controllers;
 import com.google.gson.Gson;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.HttpConnector;
-import it.unipi.brewathome.connection.requests.FermentabileRequest;
-import it.unipi.brewathome.connection.requests.LuppoloRequest;
+import it.unipi.brewathome.connection.requests.Fermentabile;
+import it.unipi.brewathome.connection.requests.Luppolo;
 import it.unipi.brewathome.utils.Tipo;
 import java.io.IOException;
 import java.net.URL;
@@ -15,6 +15,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * FXML Controller class
@@ -23,8 +25,9 @@ import javafx.stage.Stage;
  */
 public class LuppoloController implements Initializable{
 
+    private static final Logger logger =LogManager.getLogger(LuppoloController.class.getName());
     private static ModificaRicettaController ricettaController;
-    private static LuppoloRequest updateLuppolo;
+    private static Luppolo updateLuppolo;
     private int id;
     
     @FXML private TextField fieldQuantita;
@@ -62,7 +65,7 @@ public class LuppoloController implements Initializable{
     private void salva() {
         try {
             //TODO: controlli input
-            LuppoloRequest request = new LuppoloRequest(id,
+            Luppolo request = new Luppolo(id,
                                                         ModificaRicettaController.getRicettaId(),
                                                         fieldNome.getText(),
                                                         Integer.parseInt(fieldTempo.getText()),
@@ -81,7 +84,7 @@ public class LuppoloController implements Initializable{
             ricettaController.caricaLuppoli();
         }
         catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
+            logger.error(ioe.getMessage());
         }
         
         Stage stage = (Stage) fieldQuantita.getScene().getWindow();
@@ -94,7 +97,7 @@ public class LuppoloController implements Initializable{
             HttpConnector.deleteRequestWithToken("/hops/remove", "id=" + id, App.getToken());
         }
         catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
+            logger.error(ioe.getMessage());
         }
         Stage stage = (Stage) fieldQuantita.getScene().getWindow();
         stage.close();
@@ -104,7 +107,7 @@ public class LuppoloController implements Initializable{
         LuppoloController.ricettaController = ricettaController;
     }
 
-    public static void setUpdateLuppolo(LuppoloRequest updateLuppolo) {
+    public static void setUpdateLuppolo(Luppolo updateLuppolo) {
         LuppoloController.updateLuppolo = updateLuppolo;
     }
 }

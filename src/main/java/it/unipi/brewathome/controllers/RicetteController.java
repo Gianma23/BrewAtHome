@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package it.unipi.brewathome.controllers;
 
 import com.google.gson.Gson;
@@ -43,20 +39,30 @@ public class RicetteController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) { 
         try {
             App.setCanResize(true);
-            
-            FXMLLoader loadTopBar = new FXMLLoader(App.class.getResource("topBar.fxml"));
-            Parent topBar = loadTopBar.load();
-            grid.add(topBar, 0, 0, 25, 1);
-            FXMLLoader loadLeftBar = new FXMLLoader(App.class.getResource("leftBar.fxml"));
-            Parent leftBar = loadLeftBar.load();
-            grid.add(leftBar, 0, 1, 1, 1);
+            App.addBars(grid);
 
             caricaRicette();        
         }
         catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
+            logger.error(ioe.getMessage());
         }
     }    
+    
+    @FXML
+    private void creaRicetta() { 
+        try {
+            HttpResponse response = HttpConnector.postRequestWithToken("/recipes/add", "", App.getToken());
+            int ricettaId = Integer.parseInt(response.getResponseBody());
+
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("modifica_ricetta.fxml"));
+            ModificaRicettaController.setRicettaId(ricettaId); 
+            grid.getScene().setRoot(loader.load());
+        }
+        catch (IOException ioe) {
+            logger.error(ioe.getMessage());
+        }
+        
+    }
     
     private void caricaRicette() throws IOException {
         
@@ -95,16 +101,5 @@ public class RicetteController implements Initializable {
             
             flow.getChildren().add(card);
         }
-    }
-    
-    @FXML
-    private void creaRicetta() throws IOException { 
-        
-        HttpResponse response = HttpConnector.postRequestWithToken("/recipes/add", "", App.getToken());
-        int ricettaId = Integer.parseInt(response.getResponseBody());
-                
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("modifica_ricetta.fxml"));
-        ModificaRicettaController.setRicettaId(ricettaId); 
-        grid.getScene().setRoot(loader.load());
     }
 }

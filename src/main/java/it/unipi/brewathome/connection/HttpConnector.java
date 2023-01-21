@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package it.unipi.brewathome.connection;
 
 import it.unipi.brewathome.connection.responses.HttpResponse;
@@ -17,16 +13,13 @@ import java.nio.charset.StandardCharsets;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- *
- * @author Utente
- */
+
 public class HttpConnector {
     
-    private static final Logger logger =LogManager.getLogger(RicetteController.class);
+    private static final Logger logger =LogManager.getLogger(HttpConnector.class.getName());
     private static final String BASE_URL = "http://localhost:8080";
     
-        public static HttpResponse getRequest(String uri, String urlParameters) throws IOException {
+    public static HttpResponse getRequest(String uri, String urlParameters) throws IOException {
         String url = BASE_URL + uri + "?" + urlParameters;
 
         HttpURLConnection httpClient = (HttpURLConnection) new URL(url).openConnection();
@@ -158,12 +151,12 @@ public class HttpConnector {
     private static void output(HttpURLConnection httpClient, String parameters) {
         
         httpClient.setDoOutput(true);
-        try (OutputStreamWriter wr = new OutputStreamWriter(httpClient.getOutputStream())) {
-            
+        try (OutputStreamWriter wr = new OutputStreamWriter(httpClient.getOutputStream())) 
+        {            
             wr.write(parameters);
         }
         catch(IOException ioe) {
-            ioe.printStackTrace();
+            logger.error(ioe.getMessage());
         }
     }
     

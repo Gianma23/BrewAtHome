@@ -34,11 +34,6 @@ CREATE TABLE IF NOT EXISTS ricetta (
     stile_id VARCHAR(255) DEFAULT 'American Light Lager',
     volume DOUBLE DEFAULT 0,
     rendimento DOUBLE DEFAULT 0,
-    abv INT,
-    og INT,
-    fg INT,
-    ebc INT,
-    ibu INT,
     ultima_modifica TIMESTAMP DEFAULT NOW(),
     
     PRIMARY KEY(id),
@@ -57,8 +52,8 @@ CREATE TABLE IF NOT EXISTS fermentabile (
     provenienza VARCHAR(45),
     tipo VARCHAR(45) NOT NULL,
     colore INT NOT NULL,
-    potenziale INT NOT NULL,
-    rendimento INT DEFAULT 75,
+    potenziale DOUBLE NOT NULL,
+    rendimento DOUBLE DEFAULT 75.0,
     
     PRIMARY KEY(id),
     CONSTRAINT fk_fermentabile_ricetta FOREIGN KEY (ricetta_id) REFERENCES ricetta(id) ON DELETE CASCADE

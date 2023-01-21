@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.unipi.brewathome.connection.HttpConnector;
 import it.unipi.brewathome.connection.responses.HttpResponse;
+import it.unipi.brewathome.controllers.ModificaRicettaController;
 import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -20,32 +21,40 @@ import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class App extends Application {
 
+    private static final Logger logger =LogManager.getLogger(App.class.getName());
     private static String token;
     private static Scene scene;
     private static boolean canResize = false;
 
     @Override
-    public void start(Stage stage) throws IOException {  
-            
+    public void start(Stage stage) {  
+        
         // creo il database e le tabelle
         DatabaseConnector.createTables();
         DatabaseConnector.populateStyleTable();
         
-        // carico gli stili di colore css
-        loadStyle();
+        try {
+            // carico gli stili di colore css
+            loadStyle();
+
+            // aggiungo gli stili alla scena
+            scene = new Scene(loadFXML("accedi"));
+            App.addStyle(scene, "style.css");
+            App.addStyle(scene, "fonts.css");
+            App.addStyle(scene, "global.css");
+        }
+        catch (IOException ioe) {
+            logger.error(ioe.getMessage());
+        }     
         
-        // aggiungo gli stili alla scena
-        scene = new Scene(loadFXML("accedi"));
-        App.addStyle(scene, "style.css");
-        App.addStyle(scene, "fonts.css");
-        App.addStyle(scene, "global.css");
-                     
         // listener sul cambio di root
-        ChangeListener<Parent> listener = (observable, oldValue, newValue) -> {
+        scene.rootProperty().addListener((observable, oldValue, newValue) -> {
             if(canResize) {
                 putSizeListener(stage, newValue);
                 stage.setResizable(true);
@@ -54,8 +63,7 @@ public class App extends Application {
                 stage.setResizable(false);
                 stage.sizeToScene();
             }
-        };
-        scene.rootProperty().addListener(listener);
+        });
         
         stage.setScene(scene);
         stage.setTitle("Brew at Home");
@@ -80,6 +88,22 @@ public class App extends Application {
     public static void setCanResize(boolean canResize) {
         App.canResize = canResize;
     }
+    
+    public static void addStyle(Scene scene, String stylesheet) {
+        String css = App.class.getResource("/styles/" + stylesheet).toExternalForm();
+        scene.getStylesheets().add(css);
+    }
+    
+    public static void addBars(GridPane grid) throws IOException {
+        FXMLLoader loadTopBar = new FXMLLoader(App.class.getResource("topBar.fxml"));
+        Parent topBar = loadTopBar.load();
+        grid.add(topBar, 0, 0, 25, 1);
+        FXMLLoader loadLeftBar = new FXMLLoader(App.class.getResource("leftBar.fxml"));
+        Parent leftBar = loadLeftBar.load();
+        grid.add(leftBar, 0, 1, 1, 1);
+    }
+    
+    /* ======= UTILITA ======= */
     
     private void putSizeListener(Stage stage, Parent newValue) {      
         GridPane grid = (GridPane) newValue;
@@ -110,11 +134,6 @@ public class App extends Application {
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
-    }
-    
-    public static void addStyle(Scene scene, String stylesheet) {
-        String css = App.class.getResource("/styles/" + stylesheet).toExternalForm();
-        scene.getStylesheets().add(css);
     }
 
     private void loadStyle() throws IOException {

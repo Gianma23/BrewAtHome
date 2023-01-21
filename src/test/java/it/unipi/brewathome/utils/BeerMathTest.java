@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
- */
 package it.unipi.brewathome.utils;
 
 import org.junit.jupiter.api.AfterEach;
@@ -52,7 +48,7 @@ public class BeerMathTest {
     @Test
     public void testCalcolaOG() {
         System.out.println("calcolaOG");
-        int[] arrayGU = {112,97,77,18,6};
+        int arrayGU = 310;
         double rendimento = 71.9;
         double volume = 23;
         double expResult = 1.044;
@@ -60,4 +56,16 @@ public class BeerMathTest {
         assertEquals(expResult, result);
     }
     
+    /**
+     * Test of calcolaFG method, of class BeerMath.
+     */
+    @Test
+    public void testCalcolaFG() {
+        System.out.println("calcolaFG");
+        double OG = 1.044;
+        double attenuazione = 75;
+        double expResult = 1.011;
+        double result = BeerMath.calcolaFG(OG, attenuazione);
+        assertEquals(expResult, result);
+    }
 }

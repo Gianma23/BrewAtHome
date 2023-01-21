@@ -382,11 +382,29 @@
                            <children>
                               <Rectangle arcHeight="8.0" arcWidth="8.0" fill="#fffbf2" height="26.0" layoutX="42.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="241.0" />
                               <Rectangle fill="#9bc624" height="26.0" layoutX="88.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="150.0" />
-                              <Rectangle fx:id="actualAbv" arcHeight="5.0" arcWidth="5.0" fill="#c32f18" height="26.0" layoutX="86.0" layoutY="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="4.0" />
+                              <Rectangle fx:id="barAbv" arcHeight="5.0" arcWidth="5.0" fill="#c32f18" height="26.0" layoutX="86.0" layoutY="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="4.0" />
                               <Text fx:id="textAbv" layoutX="96.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%" />
+                              <Text layoutX="3.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-large" text="ABV" />
                            </children>
                         </Group>
-                        <Text layoutX="4.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-large" text="ABV" />
+                        <Group layoutY="31.0">
+                           <children>
+                              <Rectangle arcHeight="8.0" arcWidth="8.0" fill="#fffbf2" height="26.0" layoutX="42.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="241.0" />
+                              <Rectangle fill="#9bc624" height="26.0" layoutX="88.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="150.0" />
+                              <Rectangle fx:id="barOg" arcHeight="5.0" arcWidth="5.0" fill="#c32f18" height="26.0" layoutX="86.0" layoutY="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="4.0" />
+                              <Text fx:id="textOg" layoutX="96.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="og" />
+                              <Text layoutX="3.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-large" text="OG" />
+                           </children>
+                        </Group>
+                        <Group layoutY="63.0">
+                           <children>
+                              <Rectangle arcHeight="8.0" arcWidth="8.0" fill="#fffbf2" height="26.0" layoutX="42.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="241.0" />
+                              <Rectangle fill="#9bc624" height="26.0" layoutX="88.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="150.0" />
+                              <Rectangle fx:id="barFg" arcHeight="5.0" arcWidth="5.0" fill="#c32f18" height="26.0" layoutX="86.0" layoutY="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="4.0" />
+                              <Text fx:id="textFg" layoutX="96.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="fg" />
+                              <Text layoutX="3.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-large" text="FG" />
+                           </children>
+                        </Group>
                      </children>
                   </AnchorPane>
                </children>

@@ -18,6 +18,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * FXML Controller class
@@ -25,7 +27,8 @@ import javafx.stage.Stage;
  * @author Utente
  */
 public class AccediController {
-
+    
+    private static final Logger logger =LogManager.getLogger(AccediController.class);
     @FXML private VBox inputsContainer;
     @FXML private Button buttonAccedi;
     @FXML private TextField email;
@@ -33,34 +36,44 @@ public class AccediController {
     @FXML private Text message;
     
     @FXML 
-    private void login() throws IOException {
+    private void login() {
         
         Gson gson = new Gson();
         AuthRequest request = new AuthRequest(email.getText(), password.getText());
         
-        HttpResponse response = HttpConnector.postRequest("/auth/login", gson.toJson(request));
-        String responseHeader = response.getResponseHeader();
-        String responseBody = response.getResponseBody();
-        int responseCode = response.getResponseCode();
-        
-        message.setText("");
-        
-        if (200 <= responseCode && responseCode <= 299) {        
-            Stage stage = (Stage) email.getScene().getWindow();
-            
-            App.setToken(responseHeader);
-            App.setRoot("ricette");
-            
-            stage.setWidth(1480);
-            stage.setHeight(900);
-            stage.centerOnScreen();
+        try {
+            HttpResponse response = HttpConnector.postRequest("/auth/login", gson.toJson(request));
+            String responseHeader = response.getResponseHeader();
+            String responseBody = response.getResponseBody();
+            int responseCode = response.getResponseCode();
+
+            message.setText("");
+
+            if (200 <= responseCode && responseCode <= 299) {        
+                Stage stage = (Stage) email.getScene().getWindow();
+
+                App.setToken(responseHeader);
+                App.setRoot("ricette");
+
+                stage.setWidth(1480);
+                stage.setHeight(900);
+                stage.centerOnScreen();
+            }
+            else 
+                message.setText(responseBody);
         }
-        else 
-            message.setText(responseBody);
+        catch (IOException ioe) {
+            logger.error(ioe.getMessage());
+        }  
     }
     
     @FXML
-    private void openRegistrati() throws IOException {
-        App.setRoot("registrati");
+    private void openRegistrati() {
+        try {
+            App.setRoot("registrati");
+        }
+        catch (IOException ioe) {
+            logger.error(ioe.getMessage());
+        }      
     }
 }

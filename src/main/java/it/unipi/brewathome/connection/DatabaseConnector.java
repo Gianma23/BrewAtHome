@@ -16,10 +16,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import org.apache.ibatis.jdbc.ScriptRunner;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class DatabaseConnector {
     
+    private static final Logger logger =LogManager.getLogger(DatabaseConnector.class.getName());
     private static final String DB_URL = "jdbc:mysql://localhost:3306/gianmaria_saggini";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "root";
@@ -35,7 +38,7 @@ public class DatabaseConnector {
             sr.runScript(reader);
         }
         catch (IOException | SQLException ioe) {
-            ioe.printStackTrace();
+            logger.error(ioe.getMessage());
         }
     }
     
@@ -83,7 +86,7 @@ public class DatabaseConnector {
             }
         }
         catch (IOException | SQLException ioe) {
-            ioe.printStackTrace();
+            logger.error(ioe.getMessage());
         }
     }
 }

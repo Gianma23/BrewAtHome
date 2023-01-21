@@ -16,6 +16,8 @@ import javafx.scene.control.Button;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import javafx.scene.control.TextField;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * FXML Controller class
@@ -23,14 +25,15 @@ import javafx.scene.control.TextField;
  * @author Utente
  */
 public class RegistratiController {
-
+    
+    private static final Logger logger =LogManager.getLogger(RegistratiController.class.getName());
     @FXML private Button buttonAccedi;
     @FXML private TextField email;
     @FXML private TextField password;
     @FXML private TextField confirmPassword;
     
     @FXML 
-    private void register() throws IOException {
+    private void register() {
         
         if(!password.getText().equals(confirmPassword.getText())) {
             //TODO set error message
@@ -39,17 +42,26 @@ public class RegistratiController {
                 
         Gson gson = new Gson();
         AuthRequest request = new AuthRequest(email.getText(), password.getText());
-        
-        HttpResponse response = HttpConnector.postRequest("/auth/register", gson.toJson(request));
-        String responseBody = response.getResponseBody();
-        int responseCode = response.getResponseCode();
-        
-        if (200 <= responseCode && responseCode <= 299)
-            App.setRoot("accedi");
+        try {
+            HttpResponse response = HttpConnector.postRequest("/auth/register", gson.toJson(request));
+            String responseBody = response.getResponseBody();
+            int responseCode = response.getResponseCode();
+
+            if (200 <= responseCode && responseCode <= 299)
+                App.setRoot("accedi");
+        }
+        catch (IOException ioe) {
+            logger.error(ioe.getMessage());
+        }  
     }
     
     @FXML
-    private void openAccedi() throws IOException {
-        App.setRoot("accedi");
+    private void openAccedi() {
+        try {
+            App.setRoot("accedi");  
+        }
+        catch (IOException ioe) {
+            logger.error(ioe.getMessage());
+        }  
     }
 }

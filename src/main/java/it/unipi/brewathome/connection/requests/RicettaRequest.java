@@ -12,11 +12,6 @@ public class RicettaRequest implements Serializable {
     private String stileId;
     private double volume;
     private double rendimento;
-    private int abv;
-    private int og;
-    private int fg;
-    private int ebc;
-    private int ibu;
     private String ultimaModifica;
 
     public int getId() {
@@ -83,46 +78,6 @@ public class RicettaRequest implements Serializable {
         this.stileId = stileId;
     }
 
-    public int getAbv() {
-        return abv;
-    }
-
-    public void setAbv(int abv) {
-        this.abv = abv;
-    }
-
-    public int getOg() {
-        return og;
-    }
-
-    public void setOg(int og) {
-        this.og = og;
-    }
-
-    public int getFg() {
-        return fg;
-    }
-
-    public void setFg(int fg) {
-        this.fg = fg;
-    }
-
-    public int getEbc() {
-        return ebc;
-    }
-
-    public void setEbc(int ebc) {
-        this.ebc = ebc;
-    }
-
-    public int getIbu() {
-        return ibu;
-    }
-
-    public void setIbu(int ibu) {
-        this.ibu = ibu;
-    }
-
     public String getUltimaModifica() {
         return ultimaModifica;
     }
@@ -131,7 +86,7 @@ public class RicettaRequest implements Serializable {
         this.ultimaModifica = ultimaModifica;
     }
 
-    public RicettaRequest(int id, String nome, String descrizione, String autore, String tipo, String stileId, double volume, double rendimento, int abv, int og, int fg, int ebc, int ibu) {
+    public RicettaRequest(int id, String nome, String descrizione, String autore, String tipo, String stileId, double volume, double rendimento) {
         this.id = id;
         this.nome = nome;
         this.descrizione = descrizione;
@@ -140,10 +95,5 @@ public class RicettaRequest implements Serializable {
         this.stileId = stileId;
         this.volume = volume;
         this.rendimento = rendimento;
-        this.abv = abv;
-        this.og = og;
-        this.fg = fg;
-        this.ebc = ebc;
-        this.ibu = ibu;
     }
 }

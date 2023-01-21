@@ -18,6 +18,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * FXML Controller class
@@ -26,6 +28,7 @@ import javafx.scene.input.MouseEvent;
  */
 public class StiliController implements Initializable{
     
+    private static final Logger logger =LogManager.getLogger(StiliController.class);
     private static ModificaRicettaController ricettaController;
     private ObservableList<String> stili;
     private List<StileResponse> stiliList;
@@ -55,7 +58,7 @@ public class StiliController implements Initializable{
             }
         }
         catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
+            logger.error(ioe.getMessage());
         }
     }
     
