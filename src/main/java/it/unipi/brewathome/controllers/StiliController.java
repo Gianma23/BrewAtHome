@@ -17,6 +17,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
@@ -25,6 +26,7 @@ import javafx.scene.control.ListView;
  */
 public class StiliController implements Initializable{
     
+    private static ModificaRicettaController ricettaController;
     private ObservableList<String> stili;
     private List<StileResponse> stiliList;
     
@@ -55,5 +57,15 @@ public class StiliController implements Initializable{
         catch (IOException ioe) {
             System.err.println(ioe.getMessage());
         }
+    }
+    
+    @FXML
+    private void seleziona(MouseEvent event) {
+        if(event.getClickCount()==2)
+            ricettaController.setTextStile(listaStili.getSelectionModel().getSelectedItem().toString());
+    }
+    
+    public static void setRicettaController(ModificaRicettaController ricettaController) {
+        StiliController.ricettaController = ricettaController;
     }
 }

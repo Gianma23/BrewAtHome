@@ -1,4 +1,4 @@
-package it.unipi.brewathome.enums;
+package it.unipi.brewathome.utils;
 
 /**
  *

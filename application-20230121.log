@@ -1,0 +1,208 @@
+2023-01-21 09:43:31.624 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/style/colors?
+2023-01-21 09:43:31.626 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : 
+2023-01-21 09:43:31.627 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 09:43:35.724 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending POST request to URL : http://localhost:8080/auth/login
+2023-01-21 09:43:35.724 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : {"email":"admin","password":"123"}
+2023-01-21 09:43:35.724 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 09:43:35.827 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/recipes/all?
+2023-01-21 09:43:35.827 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : 
+2023-01-21 09:43:35.827 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 09:43:38.279 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/fermentables/all?recipe=3
+2023-01-21 09:43:38.279 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 09:43:38.279 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 09:43:38.290 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/hops/all?recipe=3
+2023-01-21 09:43:38.290 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 09:43:38.290 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 09:43:38.298 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/recipes/info?recipe=3
+2023-01-21 09:43:38.298 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 09:43:38.298 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 09:43:50.659 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending POST request to URL : http://localhost:8080/recipes/update
+2023-01-21 09:43:50.659 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : {"id":3,"nome":"ciao","descrizione":"bvbbb","autore":"gianma","tipo":"All Grain","stileId":"American Light Lager","volume":23.0,"rendimento":0.0,"abv":0,"og":0,"fg":0,"ebc":0,"ibu":0}
+2023-01-21 09:43:50.659 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 09:43:50.682 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/recipes/all?
+2023-01-21 09:43:50.682 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : 
+2023-01-21 09:43:50.682 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 09:43:51.624 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/fermentables/all?recipe=3
+2023-01-21 09:43:51.625 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 09:43:51.625 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 09:43:51.633 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/hops/all?recipe=3
+2023-01-21 09:43:51.633 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 09:43:51.633 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 09:43:51.639 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/recipes/info?recipe=3
+2023-01-21 09:43:51.640 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 09:43:51.640 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 09:57:32.743 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/style/colors?
+2023-01-21 09:57:32.744 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : 
+2023-01-21 09:57:32.745 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 09:57:35.651 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending POST request to URL : http://localhost:8080/auth/login
+2023-01-21 09:57:35.652 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : {"email":"admin","password":"123"}
+2023-01-21 09:57:35.652 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 09:57:35.706 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/recipes/all?
+2023-01-21 09:57:35.706 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : 
+2023-01-21 09:57:35.706 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 09:57:36.901 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/fermentables/all?recipe=3
+2023-01-21 09:57:36.901 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 09:57:36.901 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 09:57:36.908 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/hops/all?recipe=3
+2023-01-21 09:57:36.908 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 09:57:36.908 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 09:57:36.916 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/recipes/info?recipe=3
+2023-01-21 09:57:36.916 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 09:57:36.916 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 09:57:38.711 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/categories/all?
+2023-01-21 09:57:38.711 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : 
+2023-01-21 09:57:38.711 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:00:11.577 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/style/colors?
+2023-01-21 10:00:11.581 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : 
+2023-01-21 10:00:11.582 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:00:17.205 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending POST request to URL : http://localhost:8080/auth/login
+2023-01-21 10:00:17.205 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : {"email":"admin","password":"123"}
+2023-01-21 10:00:17.206 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:00:17.257 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/recipes/all?
+2023-01-21 10:00:17.257 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : 
+2023-01-21 10:00:17.257 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:00:36.724 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/fermentables/all?recipe=3
+2023-01-21 10:00:36.724 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 10:00:36.724 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:00:36.731 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/hops/all?recipe=3
+2023-01-21 10:00:36.731 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 10:00:36.731 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:00:36.740 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/recipes/info?recipe=3
+2023-01-21 10:00:36.740 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 10:00:36.740 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:03:42.341 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending POST request to URL : http://localhost:8080/fermentables/add
+2023-01-21 10:03:42.341 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : {"id":0,"ricettaId":3,"nome":"a","quantita":200000,"categoria":"a","fornitore":"a","provenienza":"a","tipo":"All Grain","colore":2,"potenziale":2,"rendimento":2}
+2023-01-21 10:03:42.341 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:03:42.350 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/fermentables/all?recipe=3
+2023-01-21 10:03:42.350 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 10:03:42.350 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:03:49.355 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending POST request to URL : http://localhost:8080/fermentables/add
+2023-01-21 10:03:49.355 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : {"id":0,"ricettaId":3,"nome":"a","quantita":222,"categoria":"s","fornitore":"s","provenienza":"s","tipo":"Ammostamento Parziale","colore":2,"potenziale":2,"rendimento":2}
+2023-01-21 10:03:49.355 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:03:49.362 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/fermentables/all?recipe=3
+2023-01-21 10:03:49.363 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 10:03:49.363 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:05:59.553 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/style/colors?
+2023-01-21 10:05:59.555 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : 
+2023-01-21 10:05:59.556 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:06:02.300 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending POST request to URL : http://localhost:8080/auth/login
+2023-01-21 10:06:02.300 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : {"email":"admin","password":"123"}
+2023-01-21 10:06:02.300 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:06:02.350 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/recipes/all?
+2023-01-21 10:06:02.350 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : 
+2023-01-21 10:06:02.350 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:06:03.271 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/fermentables/all?recipe=3
+2023-01-21 10:06:03.271 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 10:06:03.271 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:06:03.279 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/hops/all?recipe=3
+2023-01-21 10:06:03.279 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 10:06:03.279 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:06:03.286 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/recipes/info?recipe=3
+2023-01-21 10:06:03.287 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 10:06:03.287 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:06:57.736 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/style/colors?
+2023-01-21 10:06:57.737 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : 
+2023-01-21 10:06:57.739 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:07:00.064 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending POST request to URL : http://localhost:8080/auth/login
+2023-01-21 10:07:00.064 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : {"email":"admin","password":"123"}
+2023-01-21 10:07:00.064 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:07:00.113 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/recipes/all?
+2023-01-21 10:07:00.114 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : 
+2023-01-21 10:07:00.114 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:07:01.276 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/fermentables/all?recipe=3
+2023-01-21 10:07:01.276 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 10:07:01.276 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:07:01.285 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/hops/all?recipe=3
+2023-01-21 10:07:01.285 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 10:07:01.285 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:07:01.291 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/recipes/info?recipe=3
+2023-01-21 10:07:01.291 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 10:07:01.291 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:07:59.704 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/style/colors?
+2023-01-21 10:07:59.706 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : 
+2023-01-21 10:07:59.707 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:08:18.554 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/style/colors?
+2023-01-21 10:08:18.557 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : 
+2023-01-21 10:08:18.558 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:08:21.896 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending POST request to URL : http://localhost:8080/auth/login
+2023-01-21 10:08:21.896 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : {"email":"admin","password":"123"}
+2023-01-21 10:08:21.897 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:08:21.947 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/recipes/all?
+2023-01-21 10:08:21.947 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : 
+2023-01-21 10:08:21.947 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:08:23.143 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/fermentables/all?recipe=3
+2023-01-21 10:08:23.143 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 10:08:23.143 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:08:23.152 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/hops/all?recipe=3
+2023-01-21 10:08:23.153 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 10:08:23.153 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:08:23.158 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/recipes/info?recipe=3
+2023-01-21 10:08:23.158 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 10:08:23.158 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:09:45.532 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending POST request to URL : http://localhost:8080/recipes/update
+2023-01-21 10:09:45.532 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : {"id":3,"nome":"ciao","descrizione":"bvbbb","autore":"gianma","tipo":"All Grain","stileId":"American Light Lager","volume":23.0,"rendimento":98.0,"abv":0,"og":0,"fg":0,"ebc":0,"ibu":0}
+2023-01-21 10:09:45.532 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:09:45.555 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/recipes/all?
+2023-01-21 10:09:45.555 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : 
+2023-01-21 10:09:45.555 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:10:05.182 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/fermentables/all?recipe=3
+2023-01-21 10:10:05.182 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 10:10:05.182 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:10:05.189 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/hops/all?recipe=3
+2023-01-21 10:10:05.189 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 10:10:05.189 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+
+2023-01-21 10:10:05.195 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Sending GET request to URL : http://localhost:8080/recipes/info?recipe=3
+2023-01-21 10:10:05.195 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - parameters : recipe=3
+2023-01-21 10:10:05.195 [JavaFX Application Thread] INFO  it.unipi.brewathome.controllers.RicetteController - Response Code : 200
+

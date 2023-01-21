@@ -11,7 +11,7 @@
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headline-medium" text="Stili" />
       <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="476.0" prefWidth="318.0">
          <content>
-            <ListView fx:id="listaStili" />
+            <ListView fx:id="listaStili" onMouseClicked="#seleziona" />
          </content>
       </ScrollPane>
    </children>

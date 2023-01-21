@@ -3,7 +3,7 @@ package it.unipi.brewathome.controllers;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import it.unipi.brewathome.enums.Tipo;
+import it.unipi.brewathome.utils.Tipo;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.responses.FermentabileResponse;
 import it.unipi.brewathome.connection.HttpConnector;
@@ -185,7 +185,7 @@ public class ModificaRicettaController implements Initializable {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("cambia_stile.fxml"));
         Scene scene = new Scene(loader.load(), 551, 624);
         //salvo per poi aggiornare la tabella
-        LuppoloController.setRicettaController(this);
+        StiliController.setRicettaController(this);
         
         App.addStyle(scene, "style.css");
         App.addStyle(scene, "fonts.css");
@@ -249,6 +249,8 @@ public class ModificaRicettaController implements Initializable {
     private void esci() throws IOException {
         App.setRoot("ricette");
     }
+    
+    /* =========== UTILITA =========== */
     
     public void caricaFermentabili() throws IOException {
         //svuoto la tabella e la lista
@@ -364,11 +366,17 @@ public class ModificaRicettaController implements Initializable {
         tableLuppoli.prefHeightProperty().bind(tableLuppoli.fixedCellSizeProperty().multiply(Bindings.size(tableLuppoli.getItems()).add(1.3)));
     }
     
+    /* =========== GETTERS & SETTERS =========== */
+    
     public static void setRicettaId(int ricettaId) {
         ModificaRicettaController.ricettaId = ricettaId;
     }
     
     public static int getRicettaId() {
         return ModificaRicettaController.ricettaId;
+    }
+    
+    public void setTextStile(String text) {
+        this.textStile.setText(text);
     }
 }

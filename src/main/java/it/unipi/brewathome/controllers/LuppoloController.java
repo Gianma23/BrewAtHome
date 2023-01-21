@@ -5,7 +5,7 @@ import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.HttpConnector;
 import it.unipi.brewathome.connection.requests.FermentabileRequest;
 import it.unipi.brewathome.connection.requests.LuppoloRequest;
-import it.unipi.brewathome.enums.Tipo;
+import it.unipi.brewathome.utils.Tipo;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;

@@ -70,9 +70,9 @@
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="96.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="48.0" valignment="CENTER" vgrow="SOMETIMES" />
-                <RowConstraints fillHeight="false" minHeight="10.0" valignment="TOP" />
+                <RowConstraints fillHeight="false" minHeight="-Infinity" valignment="TOP" />
                   <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
@@ -142,7 +142,7 @@
                         </AnchorPane>
                         <TableView fx:id="tableFermentabili" maxHeight="-Infinity" minHeight="-Infinity" styleClass="table">
                           <columns>
-                            <TableColumn fx:id="columnPesoFermentabile" editable="false" minWidth="-1.0" resizable="false" sortable="false" text="Peso" />
+                            <TableColumn fx:id="columnPesoFermentabile" editable="false" minWidth="-1.0" resizable="false" sortable="false" text="Peso    (g)" />
                             <TableColumn fx:id="columnNomeFermentabile" editable="false" minWidth="-1.0" prefWidth="203.0" resizable="false" sortable="false" text="Nome" />
                               <TableColumn fx:id="columnColore" editable="false" minWidth="-1.0" prefWidth="68.0" resizable="false" sortable="false" text="Colore" />
                               <TableColumn fx:id="columnCategoria" editable="false" minWidth="-1.0" prefWidth="104.0" resizable="false" sortable="false" text="Categoria" />
@@ -186,9 +186,9 @@
                         </AnchorPane>
                         <TableView fx:id="tableLuppoli" maxHeight="-Infinity" minHeight="-Infinity" styleClass="table">
                            <columns>
-                              <TableColumn fx:id="columnPesoLuppolo" editable="false" prefWidth="83.0" resizable="false" sortable="false" text="Peso" />
+                              <TableColumn fx:id="columnPesoLuppolo" editable="false" prefWidth="83.0" resizable="false" sortable="false" text="Peso    (g)" />
                               <TableColumn fx:id="columnNomeLuppolo" editable="false" prefWidth="210.0" resizable="false" sortable="false" text="Nome" />
-                              <TableColumn fx:id="columnAlpha" editable="false" prefWidth="76.0" resizable="false" sortable="false" text="Alpha" />
+                              <TableColumn fx:id="columnAlpha" editable="false" prefWidth="76.0" resizable="false" sortable="false" text="Alpha   (%)" />
                               <TableColumn fx:id="columnTempo" editable="false" minWidth="0.0" prefWidth="86.0" resizable="false" sortable="false" text="Tempo" />
                            </columns>
                            <contextMenu>

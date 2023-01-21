@@ -7,7 +7,7 @@ import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.HttpConnector;
 import it.unipi.brewathome.connection.requests.FermentabileRequest;
 import it.unipi.brewathome.connection.responses.HttpResponse;
-import it.unipi.brewathome.enums.Tipo;
+import it.unipi.brewathome.utils.Tipo;
 import java.io.IOException;
 import java.net.IDN;
 import java.net.URL;
