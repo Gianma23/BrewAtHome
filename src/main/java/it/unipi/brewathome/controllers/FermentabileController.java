@@ -1,35 +1,26 @@
 package it.unipi.brewathome.controllers;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.HttpConnector;
 import it.unipi.brewathome.connection.requests.Fermentabile;
-import it.unipi.brewathome.connection.responses.HttpResponse;
-import it.unipi.brewathome.utils.Tipo;
+import it.unipi.brewathome.utils.CategoriaFermentabile;
+import it.unipi.brewathome.utils.TipoFermentabile;
+import it.unipi.brewathome.utils.TipoRicetta;
 import java.io.IOException;
-import java.net.IDN;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * FXML Controller class
- *
- * @author Utente
- */
+
 public class FermentabileController implements Initializable{
 
     private static final Logger logger =LogManager.getLogger(FermentabileController.class.getName());
@@ -39,29 +30,33 @@ public class FermentabileController implements Initializable{
     
     @FXML private TextField fieldQuantita;
     @FXML private TextField fieldNome;
-    @FXML private TextField fieldCategoria;
+    @FXML private ChoiceBox fieldCategoria;
     @FXML private TextField fieldFornitore;
     @FXML private TextField fieldProvenienza;
     @FXML private ChoiceBox fieldTipo;
     @FXML private TextField fieldColore;
     @FXML private TextField fieldPotenziale;
     @FXML private TextField fieldRendimento;
+    @FXML private Text errorMessage;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     
         // riempimento dropdown menu
-        fieldTipo.getItems().setAll(Arrays.asList(Tipo.values()));
+        fieldTipo.getItems().setAll(Arrays.asList(TipoFermentabile.values()));
+        fieldTipo.setValue("Grani");
+        fieldCategoria.getItems().setAll(Arrays.asList(CategoriaFermentabile.values()));
+        fieldCategoria.setValue("Base");
         
         if(updateFermentabile==null)
             return;
         
         fieldQuantita.setText(String.valueOf(updateFermentabile.getQuantita()));
         fieldNome.setText(updateFermentabile.getNome());
-        fieldCategoria.setText(updateFermentabile.getCategoria());
+        fieldCategoria.getSelectionModel().select(CategoriaFermentabile.indexOf(updateFermentabile.getCategoria()));
         fieldFornitore.setText(updateFermentabile.getFornitore());
         fieldProvenienza.setText(updateFermentabile.getProvenienza());
-        fieldTipo.getSelectionModel().select(Tipo.indexOf(updateFermentabile.getTipo()));
+        fieldTipo.getSelectionModel().select(TipoFermentabile.indexOf(updateFermentabile.getTipo()));
         fieldColore.setText(String.valueOf(updateFermentabile.getColore()));
         fieldPotenziale.setText(String.valueOf(updateFermentabile.getPotenziale()));
         fieldRendimento.setText(String.valueOf(updateFermentabile.getRendimento()));
@@ -73,15 +68,23 @@ public class FermentabileController implements Initializable{
     @FXML
     private void salva() {
         try {
-            //TODO: controlli input
+            errorMessage.setText("");
+            String categoria = "";
+            String tipo = "";
+            //controlli sugli input
+            if(fieldCategoria.getSelectionModel().getSelectedItem()!=null)
+                categoria = fieldCategoria.getSelectionModel().getSelectedItem().toString();
+            if(fieldTipo.getSelectionModel().getSelectedItem()!=null)
+                tipo = fieldTipo.getSelectionModel().getSelectedItem().toString();
+            
             Fermentabile request = new Fermentabile(id,
                                                     ModificaRicettaController.getRicettaId(),
                                                     fieldNome.getText(),
                                                     Integer.valueOf(fieldQuantita.getText()),
-                                                    fieldCategoria.getText(),
+                                                    categoria,
                                                     fieldFornitore.getText(),
                                                     fieldProvenienza.getText(),
-                                                    fieldTipo.getSelectionModel().getSelectedItem().toString(),
+                                                    tipo,
                                                     Integer.valueOf(fieldColore.getText()),
                                                     Double.valueOf(fieldPotenziale.getText()),
                                                     Double.valueOf(fieldRendimento.getText()));                                                   
@@ -92,18 +95,24 @@ public class FermentabileController implements Initializable{
             
             //ricarico la tabella
             ricettaController.caricaFermentabili();
+            
+            Stage stage = (Stage) fieldQuantita.getScene().getWindow();
+            stage.close();
         }
         catch (IOException ioe) {
             logger.error(ioe.getMessage());
         }
-        Stage stage = (Stage) fieldQuantita.getScene().getWindow();
-        stage.close();
+        catch(NumberFormatException ne) {
+            errorMessage.setText("Inserire i dati nel formato corretto.");
+        }
     }
     
     @FXML
     private void elimina() {
         try {
             HttpConnector.deleteRequestWithToken("/fermentables/remove", "id=" + id, App.getToken());
+            //ricarico la tabella
+            ricettaController.caricaFermentabili();
         }
         catch (IOException ioe) {
             logger.error(ioe.getMessage());

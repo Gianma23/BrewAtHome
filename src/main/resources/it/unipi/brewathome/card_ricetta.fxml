@@ -39,7 +39,6 @@
                   <String fx:value="btn" />
                   <String fx:value="btn--outlined" />
                </styleClass></Button>
-            <Button mnemonicParsing="false" styleClass="btn" text="Visualizza" />
          </children>
       </HBox>
    </children>

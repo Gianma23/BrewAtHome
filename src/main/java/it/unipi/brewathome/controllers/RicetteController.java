@@ -6,7 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.HttpConnector;
-import it.unipi.brewathome.connection.requests.RicettaRequest;
+import it.unipi.brewathome.connection.requests.Ricetta;
 import it.unipi.brewathome.connection.responses.HttpResponse;
 import java.io.IOException;
 import java.net.URL;
@@ -77,7 +77,7 @@ public class RicetteController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("card_ricetta.fxml"));
             VBox card = (VBox) fxmlLoader.load();
 
-            RicettaRequest ricetta = gson.fromJson(recipe, RicettaRequest.class);
+            Ricetta ricetta = gson.fromJson(recipe, Ricetta.class);
 
             String nomeText = ricetta.getNome();
             Text nome = (Text) card.lookup(".nome");

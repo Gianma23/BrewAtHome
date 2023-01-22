@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -23,7 +24,7 @@
             <Rectangle2D />
          </viewport>
       </ImageView>
-      <VBox fx:id="inputsContainer" alignment="CENTER" prefWidth="500.0" spacing="24.0">
+      <VBox alignment="CENTER" prefWidth="500.0" spacing="24.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headline-large" text="Accedi">
                <font>
@@ -61,15 +62,12 @@
                         <Font size="12.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="password" prefHeight="56.0" promptText="****">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
+                  <PasswordField fx:id="password" prefHeight="56.0">
                      <styleClass>
                         <String fx:value="input-text" />
                         <String fx:value="body-large" />
                      </styleClass>
-                  </TextField>
+                  </PasswordField>
                </children>
             </VBox>
             <Button fx:id="buttonAccedi" alignment="CENTER" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="1000.0" text="Accedi">
@@ -77,7 +75,7 @@
                   <String fx:value="label-large" />
                   <String fx:value="btn" />
                </styleClass></Button>
-            <Text fx:id="message" strokeType="OUTSIDE" strokeWidth="0.0" />
+            <Text fx:id="message" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body-small" />
             <Hyperlink onAction="#openRegistrati" styleClass="body-small" text="Non sei registrato? Registrati" />
          </children>
          <padding>

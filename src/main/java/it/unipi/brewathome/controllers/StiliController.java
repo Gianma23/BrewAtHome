@@ -6,7 +6,7 @@ import com.google.gson.JsonElement;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.HttpConnector;
 import it.unipi.brewathome.connection.responses.HttpResponse;
-import it.unipi.brewathome.connection.responses.StileResponse;
+import it.unipi.brewathome.connection.responses.Stile;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class StiliController implements Initializable{
     private static final Logger logger =LogManager.getLogger(StiliController.class);
     private static ModificaRicettaController ricettaController;
     private ObservableList<String> stili;
-    private List<StileResponse> stiliList;
+    private List<Stile> stiliList;
     
     @FXML private ListView listaStili;
     
@@ -43,7 +43,7 @@ public class StiliController implements Initializable{
         stiliList = new ArrayList();
         
         try {
-            HttpResponse response = HttpConnector.getRequestWithToken("/categories/all", "", App.getToken());
+            HttpResponse response = HttpConnector.getRequest("/categories/all", "");
             String responseBody = response.getResponseBody();
         
             if(responseBody.equals(""))
@@ -52,7 +52,7 @@ public class StiliController implements Initializable{
             Gson gson = new Gson();
             JsonArray stiliArray = gson.fromJson(responseBody, JsonElement.class).getAsJsonArray();
             for(JsonElement fermentabile : stiliArray) {
-                StileResponse stileElem = gson.fromJson(fermentabile, StileResponse.class);
+                Stile stileElem = gson.fromJson(fermentabile, Stile.class);
                 stiliList.add(stileElem);
                 stili.add(stileElem.getNome());
             }
@@ -64,8 +64,11 @@ public class StiliController implements Initializable{
     
     @FXML
     private void seleziona(MouseEvent event) {
-        if(event.getClickCount()==2)
-            ricettaController.setTextStile(listaStili.getSelectionModel().getSelectedItem().toString());
+        if(event.getClickCount()==2) {
+            Stile stile = stiliList.get(listaStili.getSelectionModel().getSelectedIndex());
+            ricettaController.setStile(stile);
+            ricettaController.aggiornaStats();
+        }
     }
     
     public static void setRicettaController(ModificaRicettaController ricettaController) {

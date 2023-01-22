@@ -2,7 +2,7 @@ package it.unipi.brewathome.connection.requests;
 
 import java.io.Serializable;
 
-public class RicettaRequest implements Serializable {
+public class Ricetta implements Serializable {
     
     private int id;
     private String nome;
@@ -86,7 +86,7 @@ public class RicettaRequest implements Serializable {
         this.ultimaModifica = ultimaModifica;
     }
 
-    public RicettaRequest(int id, String nome, String descrizione, String autore, String tipo, String stileId, double volume, double rendimento) {
+    public Ricetta(int id, String nome, String descrizione, String autore, String tipo, String stileId, double volume, double rendimento) {
         this.id = id;
         this.nome = nome;
         this.descrizione = descrizione;

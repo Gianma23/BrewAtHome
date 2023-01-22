@@ -2,7 +2,7 @@ package it.unipi.brewathome.connection.responses;
 
 import java.io.Serializable;
 
-public class StileResponse implements Serializable {
+public class Stile implements Serializable {
     
     private String nome; 
     private double abvMin;
@@ -16,10 +16,10 @@ public class StileResponse implements Serializable {
     private int ibuMin;
     private int ibuMax;
     
-    public StileResponse() {
+    public Stile() {
     }
 
-    public StileResponse(String nome, double abvMin, double abvMax, double ogMin, double ogMax, double fgMin, double fgMax, int srmMin, int srmMax, int ibuMin, int ibuMax) {
+    public Stile(String nome, double abvMin, double abvMax, double ogMin, double ogMax, double fgMin, double fgMax, int srmMin, int srmMax, int ibuMin, int ibuMax) {
         this.nome = nome;
         this.abvMin = abvMin;
         this.abvMax = abvMax;

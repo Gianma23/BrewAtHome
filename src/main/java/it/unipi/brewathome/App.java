@@ -7,7 +7,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.unipi.brewathome.connection.HttpConnector;
 import it.unipi.brewathome.connection.responses.HttpResponse;
-import it.unipi.brewathome.controllers.ModificaRicettaController;
 import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

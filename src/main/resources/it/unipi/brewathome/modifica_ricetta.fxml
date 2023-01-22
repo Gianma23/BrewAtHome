@@ -142,10 +142,10 @@
                         </AnchorPane>
                         <TableView fx:id="tableFermentabili" maxHeight="-Infinity" minHeight="-Infinity" styleClass="table">
                           <columns>
-                            <TableColumn fx:id="columnPesoFermentabile" editable="false" minWidth="-1.0" resizable="false" sortable="false" text="Peso    (g)" />
-                            <TableColumn fx:id="columnNomeFermentabile" editable="false" minWidth="-1.0" prefWidth="203.0" resizable="false" sortable="false" text="Nome" />
-                              <TableColumn fx:id="columnColore" editable="false" minWidth="-1.0" prefWidth="68.0" resizable="false" sortable="false" text="Colore" />
-                              <TableColumn fx:id="columnCategoria" editable="false" minWidth="-1.0" prefWidth="104.0" resizable="false" sortable="false" text="Categoria" />
+                            <TableColumn fx:id="columnPesoFermentabile" editable="false" minWidth="-1.0" resizable="false" sortable="false" text="Peso (g)" />
+                            <TableColumn fx:id="columnNomeFermentabile" editable="false" minWidth="-1.0" prefWidth="190.0" resizable="false" sortable="false" text="Nome" />
+                              <TableColumn fx:id="columnColore" editable="false" minWidth="-1.0" prefWidth="84.0" resizable="false" sortable="false" text="Colore (EBC)" />
+                              <TableColumn fx:id="columnTipo" editable="false" minWidth="-1.0" prefWidth="101.0" resizable="false" sortable="false" text="Tipo" />
                           </columns>
                            <contextMenu>
                               <ContextMenu>
@@ -186,7 +186,7 @@
                         </AnchorPane>
                         <TableView fx:id="tableLuppoli" maxHeight="-Infinity" minHeight="-Infinity" styleClass="table">
                            <columns>
-                              <TableColumn fx:id="columnPesoLuppolo" editable="false" prefWidth="83.0" resizable="false" sortable="false" text="Peso    (g)" />
+                              <TableColumn fx:id="columnPesoLuppolo" editable="false" prefWidth="83.0" resizable="false" sortable="false" text="Peso (g)" />
                               <TableColumn fx:id="columnNomeLuppolo" editable="false" prefWidth="210.0" resizable="false" sortable="false" text="Nome" />
                               <TableColumn fx:id="columnAlpha" editable="false" prefWidth="76.0" resizable="false" sortable="false" text="Alpha   (%)" />
                               <TableColumn fx:id="columnTempo" editable="false" minWidth="0.0" prefWidth="86.0" resizable="false" sortable="false" text="Tempo" />
@@ -257,7 +257,7 @@
             </StackPane>
             <StackPane alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="56.0">
                <children>
-                  <TextField fx:id="fieldAutore" maxWidth="200.0" onKeyPressed="#aggiornaNome" onKeyTyped="#aggiornaNome" prefHeight="56.0">
+                  <TextField fx:id="fieldAutore" maxWidth="200.0" prefHeight="56.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -308,7 +308,7 @@
                <children>
                   <StackPane alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="56.0">
                      <children>
-                        <TextField fx:id="fieldVolume" maxWidth="200.0" onKeyPressed="#aggiornaNome" onKeyTyped="#aggiornaNome" prefHeight="56.0" prefWidth="133.0">
+                        <TextField fx:id="fieldVolume" maxWidth="200.0" prefHeight="56.0" prefWidth="133.0" text="20">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -335,7 +335,7 @@
                   </StackPane>
                   <StackPane alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="56.0">
                      <children>
-                        <TextField fx:id="fieldRendimento" maxWidth="200.0" onKeyPressed="#aggiornaNome" onKeyTyped="#aggiornaNome" prefHeight="56.0" prefWidth="133.0">
+                        <TextField fx:id="fieldRendimento" maxWidth="200.0" prefHeight="56.0" prefWidth="133.0" text="75">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -378,33 +378,75 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Group>
+                        <VBox layoutX="2.0" layoutY="62.0" prefHeight="200.0" prefWidth="100.0" spacing="4.0" AnchorPane.rightAnchor="0.0">
                            <children>
-                              <Rectangle arcHeight="8.0" arcWidth="8.0" fill="#fffbf2" height="26.0" layoutX="42.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="241.0" />
-                              <Rectangle fill="#9bc624" height="26.0" layoutX="88.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="150.0" />
-                              <Rectangle fx:id="barAbv" arcHeight="5.0" arcWidth="5.0" fill="#c32f18" height="26.0" layoutX="86.0" layoutY="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="4.0" />
-                              <Text fx:id="textAbv" layoutX="96.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%" />
-                              <Text layoutX="3.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-large" text="ABV" />
+                              <HBox alignment="CENTER_RIGHT" spacing="8.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-large" text="ABV" />
+                                    <Text fx:id="textAbv" strokeType="OUTSIDE" strokeWidth="0.0" text="0.0%" />
+                                    <Group>
+                                       <children>
+                                          <Rectangle arcHeight="8.0" arcWidth="8.0" fill="#fffbf2" height="26.0" layoutX="42.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="214.0" />
+                                          <Rectangle fill="#9bc624" height="26.0" layoutX="85.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="128.0" />
+                                          <Rectangle fx:id="barAbv" arcHeight="5.0" arcWidth="5.0" fill="#c32f18" height="26.0" layoutX="83.0" layoutY="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="4.0" />
+                                       </children>
+                                    </Group>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" spacing="8.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-large" text="OG" />
+                                    <Text fx:id="textOg" strokeType="OUTSIDE" strokeWidth="0.0" text="1.000" />
+                                    <Group>
+                                       <children>
+                                          <Rectangle arcHeight="8.0" arcWidth="8.0" fill="#fffbf2" height="26.0" layoutX="42.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="214.0" />
+                                          <Rectangle fill="#9bc624" height="26.0" layoutX="85.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="128.0" />
+                                          <Rectangle fx:id="barOg" arcHeight="5.0" arcWidth="5.0" fill="#c32f18" height="26.0" layoutX="83.0" layoutY="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="4.0" />
+                                       </children>
+                                    </Group>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" spacing="8.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-large" text="FG" />
+                                    <Text fx:id="textFg" strokeType="OUTSIDE" strokeWidth="0.0" text="1.000" />
+                                    <Group>
+                                       <children>
+                                          <Rectangle arcHeight="8.0" arcWidth="8.0" fill="#fffbf2" height="26.0" layoutX="42.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="214.0" />
+                                          <Rectangle fill="#9bc624" height="26.0" layoutX="85.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="128.0" />
+                                          <Rectangle fx:id="barFg" arcHeight="5.0" arcWidth="5.0" fill="#c32f18" height="26.0" layoutX="83.0" layoutY="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="4.0" />
+                                       </children>
+                                    </Group>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" spacing="8.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-large" text="EBC" />
+                                    <Text fx:id="textEbc" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                                    <Group>
+                                       <children>
+                                          <Rectangle arcHeight="8.0" arcWidth="8.0" fill="#fffbf2" height="26.0" layoutX="42.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="214.0" />
+                                          <Rectangle fill="#9bc624" height="26.0" layoutX="85.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="128.0" />
+                                          <Rectangle fx:id="barEbc" arcHeight="5.0" arcWidth="5.0" fill="#c32f18" height="26.0" layoutX="83.0" layoutY="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="4.0" />
+                                       </children>
+                                    </Group>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" spacing="8.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-large" text="IBU" />
+                                    <Text fx:id="textIbu" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                                    <Group>
+                                       <children>
+                                          <Rectangle arcHeight="8.0" arcWidth="8.0" fill="#fffbf2" height="26.0" layoutX="42.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="214.0" />
+                                          <Rectangle fill="#9bc624" height="26.0" layoutX="85.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="128.0" />
+                                          <Rectangle fx:id="barIbu" arcHeight="5.0" arcWidth="5.0" fill="#c32f18" height="26.0" layoutX="83.0" layoutY="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="4.0" />
+                                       </children>
+                                    </Group>
+                                 </children>
+                              </HBox>
                            </children>
-                        </Group>
-                        <Group layoutY="31.0">
-                           <children>
-                              <Rectangle arcHeight="8.0" arcWidth="8.0" fill="#fffbf2" height="26.0" layoutX="42.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="241.0" />
-                              <Rectangle fill="#9bc624" height="26.0" layoutX="88.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="150.0" />
-                              <Rectangle fx:id="barOg" arcHeight="5.0" arcWidth="5.0" fill="#c32f18" height="26.0" layoutX="86.0" layoutY="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="4.0" />
-                              <Text fx:id="textOg" layoutX="96.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="og" />
-                              <Text layoutX="3.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-large" text="OG" />
-                           </children>
-                        </Group>
-                        <Group layoutY="63.0">
-                           <children>
-                              <Rectangle arcHeight="8.0" arcWidth="8.0" fill="#fffbf2" height="26.0" layoutX="42.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="241.0" />
-                              <Rectangle fill="#9bc624" height="26.0" layoutX="88.0" layoutY="55.0" stroke="#7c7767" strokeLineJoin="ROUND" strokeType="INSIDE" width="150.0" />
-                              <Rectangle fx:id="barFg" arcHeight="5.0" arcWidth="5.0" fill="#c32f18" height="26.0" layoutX="86.0" layoutY="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="4.0" />
-                              <Text fx:id="textFg" layoutX="96.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="fg" />
-                              <Text layoutX="3.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-large" text="FG" />
-                           </children>
-                        </Group>
+                        </VBox>
                      </children>
                   </AnchorPane>
                </children>

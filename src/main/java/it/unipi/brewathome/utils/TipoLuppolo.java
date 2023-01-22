@@ -4,15 +4,15 @@ package it.unipi.brewathome.utils;
  *
  * @author Utente
  */
-public enum Tipo {
+public enum TipoLuppolo {
     
-    ALL_GRAIN("All Grain"),
-    AMMOSTAMENTO_PARZIALE("Ammostamento Parziale"),
-    ESTRATTO("Estratto");
+    PELLET("Pellet"),
+    CONI("Coni"),
+    CRYO("Cryo");
     
     private String label;
 
-    Tipo(String label) {
+    TipoLuppolo(String label) {
         this.label = label;
     }
 
@@ -22,11 +22,11 @@ public enum Tipo {
     
     public static int indexOf(String name) {
         switch (name) {
-            case "All Grain":
+            case "Pellet":
                 return 0;
-            case "Ammostamento Parziale":
+            case "Coni":
                 return 1;
-            case "Estratto":
+            case "Cryo":
                 return 2;
             default:
                 throw new AssertionError("Tipo non esistente");

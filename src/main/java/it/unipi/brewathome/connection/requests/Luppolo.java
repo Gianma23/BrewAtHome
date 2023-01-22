@@ -5,11 +5,10 @@ import java.io.Serializable;
 public class Luppolo implements Serializable {
     
     private int id;
-    private int ricettaId; // non utilizzato in response
+    private int ricettaId;
     private String nome;
     private int tempo;
     private int quantita; 
-    private String categoria;
     private String fornitore;
     private String provenienza;
     private String tipo;
@@ -55,14 +54,6 @@ public class Luppolo implements Serializable {
         this.quantita = quantita;
     }
 
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
     public String getFornitore() {
         return fornitore;
     }
@@ -95,13 +86,12 @@ public class Luppolo implements Serializable {
         this.alpha = alpha;
     }
 
-    public Luppolo(int id, int ricettaId, String nome, int tempo, int quantita, String categoria, String fornitore, String provenienza, String tipo, double alpha) {
+    public Luppolo(int id, int ricettaId, String nome, int tempo, int quantita, String fornitore, String provenienza, String tipo, double alpha) {
         this.id = id;
         this.ricettaId = ricettaId;
         this.nome = nome;
         this.tempo = tempo;
         this.quantita = quantita;
-        this.categoria = categoria;
         this.fornitore = fornitore;
         this.provenienza = provenienza;
         this.tipo = tipo;

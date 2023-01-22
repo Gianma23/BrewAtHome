@@ -1,7 +1,6 @@
 package it.unipi.brewathome.connection;
 
 import it.unipi.brewathome.connection.responses.HttpResponse;
-import it.unipi.brewathome.controllers.RicetteController;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +19,7 @@ public class HttpConnector {
     private static final String BASE_URL = "http://localhost:8080";
     
     public static HttpResponse getRequest(String uri, String urlParameters) throws IOException {
+        urlParameters = urlParameters.replaceAll(" ", "%20");
         String url = BASE_URL + uri + "?" + urlParameters;
 
         HttpURLConnection httpClient = (HttpURLConnection) new URL(url).openConnection();
@@ -35,6 +35,7 @@ public class HttpConnector {
     }
     
     public static HttpResponse getRequestWithToken(String uri, String urlParameters, String token) throws IOException {
+        urlParameters = urlParameters.replaceAll(" ", "%20");
         String url = BASE_URL + uri + "?" + urlParameters;
 
         HttpURLConnection httpClient = (HttpURLConnection) new URL(url).openConnection();
@@ -113,6 +114,7 @@ public class HttpConnector {
     }
     
     public static HttpResponse deleteRequestWithToken(String uri, String urlParameters, String token) throws IOException {
+        urlParameters = urlParameters.replaceAll(" ", "%20");
         String url = BASE_URL + uri + "?" + urlParameters;
 
         HttpURLConnection httpClient = (HttpURLConnection) new URL(url).openConnection();

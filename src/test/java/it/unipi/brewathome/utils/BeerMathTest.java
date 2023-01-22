@@ -38,7 +38,7 @@ public class BeerMathTest {
         double PPG = 1.034;
         int peso = 1500;
         int expResult = 112;
-        int result = BeerMath.calcolaGU(PPG, peso);
+        int result = BeerMath.CalcolaGU(PPG, peso);
         assertEquals(expResult, result);
     }
 
@@ -52,7 +52,7 @@ public class BeerMathTest {
         double rendimento = 71.9;
         double volume = 23;
         double expResult = 1.044;
-        double result = BeerMath.calcolaOG(arrayGU, rendimento, volume);
+        double result = BeerMath.CalcolaOG(arrayGU, rendimento, volume);
         assertEquals(expResult, result);
     }
     
@@ -65,7 +65,34 @@ public class BeerMathTest {
         double OG = 1.044;
         double attenuazione = 75;
         double expResult = 1.011;
-        double result = BeerMath.calcolaFG(OG, attenuazione);
+        double result = BeerMath.CalcolaFG(OG, attenuazione);
         assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of calcolaABV method, of class BeerMath.
+     */
+    @Test
+    public void testCalcolaABV() {
+        System.out.println("calcolaABV");
+        double OG = 1.044;
+        double FG = 1.011;
+        double expResult = 4.3;
+        double result = BeerMath.CalcolaABV(OG, FG);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of calcolaEBC method, of class BeerMath.
+     */
+    @Test
+    public void test1CalcolaEBC() {
+        System.out.println("calcolaEBC");
+        int[] EBC = {10,8,5,290,1300};
+        int[] pesi = {1500,1000,1000,250,100};
+        double volume = 23.0;
+        double expResult = 37;
+        double result = BeerMath.CalcolaEBC(EBC, pesi, volume);
+        assertEquals(expResult, result, 1);
     }
 }

@@ -79,22 +79,16 @@
             </StackPane>
             <StackPane alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="56.0">
                <children>
-                  <TextField fx:id="fieldCategoria" prefHeight="56.0" prefWidth="252.0">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <padding>
-                        <Insets left="16.0" top="16.0" />
-                     </padding>
+                  <ChoiceBox fx:id="fieldTipo" maxWidth="259.0" prefHeight="56.0" prefWidth="252.0">
                      <styleClass>
                         <String fx:value="input-text--filled" />
                         <String fx:value="body-large" />
                      </styleClass>
-                     <StackPane.margin>
-                        <Insets />
-                     </StackPane.margin>
-                  </TextField>
-                  <Label alignment="CENTER" style="-fx-background-color: transparent;" styleClass="body-small" text="Categoria" translateY="8.0">
+                     <padding>
+                        <Insets top="16.0" />
+                     </padding>
+                  </ChoiceBox>
+                  <Label alignment="CENTER" style="-fx-background-color: transparent;" styleClass="body-small" text="Tipo" translateY="8.0">
                      <font>
                         <Font size="12.0" />
                      </font>
@@ -164,27 +158,6 @@
             </StackPane>
          </children>
       </HBox>
-      <StackPane alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="56.0">
-         <children>
-            <ChoiceBox fx:id="fieldTipo" maxWidth="200.0" prefHeight="56.0">
-               <styleClass>
-                  <String fx:value="input-text--filled" />
-                  <String fx:value="body-large" />
-               </styleClass>
-               <padding>
-                  <Insets top="16.0" />
-               </padding>
-            </ChoiceBox>
-            <Label alignment="CENTER" style="-fx-background-color: transparent;" styleClass="body-small" text="Tipo" translateY="8.0">
-               <font>
-                  <Font size="12.0" />
-               </font>
-               <StackPane.margin>
-                  <Insets left="17.0" />
-               </StackPane.margin>
-            </Label>
-         </children>
-      </StackPane>
       <HBox spacing="16.0">
          <children>
             <StackPane alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="56.0">

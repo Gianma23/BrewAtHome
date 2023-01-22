@@ -3,13 +3,14 @@ package it.unipi.brewathome.controllers;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import it.unipi.brewathome.utils.Tipo;
+import it.unipi.brewathome.utils.TipoRicetta;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.HttpConnector;
 import it.unipi.brewathome.connection.requests.Fermentabile;
 import it.unipi.brewathome.connection.requests.Luppolo;
-import it.unipi.brewathome.connection.requests.RicettaRequest;
+import it.unipi.brewathome.connection.requests.Ricetta;
 import it.unipi.brewathome.connection.responses.HttpResponse;
+import it.unipi.brewathome.connection.responses.Stile;
 import it.unipi.brewathome.utils.BeerMath;
 import java.io.IOException;
 import java.net.URL;
@@ -51,6 +52,7 @@ public class ModificaRicettaController implements Initializable {
     private ObservableList<Fermentabile> fermentabili;
     private ObservableList<Luppolo> luppoli;
     private List<Luppolo> luppoliList;
+    private Stile stile;
     
     @FXML private GridPane grid;
     @FXML private ScrollPane scroll;
@@ -61,7 +63,7 @@ public class ModificaRicettaController implements Initializable {
     @FXML private TableColumn columnPesoFermentabile;
     @FXML private TableColumn columnNomeFermentabile;
     @FXML private TableColumn columnColore;
-    @FXML private TableColumn columnCategoria;
+    @FXML private TableColumn columnTipo;
     @FXML private TableColumn columnPesoLuppolo;
     @FXML private TableColumn columnNomeLuppolo;
     @FXML private TableColumn columnAlpha;
@@ -73,6 +75,8 @@ public class ModificaRicettaController implements Initializable {
     @FXML private Text textAbv;
     @FXML private Text textOg;
     @FXML private Text textFg;
+    @FXML private Text textEbc;
+    @FXML private Text textIbu;
     
     @FXML private TextArea fieldDescrizione;
     @FXML private TextField fieldNomeRicetta;
@@ -84,6 +88,8 @@ public class ModificaRicettaController implements Initializable {
     @FXML private Rectangle barAbv;
     @FXML private Rectangle barOg;
     @FXML private Rectangle barFg;
+    @FXML private Rectangle barEbc;
+    @FXML private Rectangle barIbu;
     
       
     @Override
@@ -96,7 +102,7 @@ public class ModificaRicettaController implements Initializable {
             columnPesoFermentabile.setCellValueFactory(new PropertyValueFactory<>("quantita"));
             columnNomeFermentabile.setCellValueFactory(new PropertyValueFactory<>("nome"));
             columnColore.setCellValueFactory(new PropertyValueFactory<>("colore"));
-            columnCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
+            columnTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
 
             columnPesoLuppolo.setCellValueFactory(new PropertyValueFactory<>("quantita"));
             columnNomeLuppolo.setCellValueFactory(new PropertyValueFactory<>("nome"));
@@ -110,21 +116,30 @@ public class ModificaRicettaController implements Initializable {
             tableLuppoli.setItems(luppoli);
             luppoliList = new ArrayList();
             
-            // carico info della ricetta
-            caricaInfoRicetta();
-
-            // aggiungo listener su statistiche birra
-            aggiornaStatsListener();
-            
-            caricaFermentabili();
-            caricaLuppoli();
-            
             // sistemo dimensioni delle tabelle
             setDimensionTableFermentabili();
             setDimensionTableLuppoli();
+            
+            // carico info della ricetta
+            caricaInfoRicetta();
+
+            // aggiungo listener per statistiche birra
+            fermentabili.addListener((ListChangeListener<Fermentabile>) (e) -> aggiornaStats());
+            luppoli.addListener((ListChangeListener<Luppolo>) (e) -> aggiornaStats());
+            fieldVolume.focusedProperty().addListener((obs, oldVal, newVal) -> {
+                if(!newVal) aggiornaStats();
+            });
+            fieldRendimento.focusedProperty().addListener((obs, oldVal, newVal) -> {
+                if(!newVal) aggiornaStats();
+            });
+            aggiornaStats();
+            
+            // aggiungo gli ingredienti
+            caricaFermentabili();
+            caricaLuppoli();
         }
         catch (IOException ioe) {
-            logger.error(ioe.getMessage());
+            logger.error(ioe);
         }
     }
   
@@ -133,7 +148,7 @@ public class ModificaRicettaController implements Initializable {
         try {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(App.class.getResource("aggiungi_fermentabile.fxml"));
-            Scene scene = new Scene(loader.load(), 551, 624);
+            Scene scene = new Scene(loader.load());
             //salvo per poi aggiornare la tabella
             FermentabileController.setRicettaController(this);
 
@@ -147,7 +162,7 @@ public class ModificaRicettaController implements Initializable {
             stage.show();
         }
         catch (IOException ioe) {
-            logger.error(ioe.getMessage());
+            logger.error(ioe);
         }
     }
     
@@ -156,7 +171,7 @@ public class ModificaRicettaController implements Initializable {
         try {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(App.class.getResource("aggiungi_luppolo.fxml"));
-            Scene scene = new Scene(loader.load(), 551, 624);
+            Scene scene = new Scene(loader.load());
             //salvo per poi aggiornare la tabella
             LuppoloController.setRicettaController(this);
 
@@ -170,7 +185,7 @@ public class ModificaRicettaController implements Initializable {
             stage.show();
         }
         catch (IOException ioe) {
-            logger.error(ioe.getMessage());
+            logger.error(ioe);
         }
     }
     
@@ -207,7 +222,7 @@ public class ModificaRicettaController implements Initializable {
             stage.show();
         }
         catch (IOException ioe) {
-            logger.error(ioe.getMessage());
+            logger.error(ioe);
         }
     }
     
@@ -227,7 +242,7 @@ public class ModificaRicettaController implements Initializable {
             App.setRoot("ricette");
         }
         catch (IOException ioe) {
-            logger.error(ioe.getMessage());
+            logger.error(ioe);
         } 
     }
     
@@ -238,7 +253,7 @@ public class ModificaRicettaController implements Initializable {
             double volume = Double.valueOf(fieldVolume.getText());
             double rendimento = Double.valueOf(fieldRendimento.getText());
             
-            RicettaRequest request = new RicettaRequest(ricettaId,
+            Ricetta request = new Ricetta(ricettaId,
                                                         fieldNomeRicetta.getText(),
                                                         fieldDescrizione.getText(),
                                                         fieldAutore.getText(),
@@ -253,7 +268,7 @@ public class ModificaRicettaController implements Initializable {
             App.setRoot("ricette");
         }
         catch (IOException ioe) {
-            logger.error(ioe.getMessage());
+            logger.error(ioe);
         } 
     }
 
@@ -302,60 +317,104 @@ public class ModificaRicettaController implements Initializable {
         }
     }
     
-    private void aggiornaStatsListener() {      
+    public void aggiornaStats() {          
+        // calcolo OG
+        int sumGU = 0;
+        for(Fermentabile fermentabile : fermentabili) {
+            sumGU += BeerMath.CalcolaGU(fermentabile.getPotenziale(), fermentabile.getQuantita());
+        }
+        double OG = BeerMath.CalcolaOG(sumGU, Double.valueOf(fieldRendimento.getText()), Double.valueOf(fieldVolume.getText()));
+        textOg.setText(String.valueOf(OG));
+        
+        // calcolo FG
+        double FG = BeerMath.CalcolaFG(OG, 75);
+        textFg.setText(String.valueOf(FG));
 
-        // listener cambio lista fermentabili
-        fermentabili.addListener((ListChangeListener<Fermentabile>) (e) -> {
-            
-            // calcolo OG
-            int sumGU = 0;
-            for(Fermentabile fermentabile : fermentabili) {
-                sumGU += BeerMath.calcolaGU(fermentabile.getPotenziale(), fermentabile.getQuantita());
-            }
-            double OG = BeerMath.calcolaOG(sumGU, Double.valueOf(fieldRendimento.getText()), Double.valueOf(fieldVolume.getText()));
-            textOg.setText(String.valueOf(OG));
-            
-            // calcolo FG
-            double FG = BeerMath.calcolaFG(OG, 75);
-            textFg.setText(String.valueOf(FG));
-        });
+        //calcolo ABV
+        double ABV = BeerMath.CalcolaABV(OG, FG);
+        textAbv.setText(String.valueOf(ABV) + "%");
+
+        //calcolo EBC
+        List<Integer> arrayEBC = new ArrayList();
+        List<Integer> arrayPeso = new ArrayList();
+        for(Fermentabile fermentabile : fermentabili) {
+            arrayEBC.add(fermentabile.getColore());
+            arrayPeso.add(fermentabile.getQuantita());
+        }
+        int[] ebc = arrayEBC.stream().mapToInt(i->i).toArray();
+        int[] pesi = arrayPeso.stream().mapToInt(i->i).toArray();
+        double EBC = BeerMath.CalcolaEBC(ebc, pesi, Double.valueOf(fieldVolume.getText()));
+        textEbc.setText(String.valueOf(EBC));
+
+        //calcolo IBU
+        List<Double> arrayAlpha = new ArrayList();
+        List<Integer> arrayPesoIbu = new ArrayList();
+        List<Integer> arrayMinuti = new ArrayList();
+        for(Luppolo luppolo : luppoli) {
+            arrayAlpha.add(luppolo.getAlpha());
+            arrayPesoIbu.add(luppolo.getQuantita());
+            arrayMinuti.add(luppolo.getTempo());
+        }
+        double[] alpha = arrayAlpha.stream().mapToDouble(i->i).toArray();
+        int[] pesiIbu = arrayPesoIbu.stream().mapToInt(i->i).toArray();
+        int[] minuti = arrayMinuti.stream().mapToInt(i->i).toArray();
+        double IBU = BeerMath.RagerIBU(alpha, pesiIbu, minuti, Double.valueOf(fieldVolume.getText()));
+        textIbu.setText(String.valueOf(IBU));
+        
+        //aggiorno barra OG
+        int offsetOG = (int) Math.round((OG - stile.getOgMin())*128/(stile.getOgMax()-stile.getOgMin()));
+        long realOffsetOG = (offsetOG < 0)? Math.max(offsetOG, -42) : Math.min(offsetOG, 170);
+        barOg.translateXProperty().set(realOffsetOG);
+        
+        //aggiorno barra FG
+        int offsetFG = (int) Math.round((FG - stile.getFgMin())*128/(stile.getFgMax()-stile.getFgMin()));
+        long realOffsetFG = (offsetFG < 0)? Math.max(offsetFG, -42) : Math.min(offsetFG, 170);
+        barFg.translateXProperty().set(realOffsetFG);
+        
+        //aggiorno barra ABV
+        int offsetABV = (int) Math.round((ABV - stile.getAbvMin())*128/(stile.getAbvMax()-stile.getAbvMin()));
+        long realOffsetABV = (offsetABV < 0)? Math.max(offsetABV, -42) : Math.min(offsetABV, 170);
+        barAbv.translateXProperty().set(realOffsetABV);
+        
+        //aggiorno barra EBC
+        double ebcMin = stile.getSrmMin()*1.97;
+        double ebcMax = stile.getSrmMax()*1.97;
+        int offsetEBC = (int) Math.round((EBC - ebcMin)*128/(ebcMax-ebcMin));
+        long realOffsetEBC = (offsetEBC < 0)? Math.max(offsetEBC, -42) : Math.min(offsetEBC, 170);
+        barEbc.translateXProperty().set(realOffsetEBC);
+        
+        //aggiorno barra IBU
+        int offsetIBU = (int) Math.round((IBU - stile.getIbuMin())*128/(stile.getIbuMax()-stile.getIbuMin()));
+        long realOffsetIBU = (offsetIBU < 0)? Math.max(offsetIBU, -42) : Math.min(offsetIBU, 170);
+        barIbu.translateXProperty().set(realOffsetIBU);
     }
     
     private void caricaInfoRicetta() throws IOException {
-        
         // riempimento dropdown menu
         
-        fieldTipo.getItems().setAll(Arrays.asList(Tipo.values()));
+        fieldTipo.getItems().setAll(Arrays.asList(TipoRicetta.values()));
         
         // riempio i field con le info già esistenti 
-        
+
         HttpResponse response = HttpConnector.getRequestWithToken("/recipes/info", "recipe=" + ricettaId, App.getToken());
         String responseBody = response.getResponseBody();
         
         Gson gson = new Gson();
-        RicettaRequest ricetta = gson.fromJson(responseBody, RicettaRequest.class);
+        Ricetta ricetta = gson.fromJson(responseBody, Ricetta.class);
         
-        String nome = ricetta.getNome();
-        textNomeRicetta.setText(nome);
-        fieldNomeRicetta.setText(nome);
+        textNomeRicetta.setText(ricetta.getNome());
+        fieldNomeRicetta.setText(ricetta.getNome());
+        fieldDescrizione.setText(ricetta.getDescrizione());
+        fieldAutore.setText(ricetta.getAutore());
+        fieldTipo.getSelectionModel().select(TipoRicetta.indexOf(ricetta.getTipo()));
+        fieldVolume.setText(String.valueOf(ricetta.getVolume()));
+        fieldRendimento.setText(String.valueOf(ricetta.getRendimento()));
         
-        if(ricetta.getDescrizione()!=null)
-            fieldDescrizione.setText(ricetta.getDescrizione());
+        HttpResponse responseStile = HttpConnector.getRequest("/categories/filter-name", "name=" + ricetta.getStileId());
+        String stileBody = responseStile.getResponseBody();
         
-        if(ricetta.getAutore()!=null)
-            fieldAutore.setText(ricetta.getAutore());
-        
-        String tipo = ricetta.getTipo();
-        fieldTipo.getSelectionModel().select(Tipo.indexOf(tipo));
-        
-        String stile = ricetta.getStileId();
-        textStile.setText(stile);
-        
-        String volume = String.valueOf(ricetta.getVolume());
-        fieldVolume.setText(volume);
-        
-        String rendimento = String.valueOf(ricetta.getRendimento());
-        fieldRendimento.setText(rendimento);
+        stile = gson.fromJson(stileBody, Stile.class);
+        textStile.setText(ricetta.getStileId());
         
         String ultimaModifica = ricetta.getUltimaModifica();
         LocalDate data = LocalDate.parse(ultimaModifica, DateTimeFormatter.ISO_DATE_TIME);
@@ -364,14 +423,14 @@ public class ModificaRicettaController implements Initializable {
     
     private void setDimensionTableFermentabili() {
         // setto la larghezza delle colonne
-        columnPesoFermentabile.prefWidthProperty().bind(tableFermentabili.widthProperty().multiply(0.2));
+        columnPesoFermentabile.prefWidthProperty().bind(tableFermentabili.widthProperty().multiply(0.15));
         columnNomeFermentabile.prefWidthProperty().bind(tableFermentabili.widthProperty().multiply(0.4));
-        columnColore.prefWidthProperty().bind(tableFermentabili.widthProperty().multiply(0.10));
-        columnCategoria.prefWidthProperty().bind(tableFermentabili.widthProperty().multiply(0.28));
+        columnColore.prefWidthProperty().bind(tableFermentabili.widthProperty().multiply(0.20));
+        columnTipo.prefWidthProperty().bind(tableFermentabili.widthProperty().multiply(0.23));
         columnPesoFermentabile.setReorderable(false);
         columnNomeFermentabile.setReorderable(false);
         columnColore.setReorderable(false);
-        columnCategoria.setReorderable(false);
+        columnTipo.setReorderable(false);
         
         // sistemo altezza tabella
         tableFermentabili.setFixedCellSize(28);
@@ -404,7 +463,8 @@ public class ModificaRicettaController implements Initializable {
         return ModificaRicettaController.ricettaId;
     }
     
-    public void setTextStile(String text) {
-        this.textStile.setText(text);
+    public void setStile(Stile stile) {
+        this.stile = stile;
+        this.textStile.setText(stile.getNome());
     }
 }

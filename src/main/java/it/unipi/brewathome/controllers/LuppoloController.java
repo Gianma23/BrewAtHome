@@ -5,7 +5,8 @@ import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.HttpConnector;
 import it.unipi.brewathome.connection.requests.Fermentabile;
 import it.unipi.brewathome.connection.requests.Luppolo;
-import it.unipi.brewathome.utils.Tipo;
+import it.unipi.brewathome.utils.TipoLuppolo;
+import it.unipi.brewathome.utils.TipoRicetta;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -14,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,28 +34,28 @@ public class LuppoloController implements Initializable{
     
     @FXML private TextField fieldQuantita;
     @FXML private TextField fieldNome;
-    @FXML private TextField fieldCategoria;
     @FXML private TextField fieldFornitore;
     @FXML private TextField fieldProvenienza;
     @FXML private ChoiceBox fieldTipo;
     @FXML private TextField fieldTempo;
     @FXML private TextField fieldAlpha;
+    @FXML private Text errorMessage;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
         // riempimento dropdown menu
-        fieldTipo.getItems().setAll(Arrays.asList(Tipo.values()));
+        fieldTipo.getItems().setAll(Arrays.asList(TipoLuppolo.values()));
+        fieldTipo.setValue("Pellet");
         
         if(updateLuppolo==null)
             return;
         
         fieldQuantita.setText(String.valueOf(updateLuppolo.getQuantita()));
         fieldNome.setText(updateLuppolo.getNome());
-        fieldCategoria.setText(updateLuppolo.getCategoria());
         fieldFornitore.setText(updateLuppolo.getFornitore());
         fieldProvenienza.setText(updateLuppolo.getProvenienza());
-        fieldTipo.getSelectionModel().select(Tipo.indexOf(updateLuppolo.getTipo()));
+        fieldTipo.getSelectionModel().select(TipoLuppolo.indexOf(updateLuppolo.getTipo()));
         fieldAlpha.setText(String.valueOf(updateLuppolo.getAlpha()));
         fieldTempo.setText(String.valueOf(updateLuppolo.getTempo()));
         id = updateLuppolo.getId();
@@ -66,35 +68,39 @@ public class LuppoloController implements Initializable{
         try {
             //TODO: controlli input
             Luppolo request = new Luppolo(id,
-                                                        ModificaRicettaController.getRicettaId(),
-                                                        fieldNome.getText(),
-                                                        Integer.parseInt(fieldTempo.getText()),
-                                                        Integer.parseInt(fieldQuantita.getText()),
-                                                        fieldCategoria.getText(),
-                                                        fieldFornitore.getText(),
-                                                        fieldProvenienza.getText(),
-                                                        fieldTipo.getSelectionModel().getSelectedItem().toString(),
-                                                        Double.parseDouble(fieldAlpha.getText()));                                                   
+                                        ModificaRicettaController.getRicettaId(),
+                                        fieldNome.getText(),
+                                        Integer.parseInt(fieldTempo.getText()),
+                                        Integer.parseInt(fieldQuantita.getText()),
+                                        fieldFornitore.getText(),
+                                        fieldProvenienza.getText(),
+                                        fieldTipo.getSelectionModel().getSelectedItem().toString(),
+                                        Double.parseDouble(fieldAlpha.getText()));                                                   
+            //serializzazione dati
             Gson gson = new Gson();
             String body = gson.toJson(request);
-            
             HttpConnector.postRequestWithToken("/hops/add", body, App.getToken());
             
             //ricarico la tabella
             ricettaController.caricaLuppoli();
+            
+            Stage stage = (Stage) fieldQuantita.getScene().getWindow();
+            stage.close();
         }
         catch (IOException ioe) {
             logger.error(ioe.getMessage());
         }
-        
-        Stage stage = (Stage) fieldQuantita.getScene().getWindow();
-        stage.close();
+        catch(NumberFormatException ne) {
+            errorMessage.setText("Inserire i dati nel formato corretto.");
+        }
     }
     
     @FXML
     private void elimina() {
         try {
             HttpConnector.deleteRequestWithToken("/hops/remove", "id=" + id, App.getToken());
+            //ricarico la tabella
+            ricettaController.caricaLuppoli();
         }
         catch (IOException ioe) {
             logger.error(ioe.getMessage());
