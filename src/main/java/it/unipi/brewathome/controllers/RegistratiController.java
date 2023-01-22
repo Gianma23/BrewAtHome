@@ -31,7 +31,7 @@ public class RegistratiController {
     private void register() {
         
         if(!password.getText().equals(confirmPassword.getText())) {
-            //TODO set error message
+            errorMessage.setText("La password non corrisponde con quella di conferma.");
             return;
         }
 

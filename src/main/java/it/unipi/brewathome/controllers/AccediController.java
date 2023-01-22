@@ -18,14 +18,10 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * FXML Controller class
- *
- * @author Utente
- */
+
 public class AccediController {
     
-    private static final Logger logger =LogManager.getLogger(AccediController.class);
+    private static final Logger logger = LogManager.getLogger(AccediController.class);
     @FXML private Button buttonAccedi;
     @FXML private TextField email;
     @FXML private PasswordField password;

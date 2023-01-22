@@ -142,6 +142,8 @@ public class ModificaRicettaController implements Initializable {
             logger.error(ioe);
         }
     }
+    
+    /* ================ FXML FUNC ================ */
   
     @FXML
     private void aggiungiFermentabile() {
@@ -249,18 +251,14 @@ public class ModificaRicettaController implements Initializable {
     @FXML
     private void salvaRicetta() {
         try {
-            //TODO: controlli input
-            double volume = Double.valueOf(fieldVolume.getText());
-            double rendimento = Double.valueOf(fieldRendimento.getText());
-            
             Ricetta request = new Ricetta(ricettaId,
-                                                        fieldNomeRicetta.getText(),
-                                                        fieldDescrizione.getText(),
-                                                        fieldAutore.getText(),
-                                                        fieldTipo.getSelectionModel().getSelectedItem().toString(),
-                                                        textStile.getText(),
-                                                        volume,
-                                                        rendimento);                                                   
+                                          fieldNomeRicetta.getText(),
+                                          fieldDescrizione.getText(),
+                                          fieldAutore.getText(),
+                                          fieldTipo.getSelectionModel().getSelectedItem().toString(),
+                                          textStile.getText(),
+                                          Double.valueOf(fieldVolume.getText()),
+                                          Double.valueOf(fieldRendimento.getText()));                                                   
             Gson gson = new Gson();
             String body = gson.toJson(request);
             
@@ -270,6 +268,9 @@ public class ModificaRicettaController implements Initializable {
         catch (IOException ioe) {
             logger.error(ioe);
         } 
+        catch(NumberFormatException ne) {
+            logger.error(ne);
+        }
     }
 
     @FXML
@@ -277,7 +278,7 @@ public class ModificaRicettaController implements Initializable {
         App.setRoot("ricette");
     }
     
-    /* =========== UTILITA =========== */
+    /* ================ UTILITA ================ */
     
     public void caricaFermentabili() throws IOException {
         //svuoto la tabella e la lista
@@ -361,6 +362,10 @@ public class ModificaRicettaController implements Initializable {
         double IBU = BeerMath.RagerIBU(alpha, pesiIbu, minuti, Double.valueOf(fieldVolume.getText()));
         textIbu.setText(String.valueOf(IBU));
         
+        aggiornaBarreStats(OG, FG, ABV, EBC, IBU);
+    }
+    
+    private void aggiornaBarreStats(double OG, double FG, double ABV, double EBC, double IBU) {
         //aggiorno barra OG
         int offsetOG = (int) Math.round((OG - stile.getOgMin())*128/(stile.getOgMax()-stile.getOgMin()));
         long realOffsetOG = (offsetOG < 0)? Math.max(offsetOG, -42) : Math.min(offsetOG, 170);
@@ -391,7 +396,6 @@ public class ModificaRicettaController implements Initializable {
     
     private void caricaInfoRicetta() throws IOException {
         // riempimento dropdown menu
-        
         fieldTipo.getItems().setAll(Arrays.asList(TipoRicetta.values()));
         
         // riempio i field con le info già esistenti 

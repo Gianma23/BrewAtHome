@@ -34,7 +34,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {  
         
-        // creo il database e le tabelle
+        // creo le tabelle e le popolo
         DatabaseConnector.createTables();
         DatabaseConnector.populateStyleTable();
         
@@ -71,36 +71,6 @@ public class App extends Application {
         stage.sizeToScene();
         stage.show();   
     }
-
-    public static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-    
-    public static void setToken(String token) {
-        App.token = token;
-    }
-    
-    public static String getToken() {
-        return token;
-    }
-    
-    public static void setCanResize(boolean canResize) {
-        App.canResize = canResize;
-    }
-    
-    public static void addStyle(Scene scene, String stylesheet) {
-        String css = App.class.getResource("/styles/" + stylesheet).toExternalForm();
-        scene.getStylesheets().add(css);
-    }
-    
-    public static void addBars(GridPane grid) throws IOException {
-        FXMLLoader loadTopBar = new FXMLLoader(App.class.getResource("topBar.fxml"));
-        Parent topBar = loadTopBar.load();
-        grid.add(topBar, 0, 0, 25, 1);
-        FXMLLoader loadLeftBar = new FXMLLoader(App.class.getResource("leftBar.fxml"));
-        Parent leftBar = loadLeftBar.load();
-        grid.add(leftBar, 0, 1, 1, 1);
-    }
     
     /* ======= UTILITA ======= */
     
@@ -128,6 +98,20 @@ public class App extends Application {
             }
         };
         stage.widthProperty().addListener(stageSizeListener);
+    }
+      
+    public static void addStyle(Scene scene, String stylesheet) {
+        String css = App.class.getResource("/styles/" + stylesheet).toExternalForm();
+        scene.getStylesheets().add(css);
+    }
+    
+    public static void addBars(GridPane grid) throws IOException {
+        FXMLLoader loadTopBar = new FXMLLoader(App.class.getResource("topBar.fxml"));
+        Parent topBar = loadTopBar.load();
+        grid.add(topBar, 0, 0, 25, 1);
+        FXMLLoader loadLeftBar = new FXMLLoader(App.class.getResource("leftBar.fxml"));
+        Parent leftBar = loadLeftBar.load();
+        grid.add(leftBar, 0, 1, 1, 1);
     }
     
     private static Parent loadFXML(String fxml) throws IOException {
@@ -166,6 +150,24 @@ public class App extends Application {
         PrintWriter out = new PrintWriter(file);
         out.println(cssString);
         out.close();
+    }
+    
+    /* ================ GETTERS & SETTERS ================ */
+    
+    public static void setRoot(String fxml) throws IOException {
+        scene.setRoot(loadFXML(fxml));
+    }
+    
+    public static void setToken(String token) {
+        App.token = token;
+    }
+    
+    public static String getToken() {
+        return token;
+    }
+    
+    public static void setCanResize(boolean canResize) {
+        App.canResize = canResize;
     }
     
     public static void main(String[] args) {

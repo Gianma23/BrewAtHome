@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS luppolo (
     ricetta_id INT NOT NULL,
     quantita INT NOT NULL,
     tempo INT NOT NULL,
-    nome VARCHAR(45) NOT NULL,
+    nome VARCHAR(45),
     fornitore VARCHAR(45),
     provenienza VARCHAR(45),
     tipo VARCHAR(45) NOT NULL,

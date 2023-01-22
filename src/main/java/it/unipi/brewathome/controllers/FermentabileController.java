@@ -6,7 +6,6 @@ import it.unipi.brewathome.connection.HttpConnector;
 import it.unipi.brewathome.connection.requests.Fermentabile;
 import it.unipi.brewathome.utils.CategoriaFermentabile;
 import it.unipi.brewathome.utils.TipoFermentabile;
-import it.unipi.brewathome.utils.TipoRicetta;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -69,22 +68,15 @@ public class FermentabileController implements Initializable{
     private void salva() {
         try {
             errorMessage.setText("");
-            String categoria = "";
-            String tipo = "";
-            //controlli sugli input
-            if(fieldCategoria.getSelectionModel().getSelectedItem()!=null)
-                categoria = fieldCategoria.getSelectionModel().getSelectedItem().toString();
-            if(fieldTipo.getSelectionModel().getSelectedItem()!=null)
-                tipo = fieldTipo.getSelectionModel().getSelectedItem().toString();
             
             Fermentabile request = new Fermentabile(id,
                                                     ModificaRicettaController.getRicettaId(),
                                                     fieldNome.getText(),
                                                     Integer.valueOf(fieldQuantita.getText()),
-                                                    categoria,
+                                                    fieldCategoria.getSelectionModel().getSelectedItem().toString(),
                                                     fieldFornitore.getText(),
                                                     fieldProvenienza.getText(),
-                                                    tipo,
+                                                    fieldTipo.getSelectionModel().getSelectedItem().toString(),
                                                     Integer.valueOf(fieldColore.getText()),
                                                     Double.valueOf(fieldPotenziale.getText()),
                                                     Double.valueOf(fieldRendimento.getText()));                                                   

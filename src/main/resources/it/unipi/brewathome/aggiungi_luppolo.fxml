@@ -243,6 +243,7 @@
             </Button>
          </children>
       </AnchorPane>
+      <Text fx:id="errorMessage" strokeType="OUTSIDE" strokeWidth="0.0" />
    </children>
    <padding>
       <Insets bottom="24.0" left="16.0" right="16.0" top="24.0" />

@@ -20,11 +20,7 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * FXML Controller class
- *
- * @author Utente
- */
+
 public class LuppoloController implements Initializable{
 
     private static final Logger logger =LogManager.getLogger(LuppoloController.class.getName());
@@ -66,7 +62,8 @@ public class LuppoloController implements Initializable{
     @FXML
     private void salva() {
         try {
-            //TODO: controlli input
+            errorMessage.setText("");
+            
             Luppolo request = new Luppolo(id,
                                         ModificaRicettaController.getRicettaId(),
                                         fieldNome.getText(),

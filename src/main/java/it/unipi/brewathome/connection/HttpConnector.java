@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 public class HttpConnector {
     
-    private static final Logger logger =LogManager.getLogger(HttpConnector.class.getName());
+    private static final Logger logger = LogManager.getLogger(HttpConnector.class.getName());
     private static final String BASE_URL = "http://localhost:8080";
     
     public static HttpResponse getRequest(String uri, String urlParameters) throws IOException {
@@ -145,7 +145,7 @@ public class HttpConnector {
                 response.append(currentLine);
         }
         catch (IOException ioe) {
-            logger.error(ioe.getMessage());
+            logger.error(ioe);
         }
         return response.toString();
     }
@@ -158,13 +158,13 @@ public class HttpConnector {
             wr.write(parameters);
         }
         catch(IOException ioe) {
-            logger.error(ioe.getMessage());
+            logger.error(ioe);
         }
     }
     
     private static void printConnection(String type, String url, String urlParameters, int responseCode) {
-        logger.info("Sending " + type + " request to URL : " + url);
-        logger.info("parameters : " + urlParameters);
-        logger.info("Response Code : " + responseCode + "\n");
+        logger.debug("Sending " + type + " request to URL : " + url);
+        logger.debug("parameters : " + urlParameters);
+        logger.debug("Response Code : " + responseCode + "\n");
     }
 }
