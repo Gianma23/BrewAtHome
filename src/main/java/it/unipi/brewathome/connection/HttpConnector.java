@@ -163,8 +163,8 @@ public class HttpConnector {
     }
     
     private static void printConnection(String type, String url, String urlParameters, int responseCode) {
-        logger.debug("Sending " + type + " request to URL : " + url);
-        logger.debug("parameters : " + urlParameters);
-        logger.debug("Response Code : " + responseCode + "\n");
+        logger.debug("\nSending " + type + " request to URL : " + url + 
+                     "\nparameters : " + urlParameters +
+                     "\nResponse Code : " + responseCode + "\n");
     }
 }

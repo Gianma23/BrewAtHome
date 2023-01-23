@@ -10,13 +10,14 @@ import it.unipi.brewathome.connection.responses.HttpResponse;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -30,7 +31,6 @@ public class RicetteController implements Initializable {
     private static final Logger logger = LogManager.getLogger(RicetteController.class);
     @FXML private GridPane grid;
     @FXML private FlowPane flow;
-    @FXML private ScrollPane scroll;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) { 
@@ -51,12 +51,13 @@ public class RicetteController implements Initializable {
             @Override public Void call() {
                 try {
                     HttpResponse response = HttpConnector.postRequestWithToken("/recipes/add", "", App.getToken());
-                    int ricettaId = Integer.parseInt(response.getResponseBody());
+                    Gson gson = new Gson();
+                    Ricetta ricetta = gson.fromJson(response.getResponseBody(), Ricetta.class);
                     
                     Platform.runLater(() -> {
                         try {
                             FXMLLoader loader = new FXMLLoader(App.class.getResource("modifica_ricetta.fxml"));
-                            ModificaRicettaController.setRicettaId(ricettaId); 
+                            ModificaRicettaController.setRicetta(ricetta); 
                             grid.getScene().setRoot(loader.load());
                         }
                         catch (IOException ioe) {
@@ -89,7 +90,8 @@ public class RicetteController implements Initializable {
                             try {
                                 FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("card_ricetta.fxml"));
                                 VBox card = (VBox) fxmlLoader.load();
-
+                                CardRicettaController controller = fxmlLoader.getController();
+                                
                                 Ricetta ricetta = gson.fromJson(recipe, Ricetta.class);
 
                                 String nomeText = ricetta.getNome();
@@ -104,8 +106,7 @@ public class RicetteController implements Initializable {
                                 Text descrizione = (Text) card.lookup(".descrizione");
                                 descrizione.setText(descText);
 
-                                String ricettaId = String.valueOf(ricetta.getId());
-                                card.setId(ricettaId);
+                                controller.setRicetta(ricetta);  
 
                                 flow.getChildren().add(card);
                             }

@@ -45,7 +45,7 @@
     <RowConstraints fillHeight="false" minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <ScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefWidth="1128.0" styleClass="scroll" GridPane.columnIndex="1" GridPane.columnSpan="23" GridPane.rowIndex="1" GridPane.valignment="TOP">
+      <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefWidth="1128.0" styleClass="scroll" GridPane.columnIndex="1" GridPane.columnSpan="23" GridPane.rowIndex="1" GridPane.valignment="TOP">
          <content>
             <FlowPane fx:id="flow" columnHalignment="CENTER" hgap="24.0" styleClass="flow-container" vgap="24.0">
                <padding>

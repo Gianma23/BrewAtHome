@@ -60,7 +60,7 @@
     <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <ScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll" GridPane.columnIndex="1" GridPane.columnSpan="19" GridPane.rowIndex="1">
+      <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll" GridPane.columnIndex="1" GridPane.columnSpan="19" GridPane.rowIndex="1">
          <content>
             <GridPane styleClass="grid-container">
               <columnConstraints>

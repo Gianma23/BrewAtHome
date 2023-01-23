@@ -1,9 +1,6 @@
 package it.unipi.brewathome.utils;
 
 // classe statica, simile a java.lang.Math
-
-import java.util.Arrays;
-
 public class BeerMath {
     
     

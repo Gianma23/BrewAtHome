@@ -12,8 +12,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -42,24 +44,33 @@ public class StiliController implements Initializable{
         listaStili.setItems(stili);
         stiliList = new ArrayList();
         
-        try {
-            HttpResponse response = HttpConnector.getRequest("/categories/all", "");
-            String responseBody = response.getResponseBody();
-        
-            if(responseBody.equals(""))
-                return;
+        Task task = new Task<Void>() {
+            @Override public Void call() {
+                try {
+                    HttpResponse response = HttpConnector.getRequest("/categories/all", "");
+                    String responseBody = response.getResponseBody();
 
-            Gson gson = new Gson();
-            JsonArray stiliArray = gson.fromJson(responseBody, JsonElement.class).getAsJsonArray();
-            for(JsonElement fermentabile : stiliArray) {
-                Stile stileElem = gson.fromJson(fermentabile, Stile.class);
-                stiliList.add(stileElem);
-                stili.add(stileElem.getNome());
+                    if(responseBody.equals(""))
+                        return null;
+
+                    Gson gson = new Gson();
+                    JsonArray stiliArray = gson.fromJson(responseBody, JsonElement.class).getAsJsonArray();
+                    
+                    Platform.runLater(() -> {
+                        for(JsonElement fermentabile : stiliArray) {
+                            Stile stileElem = gson.fromJson(fermentabile, Stile.class);
+                            stiliList.add(stileElem);
+                            stili.add(stileElem.getNome());
+                        }
+                    });
+                }
+                catch (IOException ioe) {
+                    logger.error(ioe.getMessage());
+                }
+                return null;
             }
-        }
-        catch (IOException ioe) {
-            logger.error(ioe.getMessage());
-        }
+        };
+        new Thread(task).start();
     }
     
     @FXML

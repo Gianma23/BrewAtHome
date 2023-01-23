@@ -36,7 +36,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -53,15 +52,13 @@ import org.apache.logging.log4j.Logger;
 public class ModificaRicettaController implements Initializable {
 
     private static final Logger logger =LogManager.getLogger(ModificaRicettaController.class.getName());
-    private static int ricettaId;
+    private static Ricetta ricetta;
     private ObservableList<Fermentabile> fermentabili;
     private ObservableList<Luppolo> luppoli;
     private List<Luppolo> luppoliList;
     private Stile stile;
     
     @FXML private GridPane grid;
-    @FXML private ScrollPane scroll;
-    
     @FXML private TableView tableFermentabili;
     @FXML private TableView tableLuppoli;
     
@@ -261,7 +258,7 @@ public class ModificaRicettaController implements Initializable {
         Task task = new Task<Void>() {
             @Override public Void call() {
                 try {
-                    HttpConnector.deleteRequestWithToken("/recipes/remove", "recipe=" + ricettaId, App.getToken());
+                    HttpConnector.deleteRequestWithToken("/recipes/remove", "recipe=" + ricetta.getId(), App.getToken());
                     App.setRoot("ricette");
                 }
                 catch (IOException ioe) {
@@ -276,14 +273,14 @@ public class ModificaRicettaController implements Initializable {
     @FXML
     private void salvaRicetta() {
         try {
-            Ricetta request = new Ricetta(ricettaId,
-                                  fieldNomeRicetta.getText(),
-                                  fieldDescrizione.getText(),
-                                  fieldAutore.getText(),
-                                  fieldTipo.getSelectionModel().getSelectedItem().toString(),
-                                  textStile.getText(),
-                                  Double.valueOf(fieldVolume.getText()),
-                                  Double.valueOf(fieldRendimento.getText()));
+            Ricetta request = new Ricetta(ricetta.getId(),
+                                        fieldNomeRicetta.getText(),
+                                        fieldDescrizione.getText(),
+                                        fieldAutore.getText(),
+                                        fieldTipo.getSelectionModel().getSelectedItem().toString(),
+                                        textStile.getText(),
+                                        Double.valueOf(fieldVolume.getText()),
+                                        Double.valueOf(fieldRendimento.getText()));
             //serializzazione
             Gson gson = new Gson();
             String body = gson.toJson(request);
@@ -321,7 +318,7 @@ public class ModificaRicettaController implements Initializable {
         Task task = new Task<Void>() {
             @Override public Void call() {
                 try {
-                    HttpResponse response = HttpConnector.getRequestWithToken("/fermentables/all", "recipe=" + ricettaId, App.getToken());
+                    HttpResponse response = HttpConnector.getRequestWithToken("/fermentables/all", "recipe=" + ricetta.getId(), App.getToken());
                     String responseBody = response.getResponseBody();
 
                     if(responseBody.equals(""))
@@ -352,7 +349,7 @@ public class ModificaRicettaController implements Initializable {
         Task task = new Task<Void>() {
             @Override public Void call() {
                 try {
-                    HttpResponse response = HttpConnector.getRequestWithToken("/hops/all", "recipe=" + ricettaId, App.getToken());
+                    HttpResponse response = HttpConnector.getRequestWithToken("/hops/all", "recipe=" + ricetta.getId(), App.getToken());
                     String responseBody = response.getResponseBody();
 
                     if(responseBody.equals(""))
@@ -384,32 +381,27 @@ public class ModificaRicettaController implements Initializable {
         
         // riempio i field con le info già esistenti 
         
+        textNomeRicetta.setText(ricetta.getNome());
+        fieldNomeRicetta.setText(ricetta.getNome());
+        fieldDescrizione.setText(ricetta.getDescrizione());
+        fieldAutore.setText(ricetta.getAutore());
+        fieldTipo.getSelectionModel().select(TipoRicetta.indexOf(ricetta.getTipo()));
+        fieldVolume.setText(String.valueOf(ricetta.getVolume()));
+        fieldRendimento.setText(String.valueOf(ricetta.getRendimento()));
+        String ultimaModifica = ricetta.getUltimaModifica();
+        LocalDate data = LocalDate.parse(ultimaModifica, DateTimeFormatter.ISO_DATE_TIME);
+        textUltimaModifica.setText("Ultima modifica: " + data.getDayOfMonth() + " " + data.getMonth().getDisplayName(TextStyle.FULL, Locale.ITALY) + " " + data.getYear());
+        
         Task task = new Task<Void>() {
             @Override public Void call() {
                 try {
-                    HttpResponse response = HttpConnector.getRequestWithToken("/recipes/info", "recipe=" + ricettaId, App.getToken());
-                    String responseBody = response.getResponseBody();
-                    
                     Gson gson = new Gson();
-                    Ricetta ricetta = gson.fromJson(responseBody, Ricetta.class);
-                    
                     HttpResponse responseStile = HttpConnector.getRequest("/categories/filter-name", "name=" + ricetta.getStileId());
                     String stileBody = responseStile.getResponseBody();
                     stile = gson.fromJson(stileBody, Stile.class);
                     
-                    Platform.runLater(() -> {
-                        textNomeRicetta.setText(ricetta.getNome());
-                        fieldNomeRicetta.setText(ricetta.getNome());
-                        fieldDescrizione.setText(ricetta.getDescrizione());
-                        fieldAutore.setText(ricetta.getAutore());
-                        fieldTipo.getSelectionModel().select(TipoRicetta.indexOf(ricetta.getTipo()));
-                        fieldVolume.setText(String.valueOf(ricetta.getVolume()));
-                        fieldRendimento.setText(String.valueOf(ricetta.getRendimento()));
+                    Platform.runLater(() -> {          
                         textStile.setText(ricetta.getStileId());
-
-                        String ultimaModifica = ricetta.getUltimaModifica();
-                        LocalDate data = LocalDate.parse(ultimaModifica, DateTimeFormatter.ISO_DATE_TIME);
-                        textUltimaModifica.setText("Ultima modifica: " + data.getDayOfMonth() + " " + data.getMonth().getDisplayName(TextStyle.FULL, Locale.ITALY) + " " + data.getYear());
                     });
                 }
                 catch (IOException ioe) {
@@ -533,12 +525,12 @@ public class ModificaRicettaController implements Initializable {
     
     /* =========== GETTERS & SETTERS =========== */
     
-    public static void setRicettaId(int ricettaId) {
-        ModificaRicettaController.ricettaId = ricettaId;
+    public static void setRicetta(Ricetta ricetta) {
+        ModificaRicettaController.ricetta = ricetta;
     }
     
     public static int getRicettaId() {
-        return ModificaRicettaController.ricettaId;
+        return ModificaRicettaController.ricetta.getId();
     }
 
     public ObservableList<Fermentabile> getFermentabili() {
