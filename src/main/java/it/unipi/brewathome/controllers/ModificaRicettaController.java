@@ -13,6 +13,7 @@ import it.unipi.brewathome.connection.responses.HttpResponse;
 import it.unipi.brewathome.connection.responses.Stile;
 import it.unipi.brewathome.utils.BeerMath;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -22,10 +23,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -120,23 +125,37 @@ public class ModificaRicettaController implements Initializable {
             setDimensionTableFermentabili();
             setDimensionTableLuppoli();
             
+            IntegerProperty taskCounter = new SimpleIntegerProperty(3);
+            
             // carico info della ricetta
-            caricaInfoRicetta();
-
-            // aggiungo listener per statistiche birra
-            fermentabili.addListener((ListChangeListener<Fermentabile>) (e) -> aggiornaStats());
-            luppoli.addListener((ListChangeListener<Luppolo>) (e) -> aggiornaStats());
-            fieldVolume.focusedProperty().addListener((obs, oldVal, newVal) -> {
-                if(!newVal) aggiornaStats();
-            });
-            fieldRendimento.focusedProperty().addListener((obs, oldVal, newVal) -> {
-                if(!newVal) aggiornaStats();
-            });
-            aggiornaStats();
+            Task taskInfo = caricaInfoRicetta();
+            taskInfo.setOnSucceeded(e -> taskCounter.set(taskCounter.get() - 1));
+            new Thread(taskInfo).start();
             
             // aggiungo gli ingredienti
-            caricaFermentabili();
-            caricaLuppoli();
+            Task taskLup = caricaLuppoli();
+            taskLup.setOnSucceeded(e -> taskCounter.set(taskCounter.get() - 1));
+            new Thread(taskLup).start();
+            
+            Task taskFerm = caricaFermentabili();
+            taskFerm.setOnSucceeded(e -> taskCounter.set(taskCounter.get() - 1));
+            new Thread(taskFerm).start();
+            
+            //se la ricetta ha caricato aggiorno le statistiche
+            taskCounter.addListener((o, oldValue, newValue) -> {
+                if(newValue.intValue() == 0) {
+                    // aggiungo listener per statistiche birra
+                    fermentabili.addListener((ListChangeListener<Fermentabile>) (e) -> aggiornaStats());
+                    luppoli.addListener((ListChangeListener<Luppolo>) (e) -> aggiornaStats());
+                    fieldVolume.focusedProperty().addListener((obs, oldVal, newVal) -> {
+                        if(!newVal) aggiornaStats();
+                    });
+                    fieldRendimento.focusedProperty().addListener((obs, oldVal, newVal) -> {
+                        if(!newVal) aggiornaStats();
+                    });
+                    aggiornaStats();
+                }
+            });
         }
         catch (IOException ioe) {
             logger.error(ioe);
@@ -239,35 +258,50 @@ public class ModificaRicettaController implements Initializable {
     
     @FXML
     private void eliminaRicetta() {
-        try {
-            HttpConnector.deleteRequestWithToken("/recipes/remove", "recipe=" + ricettaId, App.getToken());
-            App.setRoot("ricette");
-        }
-        catch (IOException ioe) {
-            logger.error(ioe);
-        } 
+        Task task = new Task<Void>() {
+            @Override public Void call() {
+                try {
+                    HttpConnector.deleteRequestWithToken("/recipes/remove", "recipe=" + ricettaId, App.getToken());
+                    App.setRoot("ricette");
+                }
+                catch (IOException ioe) {
+                    logger.error(ioe);
+                } 
+                return null;
+            }
+        };
+        new Thread(task).start();
     }
     
     @FXML
     private void salvaRicetta() {
         try {
             Ricetta request = new Ricetta(ricettaId,
-                                          fieldNomeRicetta.getText(),
-                                          fieldDescrizione.getText(),
-                                          fieldAutore.getText(),
-                                          fieldTipo.getSelectionModel().getSelectedItem().toString(),
-                                          textStile.getText(),
-                                          Double.valueOf(fieldVolume.getText()),
-                                          Double.valueOf(fieldRendimento.getText()));                                                   
+                                  fieldNomeRicetta.getText(),
+                                  fieldDescrizione.getText(),
+                                  fieldAutore.getText(),
+                                  fieldTipo.getSelectionModel().getSelectedItem().toString(),
+                                  textStile.getText(),
+                                  Double.valueOf(fieldVolume.getText()),
+                                  Double.valueOf(fieldRendimento.getText()));
+            //serializzazione
             Gson gson = new Gson();
             String body = gson.toJson(request);
-            
-            HttpConnector.postRequestWithToken("/recipes/update", body, App.getToken());
-            App.setRoot("ricette");
-        }
-        catch (IOException ioe) {
-            logger.error(ioe);
-        } 
+        
+            Task task = new Task<Void>() {
+                @Override public Void call() {
+                    try {
+                        HttpConnector.postRequestWithToken("/recipes/update", body, App.getToken());
+                        App.setRoot("ricette");
+                    }
+                    catch (IOException ioe) {
+                        logger.error(ioe);
+                    }
+                    return null;
+                }
+            };
+            new Thread(task).start();
+        }   
         catch(NumberFormatException ne) {
             logger.error(ne);
         }
@@ -278,45 +312,116 @@ public class ModificaRicettaController implements Initializable {
         App.setRoot("ricette");
     }
     
-    /* ================ UTILITA ================ */
-    
-    public void caricaFermentabili() throws IOException {
+    /* =============== TASK ASYNC =============== */
+        
+    private Task caricaFermentabili() throws IOException {
         //svuoto la tabella e la lista
         tableFermentabili.getItems().clear();
         
-        HttpResponse response = HttpConnector.getRequestWithToken("/fermentables/all", "recipe=" + ricettaId, App.getToken());
-        String responseBody = response.getResponseBody();
-        
-        if(responseBody.equals(""))
-            return;
-            
-        Gson gson = new Gson();
-        JsonArray fermentabiliArray = gson.fromJson(responseBody, JsonElement.class).getAsJsonArray();
-        for(JsonElement fermentabile : fermentabiliArray) {
-            Fermentabile fermentabileTable = gson.fromJson(fermentabile, Fermentabile.class);
-            fermentabili.add(fermentabileTable);
-        }
+        Task task = new Task<Void>() {
+            @Override public Void call() {
+                try {
+                    HttpResponse response = HttpConnector.getRequestWithToken("/fermentables/all", "recipe=" + ricettaId, App.getToken());
+                    String responseBody = response.getResponseBody();
+
+                    if(responseBody.equals(""))
+                        return null;
+
+                    Gson gson = new Gson();
+                    JsonArray fermentabiliArray = gson.fromJson(responseBody, JsonElement.class).getAsJsonArray();
+                    Platform.runLater(() -> {
+                        for(JsonElement fermentabile : fermentabiliArray) {
+                            Fermentabile fermentabileTable = gson.fromJson(fermentabile, Fermentabile.class);
+                            fermentabili.add(fermentabileTable);
+                        }
+                    });
+                }
+                catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+                return null;
+            }
+        };
+        return task;
     }
     
-    public void caricaLuppoli() throws IOException {
+    private Task caricaLuppoli() throws IOException {
         //svuoto la tabella
         tableLuppoli.getItems().clear();
         
-        HttpResponse response = HttpConnector.getRequestWithToken("/hops/all", "recipe=" + ricettaId, App.getToken());
-        String responseBody = response.getResponseBody();
-        
-        if(responseBody.equals(""))
-            return;
-            
-        Gson gson = new Gson();
-        JsonArray luppoliArray = gson.fromJson(responseBody, JsonElement.class).getAsJsonArray();
-        for(JsonElement luppolo : luppoliArray) {
-            Luppolo luppoloTable = gson.fromJson(luppolo, Luppolo.class);
-            luppoli.add(luppoloTable);
-            Luppolo lup = gson.fromJson(luppolo, Luppolo.class);
-            luppoliList.add(lup);
-        }
+        Task task = new Task<Void>() {
+            @Override public Void call() {
+                try {
+                    HttpResponse response = HttpConnector.getRequestWithToken("/hops/all", "recipe=" + ricettaId, App.getToken());
+                    String responseBody = response.getResponseBody();
+
+                    if(responseBody.equals(""))
+                        return null;
+
+                    Gson gson = new Gson();
+                    JsonArray luppoliArray = gson.fromJson(responseBody, JsonElement.class).getAsJsonArray();
+                    Platform.runLater(() -> {
+                        for(JsonElement luppolo : luppoliArray) {
+                            Luppolo luppoloTable = gson.fromJson(luppolo, Luppolo.class);
+                            luppoli.add(luppoloTable);
+                            Luppolo lup = gson.fromJson(luppolo, Luppolo.class);
+                            luppoliList.add(lup);
+                        }
+                    });
+                }
+                catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+                return null;
+            }
+        };
+        return task;
     }
+    
+    private Task caricaInfoRicetta() throws IOException {
+        // riempimento dropdown menu
+        fieldTipo.getItems().setAll(Arrays.asList(TipoRicetta.values()));
+        
+        // riempio i field con le info già esistenti 
+        
+        Task task = new Task<Void>() {
+            @Override public Void call() {
+                try {
+                    HttpResponse response = HttpConnector.getRequestWithToken("/recipes/info", "recipe=" + ricettaId, App.getToken());
+                    String responseBody = response.getResponseBody();
+                    
+                    Gson gson = new Gson();
+                    Ricetta ricetta = gson.fromJson(responseBody, Ricetta.class);
+                    
+                    HttpResponse responseStile = HttpConnector.getRequest("/categories/filter-name", "name=" + ricetta.getStileId());
+                    String stileBody = responseStile.getResponseBody();
+                    stile = gson.fromJson(stileBody, Stile.class);
+                    
+                    Platform.runLater(() -> {
+                        textNomeRicetta.setText(ricetta.getNome());
+                        fieldNomeRicetta.setText(ricetta.getNome());
+                        fieldDescrizione.setText(ricetta.getDescrizione());
+                        fieldAutore.setText(ricetta.getAutore());
+                        fieldTipo.getSelectionModel().select(TipoRicetta.indexOf(ricetta.getTipo()));
+                        fieldVolume.setText(String.valueOf(ricetta.getVolume()));
+                        fieldRendimento.setText(String.valueOf(ricetta.getRendimento()));
+                        textStile.setText(ricetta.getStileId());
+
+                        String ultimaModifica = ricetta.getUltimaModifica();
+                        LocalDate data = LocalDate.parse(ultimaModifica, DateTimeFormatter.ISO_DATE_TIME);
+                        textUltimaModifica.setText("Ultima modifica: " + data.getDayOfMonth() + " " + data.getMonth().getDisplayName(TextStyle.FULL, Locale.ITALY) + " " + data.getYear());
+                    });
+                }
+                catch (IOException ioe) {
+                    throw new UncheckedIOException(ioe);
+                }
+                return null;
+            }
+        };
+        return task;
+    }
+    
+    /* ================ UTILITA ================ */
     
     public void aggiornaStats() {          
         // calcolo OG
@@ -394,37 +499,6 @@ public class ModificaRicettaController implements Initializable {
         barIbu.translateXProperty().set(realOffsetIBU);
     }
     
-    private void caricaInfoRicetta() throws IOException {
-        // riempimento dropdown menu
-        fieldTipo.getItems().setAll(Arrays.asList(TipoRicetta.values()));
-        
-        // riempio i field con le info già esistenti 
-
-        HttpResponse response = HttpConnector.getRequestWithToken("/recipes/info", "recipe=" + ricettaId, App.getToken());
-        String responseBody = response.getResponseBody();
-        
-        Gson gson = new Gson();
-        Ricetta ricetta = gson.fromJson(responseBody, Ricetta.class);
-        
-        textNomeRicetta.setText(ricetta.getNome());
-        fieldNomeRicetta.setText(ricetta.getNome());
-        fieldDescrizione.setText(ricetta.getDescrizione());
-        fieldAutore.setText(ricetta.getAutore());
-        fieldTipo.getSelectionModel().select(TipoRicetta.indexOf(ricetta.getTipo()));
-        fieldVolume.setText(String.valueOf(ricetta.getVolume()));
-        fieldRendimento.setText(String.valueOf(ricetta.getRendimento()));
-        
-        HttpResponse responseStile = HttpConnector.getRequest("/categories/filter-name", "name=" + ricetta.getStileId());
-        String stileBody = responseStile.getResponseBody();
-        
-        stile = gson.fromJson(stileBody, Stile.class);
-        textStile.setText(ricetta.getStileId());
-        
-        String ultimaModifica = ricetta.getUltimaModifica();
-        LocalDate data = LocalDate.parse(ultimaModifica, DateTimeFormatter.ISO_DATE_TIME);
-        textUltimaModifica.setText("Ultima modifica: " + data.getDayOfMonth() + " " + data.getMonth().getDisplayName(TextStyle.FULL, Locale.ITALY) + " " + data.getYear());
-    }
-    
     private void setDimensionTableFermentabili() {
         // setto la larghezza delle colonne
         columnPesoFermentabile.prefWidthProperty().bind(tableFermentabili.widthProperty().multiply(0.15));
@@ -465,6 +539,14 @@ public class ModificaRicettaController implements Initializable {
     
     public static int getRicettaId() {
         return ModificaRicettaController.ricettaId;
+    }
+
+    public ObservableList<Fermentabile> getFermentabili() {
+        return fermentabili;
+    }
+    
+    public ObservableList<Luppolo> getLuppoli() {
+        return luppoli;
     }
     
     public void setStile(Stile stile) {

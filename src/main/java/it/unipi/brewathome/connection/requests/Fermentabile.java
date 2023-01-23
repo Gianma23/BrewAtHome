@@ -117,4 +117,13 @@ public class Fermentabile implements Serializable {
         this.potenziale = potenziale;
         this.rendimento = rendimento;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj.getClass()!=Fermentabile.class)
+            return false;
+        
+        Fermentabile ferm = (Fermentabile) obj;
+        return (ferm.id == this.id);
+    }
 }

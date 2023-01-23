@@ -98,5 +98,12 @@ public class Luppolo implements Serializable {
         this.alpha = alpha;
     }
 
-    
+        @Override
+    public boolean equals(Object obj) {
+        if(obj.getClass()!=Luppolo.class)
+            return false;
+        
+        Luppolo lup = (Luppolo) obj;
+        return (lup.id == this.id);
+    }
 }

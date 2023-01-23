@@ -3,14 +3,15 @@ package it.unipi.brewathome.controllers;
 import com.google.gson.Gson;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.HttpConnector;
-import it.unipi.brewathome.connection.requests.Fermentabile;
 import it.unipi.brewathome.connection.requests.Luppolo;
+import it.unipi.brewathome.connection.responses.HttpResponse;
 import it.unipi.brewathome.utils.TipoLuppolo;
-import it.unipi.brewathome.utils.TipoRicetta;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
@@ -76,16 +77,27 @@ public class LuppoloController implements Initializable{
             //serializzazione dati
             Gson gson = new Gson();
             String body = gson.toJson(request);
-            HttpConnector.postRequestWithToken("/hops/add", body, App.getToken());
             
-            //ricarico la tabella
-            ricettaController.caricaLuppoli();
-            
-            Stage stage = (Stage) fieldQuantita.getScene().getWindow();
-            stage.close();
-        }
-        catch (IOException ioe) {
-            logger.error(ioe.getMessage());
+            Task task = new Task<Void>() {
+                @Override public Void call() {
+                    try {      
+                        HttpConnector.postRequestWithToken("/hops/add", body, App.getToken());
+
+                        Platform.runLater(() -> {
+                            //aggiungo alla tabella
+                            ricettaController.getLuppoli().add(request);
+
+                            Stage stage = (Stage) fieldQuantita.getScene().getWindow();
+                            stage.close();
+                        });
+                    }
+                    catch (IOException ioe) {
+                        logger.error(ioe);
+                    }
+                    return null;
+                }
+            };
+            new Thread(task).start();
         }
         catch(NumberFormatException ne) {
             errorMessage.setText("Inserire i dati nel formato corretto.");
@@ -94,16 +106,29 @@ public class LuppoloController implements Initializable{
     
     @FXML
     private void elimina() {
-        try {
-            HttpConnector.deleteRequestWithToken("/hops/remove", "id=" + id, App.getToken());
-            //ricarico la tabella
-            ricettaController.caricaLuppoli();
-        }
-        catch (IOException ioe) {
-            logger.error(ioe.getMessage());
-        }
-        Stage stage = (Stage) fieldQuantita.getScene().getWindow();
-        stage.close();
+        Task task = new Task<Void>() {
+            @Override public Void call() {
+                try {
+                    HttpResponse response = HttpConnector.deleteRequestWithToken("/hops/remove", "id=" + id, App.getToken());
+                    
+                    Gson gson = new Gson();
+                    Luppolo lup = gson.fromJson(response.getResponseBody(), Luppolo.class);
+                    
+                    Platform.runLater(() -> {
+                        //aggiungo alla tabella
+                        ricettaController.getLuppoli().remove(lup);
+
+                        Stage stage = (Stage) fieldQuantita.getScene().getWindow();
+                        stage.close();
+                    });
+                }
+                catch (IOException ioe) {
+                    logger.error(ioe.getMessage());
+                }
+                return null;
+            }
+        };
+        new Thread(task).start();
     }
 
     public static void setRicettaController(ModificaRicettaController ricettaController) {

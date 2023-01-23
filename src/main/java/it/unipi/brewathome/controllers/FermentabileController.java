@@ -4,12 +4,15 @@ import com.google.gson.Gson;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.HttpConnector;
 import it.unipi.brewathome.connection.requests.Fermentabile;
+import it.unipi.brewathome.connection.responses.HttpResponse;
 import it.unipi.brewathome.utils.CategoriaFermentabile;
 import it.unipi.brewathome.utils.TipoFermentabile;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
@@ -68,7 +71,7 @@ public class FermentabileController implements Initializable{
     private void salva() {
         try {
             errorMessage.setText("");
-            
+ 
             Fermentabile request = new Fermentabile(id,
                                                     ModificaRicettaController.getRicettaId(),
                                                     fieldNome.getText(),
@@ -79,20 +82,31 @@ public class FermentabileController implements Initializable{
                                                     fieldTipo.getSelectionModel().getSelectedItem().toString(),
                                                     Integer.valueOf(fieldColore.getText()),
                                                     Double.valueOf(fieldPotenziale.getText()),
-                                                    Double.valueOf(fieldRendimento.getText()));                                                   
+                                                    Double.valueOf(fieldRendimento.getText()));  
             //serializzazione dati
             Gson gson = new Gson();
             String body = gson.toJson(request);
-            HttpConnector.postRequestWithToken("/fermentables/add", body, App.getToken());
             
-            //ricarico la tabella
-            ricettaController.caricaFermentabili();
-            
-            Stage stage = (Stage) fieldQuantita.getScene().getWindow();
-            stage.close();
-        }
-        catch (IOException ioe) {
-            logger.error(ioe.getMessage());
+            Task task = new Task<Void>() {
+                @Override public Void call() {
+                    try {                                           
+                        HttpConnector.postRequestWithToken("/fermentables/add", body, App.getToken());
+                        
+                        Platform.runLater(() -> {
+                            //aggiungo alla tabella
+                            ricettaController.getFermentabili().add(request);
+
+                            Stage stage = (Stage) fieldQuantita.getScene().getWindow();
+                            stage.close();
+                        });
+                    }
+                    catch (IOException ioe) {
+                        logger.error(ioe);
+                    }
+                    return null;
+                }
+            };
+            new Thread(task).start();
         }
         catch(NumberFormatException ne) {
             errorMessage.setText("Inserire i dati nel formato corretto.");
@@ -101,18 +115,33 @@ public class FermentabileController implements Initializable{
     
     @FXML
     private void elimina() {
-        try {
-            HttpConnector.deleteRequestWithToken("/fermentables/remove", "id=" + id, App.getToken());
-            //ricarico la tabella
-            ricettaController.caricaFermentabili();
-        }
-        catch (IOException ioe) {
-            logger.error(ioe.getMessage());
-        }
-        Stage stage = (Stage) fieldQuantita.getScene().getWindow();
-        stage.close();
+        Task task = new Task<Void>() {
+            @Override public Void call() {
+                try {
+                    HttpResponse response = HttpConnector.deleteRequestWithToken("/fermentables/remove", "id=" + id, App.getToken());
+                    
+                    Gson gson = new Gson();
+                    Fermentabile ferm = gson.fromJson(response.getResponseBody(), Fermentabile.class);
+
+                    Platform.runLater(() -> {
+                        //aggiungo alla tabella
+                        ricettaController.getFermentabili().remove(ferm);
+                        
+                        Stage stage = (Stage) fieldQuantita.getScene().getWindow();
+                        stage.close();
+                    });
+                }
+                catch (IOException ioe) {
+                    logger.error(ioe);
+                }
+                return null;
+            }
+        };
+        new Thread(task).start();
     }
 
+    /* =========== SETTERS =========== */
+    
     public static void setRicettaController(ModificaRicettaController ricettaController) {
         FermentabileController.ricettaController = ricettaController;
     }
