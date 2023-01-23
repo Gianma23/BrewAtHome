@@ -1,0 +1,13 @@
+[
+  {
+    "id": 1,
+    "ricettaId": 1,
+    "nome": "East Kent Goldings",
+    "tempo": 60,
+    "quantita": 45,
+    "fornitore": "",
+    "provenienza": "",
+    "tipo": "Pellet",
+    "alpha": 4.6
+  }
+]

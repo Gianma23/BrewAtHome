@@ -25,7 +25,7 @@ import org.apache.logging.log4j.Logger;
 public class LuppoloController implements Initializable{
 
     private static final Logger logger =LogManager.getLogger(LuppoloController.class.getName());
-    private static ModificaRicettaController ricettaController;
+    private ModificaRicettaController ricettaController;
     private static Luppolo updateLuppolo;
     private int id;
     
@@ -56,8 +56,6 @@ public class LuppoloController implements Initializable{
         fieldAlpha.setText(String.valueOf(updateLuppolo.getAlpha()));
         fieldTempo.setText(String.valueOf(updateLuppolo.getTempo()));
         id = updateLuppolo.getId();
-        
-        updateLuppolo = null;
     }
     
     @FXML
@@ -66,7 +64,7 @@ public class LuppoloController implements Initializable{
             errorMessage.setText("");
             
             Luppolo request = new Luppolo(id,
-                                        ModificaRicettaController.getRicettaId(),
+                                        ricettaController.getRicettaId(),
                                         fieldNome.getText(),
                                         Integer.parseInt(fieldTempo.getText()),
                                         Integer.parseInt(fieldQuantita.getText()),
@@ -81,11 +79,18 @@ public class LuppoloController implements Initializable{
             Task task = new Task<Void>() {
                 @Override public Void call() {
                     try {      
-                        HttpConnector.postRequestWithToken("/hops/add", body, App.getToken());
-
+                        HttpResponse response = HttpConnector.postRequestWithToken("/hops/add", body, App.getToken());
+                        int hopId = Integer.parseInt(response.getResponseBody());
+                        request.setId(hopId);
+                        
                         Platform.runLater(() -> {
-                            //aggiungo alla tabella
-                            ricettaController.getLuppoli().add(request);
+                            if(updateLuppolo != null) {
+                                int index = ricettaController.getLuppoli().indexOf(updateLuppolo);
+                                ricettaController.getLuppoli().set(index, request);
+                                updateLuppolo = null;
+                            }
+                            else
+                                ricettaController.getLuppoli().add(request);
 
                             Stage stage = (Stage) fieldQuantita.getScene().getWindow();
                             stage.close();
@@ -131,8 +136,8 @@ public class LuppoloController implements Initializable{
         new Thread(task).start();
     }
 
-    public static void setRicettaController(ModificaRicettaController ricettaController) {
-        LuppoloController.ricettaController = ricettaController;
+    public void setRicettaController(ModificaRicettaController ricettaController) {
+        this.ricettaController = ricettaController;
     }
 
     public static void setUpdateLuppolo(Luppolo updateLuppolo) {

@@ -1,0 +1,67 @@
+[
+  {
+    "id": 1,
+    "ricettaId": 1,
+    "nome": "Light dry extract",
+    "quantita": 1000,
+    "categoria": "Base",
+    "fornitore": "",
+    "provenienza": "",
+    "tipo": "Estratto secco",
+    "colore": 8,
+    "potenziale": 1.044,
+    "rendimento": 75
+  },
+  {
+    "id": 2,
+    "ricettaId": 1,
+    "nome": "Dark Crystal Malt",
+    "quantita": 250,
+    "categoria": "Crystal/Caramel",
+    "fornitore": "",
+    "provenienza": "",
+    "tipo": "Grani",
+    "colore": 290,
+    "potenziale": 1.032,
+    "rendimento": 75
+  },
+  {
+    "id": 3,
+    "ricettaId": 1,
+    "nome": "Roaster Barley",
+    "quantita": 100,
+    "categoria": "Base",
+    "fornitore": "Dingemans",
+    "provenienza": "",
+    "tipo": "Grani",
+    "colore": 1300,
+    "potenziale": 1.029,
+    "rendimento": 75
+  },
+  {
+    "id": 4,
+    "ricettaId": 1,
+    "nome": "Pale Malt, maris otter",
+    "quantita": 1000,
+    "categoria": "Base",
+    "fornitore": "Thomas Fawcett",
+    "provenienza": "UK",
+    "tipo": "Grani",
+    "colore": 5,
+    "potenziale": 1.035,
+    "rendimento": 75
+  },
+  {
+    "id": 5,
+    "ricettaId": 1,
+    "nome": "Maris Otter",
+    "quantita": 1500,
+    "categoria": "Base",
+    "fornitore": "",
+    "provenienza": "",
+    "tipo": "Estratto liquido",
+    "colore": 10,
+    "potenziale": 1.034,
+    "rendimento": 75
+  }
+]

@@ -17,7 +17,9 @@ public class CardRicettaController {
     private void modificaRicetta() throws IOException {
         
         FXMLLoader loader = new FXMLLoader(App.class.getResource("modifica_ricetta.fxml"));
-        ModificaRicettaController.setRicetta(ricetta); 
+        ModificaRicettaController controller = new ModificaRicettaController();
+        controller.setRicetta(ricetta); 
+        loader.setController(controller);
         cardBox.getScene().setRoot(loader.load());
     }
     

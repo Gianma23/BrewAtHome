@@ -52,10 +52,10 @@ import org.apache.logging.log4j.Logger;
 public class ModificaRicettaController implements Initializable {
 
     private static final Logger logger =LogManager.getLogger(ModificaRicettaController.class.getName());
-    private static Ricetta ricetta;
     private ObservableList<Fermentabile> fermentabili;
     private ObservableList<Luppolo> luppoli;
     private List<Luppolo> luppoliList;
+    private Ricetta ricetta;
     private Stile stile;
     
     @FXML private GridPane grid;
@@ -97,7 +97,7 @@ public class ModificaRicettaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {   
-            App.addBars(grid);
+            App.addLeftBar(grid);
             
             // carico i fermentabili e i luppoli nella tabella
             
@@ -166,9 +166,10 @@ public class ModificaRicettaController implements Initializable {
         try {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(App.class.getResource("aggiungi_fermentabile.fxml"));
+            FermentabileController controller = new FermentabileController();
+            controller.setRicettaController(this); 
+            loader.setController(controller);
             Scene scene = new Scene(loader.load());
-            //salvo per poi aggiornare la tabella
-            FermentabileController.setRicettaController(this);
 
             App.addStyle(scene, "style.css");
             App.addStyle(scene, "fonts.css");
@@ -189,9 +190,10 @@ public class ModificaRicettaController implements Initializable {
         try {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(App.class.getResource("aggiungi_luppolo.fxml"));
+            LuppoloController controller = new LuppoloController();
+            controller.setRicettaController(this); 
+            loader.setController(controller);  
             Scene scene = new Scene(loader.load());
-            //salvo per poi aggiornare la tabella
-            LuppoloController.setRicettaController(this);
 
             App.addStyle(scene, "style.css");
             App.addStyle(scene, "fonts.css");
@@ -525,12 +527,12 @@ public class ModificaRicettaController implements Initializable {
     
     /* =========== GETTERS & SETTERS =========== */
     
-    public static void setRicetta(Ricetta ricetta) {
-        ModificaRicettaController.ricetta = ricetta;
+    public void setRicetta(Ricetta ricetta) {
+        this.ricetta = ricetta;
     }
     
-    public static int getRicettaId() {
-        return ModificaRicettaController.ricetta.getId();
+    public int getRicettaId() {
+        return this.ricetta.getId();
     }
 
     public ObservableList<Fermentabile> getFermentabili() {

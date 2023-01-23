@@ -1,6 +1,7 @@
 package it.unipi.brewathome.controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.HttpConnector;
 import it.unipi.brewathome.connection.requests.Fermentabile;
@@ -26,7 +27,7 @@ import org.apache.logging.log4j.Logger;
 public class FermentabileController implements Initializable{
 
     private static final Logger logger =LogManager.getLogger(FermentabileController.class.getName());
-    private static ModificaRicettaController ricettaController;
+    private ModificaRicettaController ricettaController;
     private static Fermentabile updateFermentabile;
     private int id;
     
@@ -50,8 +51,9 @@ public class FermentabileController implements Initializable{
         fieldCategoria.getItems().setAll(Arrays.asList(CategoriaFermentabile.values()));
         fieldCategoria.setValue("Base");
         
-        if(updateFermentabile==null)
+        if(updateFermentabile==null) {
             return;
+        }
         
         fieldQuantita.setText(String.valueOf(updateFermentabile.getQuantita()));
         fieldNome.setText(updateFermentabile.getNome());
@@ -62,18 +64,16 @@ public class FermentabileController implements Initializable{
         fieldColore.setText(String.valueOf(updateFermentabile.getColore()));
         fieldPotenziale.setText(String.valueOf(updateFermentabile.getPotenziale()));
         fieldRendimento.setText(String.valueOf(updateFermentabile.getRendimento()));
-        id = updateFermentabile.getId();
-        
-        updateFermentabile = null;
+        id = updateFermentabile.getId();   
     }
     
     @FXML
     private void salva() {
         try {
             errorMessage.setText("");
- 
+            
             Fermentabile request = new Fermentabile(id,
-                                                    ModificaRicettaController.getRicettaId(),
+                                                    ricettaController.getRicettaId(),
                                                     fieldNome.getText(),
                                                     Integer.valueOf(fieldQuantita.getText()),
                                                     fieldCategoria.getSelectionModel().getSelectedItem().toString(),
@@ -89,16 +89,24 @@ public class FermentabileController implements Initializable{
             
             Task task = new Task<Void>() {
                 @Override public Void call() {
-                    try {                                           
-                        HttpConnector.postRequestWithToken("/fermentables/add", body, App.getToken());
+                    try {    
+                        HttpResponse response = HttpConnector.postRequestWithToken("/fermentables/add", body, App.getToken());
+                        int fermentableId = Integer.parseInt(response.getResponseBody());
+                        request.setId(fermentableId);
                         
                         Platform.runLater(() -> {
-                            //aggiungo alla tabella
-                            ricettaController.getFermentabili().add(request);
+                            if(updateFermentabile != null) {
+                                int index = ricettaController.getFermentabili().indexOf(updateFermentabile);
+                                ricettaController.getFermentabili().set(index, request);
+                                updateFermentabile = null;
+                            }
+                            else
+                                ricettaController.getFermentabili().add(request);
 
                             Stage stage = (Stage) fieldQuantita.getScene().getWindow();
                             stage.close();
                         });
+                        
                     }
                     catch (IOException ioe) {
                         logger.error(ioe);
@@ -129,6 +137,7 @@ public class FermentabileController implements Initializable{
                         
                         Stage stage = (Stage) fieldQuantita.getScene().getWindow();
                         stage.close();
+                        updateFermentabile = null;
                     });
                 }
                 catch (IOException ioe) {
@@ -142,8 +151,8 @@ public class FermentabileController implements Initializable{
 
     /* =========== SETTERS =========== */
     
-    public static void setRicettaController(ModificaRicettaController ricettaController) {
-        FermentabileController.ricettaController = ricettaController;
+    public void setRicettaController(ModificaRicettaController ricettaController) {
+        this.ricettaController = ricettaController;
     }
 
     public static void setUpdateFermentabile(Fermentabile updateFermentabile) {

@@ -36,7 +36,7 @@ public class RicetteController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) { 
         try {
             App.setCanResize(true);
-            App.addBars(grid);
+            App.addLeftBar(grid);
 
             caricaRicette();        
         }
@@ -57,7 +57,9 @@ public class RicetteController implements Initializable {
                     Platform.runLater(() -> {
                         try {
                             FXMLLoader loader = new FXMLLoader(App.class.getResource("modifica_ricetta.fxml"));
-                            ModificaRicettaController.setRicetta(ricetta); 
+                            ModificaRicettaController controller = new ModificaRicettaController();
+                            controller.setRicetta(ricetta); 
+                            loader.setController(controller);
                             grid.getScene().setRoot(loader.load());
                         }
                         catch (IOException ioe) {
@@ -88,11 +90,12 @@ public class RicetteController implements Initializable {
                     Platform.runLater(() -> {
                         for(JsonElement recipe : recipes) {
                             try {
+                                Ricetta ricetta = gson.fromJson(recipe, Ricetta.class);
+                                
                                 FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("card_ricetta.fxml"));
                                 VBox card = (VBox) fxmlLoader.load();
-                                CardRicettaController controller = fxmlLoader.getController();
-                                
-                                Ricetta ricetta = gson.fromJson(recipe, Ricetta.class);
+                                CardRicettaController controller = (CardRicettaController) fxmlLoader.getController();
+                                controller.setRicetta(ricetta);
 
                                 String nomeText = ricetta.getNome();
                                 Text nome = (Text) card.lookup(".nome");
@@ -105,8 +108,6 @@ public class RicetteController implements Initializable {
                                 String descText = ricetta.getDescrizione();
                                 Text descrizione = (Text) card.lookup(".descrizione");
                                 descrizione.setText(descText);
-
-                                controller.setRicetta(ricetta);  
 
                                 flow.getChildren().add(card);
                             }

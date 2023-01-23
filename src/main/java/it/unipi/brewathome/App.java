@@ -37,6 +37,8 @@ public class App extends Application {
         // creo le tabelle e le popolo
         DatabaseConnector.createTables();
         DatabaseConnector.populateStyleTable();
+        DatabaseConnector.populateAccount();
+        DatabaseConnector.populateRicettawithIngredienti();
         
         try {
             // carico gli stili di colore css
@@ -105,13 +107,10 @@ public class App extends Application {
         scene.getStylesheets().add(css);
     }
     
-    public static void addBars(GridPane grid) throws IOException {
-        FXMLLoader loadTopBar = new FXMLLoader(App.class.getResource("topBar.fxml"));
-        Parent topBar = loadTopBar.load();
-        grid.add(topBar, 0, 0, 25, 1);
+    public static void addLeftBar(GridPane grid) throws IOException {
         FXMLLoader loadLeftBar = new FXMLLoader(App.class.getResource("leftBar.fxml"));
         Parent leftBar = loadLeftBar.load();
-        grid.add(leftBar, 0, 1, 1, 1);
+        grid.add(leftBar, 0, 0, 1, 1);
     }
     
     private static Parent loadFXML(String fxml) throws IOException {
