@@ -7,6 +7,7 @@ import it.unipi.brewathome.connection.HttpConnector;
 import it.unipi.brewathome.connection.responses.HttpResponse;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.regex.Pattern;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -30,11 +31,20 @@ public class RegistratiController {
     @FXML 
     private void register() {
         
+        Pattern pattern = Pattern.compile("^(.+)@(\\S+)$");
+        if(!pattern.matcher(email.getText()).matches()) {
+            errorMessage.setText("Inserire una mail valida.");
+            return;
+        }
+        if(password.getText().length() < 3) {
+            errorMessage.setText("La password deve essere lunga almeno 3.");
+            return;
+        }
         if(!password.getText().equals(confirmPassword.getText())) {
             errorMessage.setText("La password non corrisponde con quella di conferma.");
             return;
         }
-
+            
         Gson gson = new Gson();
         AuthRequest request = new AuthRequest(email.getText(), password.getText());
                 

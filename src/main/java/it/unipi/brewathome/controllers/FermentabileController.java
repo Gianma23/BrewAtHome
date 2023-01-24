@@ -1,7 +1,6 @@
 package it.unipi.brewathome.controllers;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.HttpConnector;
 import it.unipi.brewathome.connection.requests.Fermentabile;
@@ -70,7 +69,14 @@ public class FermentabileController implements Initializable{
     @FXML
     private void salva() {
         try {
-            errorMessage.setText("");
+            
+            //controllo input
+            if(!validInputs()) {
+                errorMessage.setText("Numeri nel formato sbagliato.");
+                return;
+            }
+            disableInputs();
+            errorMessage.setText("Salvataggio in corso...");
             
             Fermentabile request = new Fermentabile(id,
                                                     ricettaController.getRicettaId(),
@@ -102,7 +108,7 @@ public class FermentabileController implements Initializable{
                             }
                             else
                                 ricettaController.getFermentabili().add(request);
-
+                            
                             Stage stage = (Stage) fieldQuantita.getScene().getWindow();
                             stage.close();
                         });
@@ -117,7 +123,8 @@ public class FermentabileController implements Initializable{
             new Thread(task).start();
         }
         catch(NumberFormatException ne) {
-            errorMessage.setText("Inserire i dati nel formato corretto.");
+            errorMessage.setText("Numeri nel formato sbagliato.");
+            enableInputs();
         }
     }
     
@@ -148,7 +155,38 @@ public class FermentabileController implements Initializable{
         };
         new Thread(task).start();
     }
-
+    
+    /* =========== UTILITA =========== */
+    
+    private void disableInputs() {
+        fieldNome.setDisable(true);
+        fieldCategoria.setDisable(true);
+        fieldQuantita.setDisable(true);
+        fieldFornitore.setDisable(true);
+        fieldProvenienza.setDisable(true);
+        fieldTipo.setDisable(true);
+        fieldColore.setDisable(true);
+        fieldPotenziale.setDisable(true);
+        fieldRendimento.setDisable(true);
+    }
+    
+    private void enableInputs() {
+        fieldNome.setDisable(false);
+        fieldCategoria.setDisable(false);
+        fieldQuantita.setDisable(false);
+        fieldFornitore.setDisable(false);
+        fieldProvenienza.setDisable(false);
+        fieldTipo.setDisable(false);
+        fieldColore.setDisable(false);
+        fieldPotenziale.setDisable(false);
+        fieldRendimento.setDisable(false);
+    }
+    
+    private boolean validInputs() {
+        return !(Integer.valueOf(fieldQuantita.getText()) <= 0 || Integer.valueOf(fieldColore.getText()) <= 0 ||
+                 Double.valueOf(fieldPotenziale.getText()) < 1 || Double.valueOf(fieldRendimento.getText()) <= 0);
+    }
+    
     /* =========== SETTERS =========== */
     
     public void setRicettaController(ModificaRicettaController ricettaController) {

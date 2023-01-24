@@ -79,6 +79,7 @@ public class ModificaRicettaController implements Initializable {
     @FXML private Text textFg;
     @FXML private Text textEbc;
     @FXML private Text textIbu;
+    @FXML private Text errorMessage;
     
     @FXML private TextArea fieldDescrizione;
     @FXML private TextField fieldNomeRicetta;
@@ -179,6 +180,11 @@ public class ModificaRicettaController implements Initializable {
             stage.setTitle("Fermentabile");
             stage.setResizable(false);
             stage.show();
+            
+            // chiudo la finestra quando cambio pagina
+            grid.getScene().rootProperty().addListener((observable, oldValue, newValue) -> {
+                stage.close();
+            });
         }
         catch (IOException ioe) {
             logger.error(ioe);
@@ -203,6 +209,11 @@ public class ModificaRicettaController implements Initializable {
             stage.setTitle("Luppolo");
             stage.setResizable(false);
             stage.show();
+            
+            // listener sul cambio di root
+            grid.getScene().rootProperty().addListener((observable, oldValue, newValue) -> {
+                stage.close();
+            });
         }
         catch (IOException ioe) {
             logger.error(ioe);
@@ -275,14 +286,22 @@ public class ModificaRicettaController implements Initializable {
     @FXML
     private void salvaRicetta() {
         try {
+            //controlli input
+            Double volume = Double.valueOf(fieldVolume.getText());
+            Double rendimento = Double.valueOf(fieldRendimento.getText());
+            if(volume <= 0 || rendimento <= 0) {
+                errorMessage.setText("inserire valori maggiori di 0.");
+                return;
+            }
+            
             Ricetta request = new Ricetta(ricetta.getId(),
-                                        fieldNomeRicetta.getText(),
-                                        fieldDescrizione.getText(),
-                                        fieldAutore.getText(),
-                                        fieldTipo.getSelectionModel().getSelectedItem().toString(),
-                                        textStile.getText(),
-                                        Double.valueOf(fieldVolume.getText()),
-                                        Double.valueOf(fieldRendimento.getText()));
+                                          fieldNomeRicetta.getText(),
+                                          fieldDescrizione.getText(),
+                                          fieldAutore.getText(),
+                                          fieldTipo.getSelectionModel().getSelectedItem().toString(),
+                                          textStile.getText(),
+                                          volume,
+                                          rendimento);
             //serializzazione
             Gson gson = new Gson();
             String body = gson.toJson(request);

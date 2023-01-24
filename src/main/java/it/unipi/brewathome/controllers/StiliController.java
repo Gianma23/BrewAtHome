@@ -3,7 +3,6 @@ package it.unipi.brewathome.controllers;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.HttpConnector;
 import it.unipi.brewathome.connection.responses.HttpResponse;
 import it.unipi.brewathome.connection.responses.Stile;
@@ -18,31 +17,42 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * FXML Controller class
- *
- * @author Utente
- */
+
 public class StiliController implements Initializable{
     
     private static final Logger logger =LogManager.getLogger(StiliController.class);
     private static ModificaRicettaController ricettaController;
-    private ObservableList<String> stili;
-    private List<Stile> stiliList;
+    private ObservableList<Stile> stili;
+    private List<Stile> copiaStili;
     
     @FXML private ListView listaStili;
+    @FXML private TextField barraRicerca;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) { 
         
+        listaStili.setCellFactory(param -> new ListCell<Stile>() {
+            @Override
+            protected void updateItem(Stile item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null || item.getNome() == null) {
+                    setText(null);
+                } else {
+                    setText(item.getNome());
+                }
+            }
+        });
         stili = FXCollections.observableArrayList();
         listaStili.setItems(stili);
-        stiliList = new ArrayList();
+        copiaStili = new ArrayList();
         
         Task task = new Task<Void>() {
             @Override public Void call() {
@@ -59,8 +69,8 @@ public class StiliController implements Initializable{
                     Platform.runLater(() -> {
                         for(JsonElement fermentabile : stiliArray) {
                             Stile stileElem = gson.fromJson(fermentabile, Stile.class);
-                            stiliList.add(stileElem);
-                            stili.add(stileElem.getNome());
+                            copiaStili.add(stileElem);
+                            stili.add(stileElem);
                         }
                     });
                 }
@@ -76,10 +86,21 @@ public class StiliController implements Initializable{
     @FXML
     private void seleziona(MouseEvent event) {
         if(event.getClickCount()==2) {
-            Stile stile = stiliList.get(listaStili.getSelectionModel().getSelectedIndex());
+            Stile stile = (Stile) listaStili.getSelectionModel().getSelectedItem();
             ricettaController.setStile(stile);
             ricettaController.aggiornaStats();
         }
+    }
+    
+    @FXML
+    private void cerca() {
+        String nome = barraRicerca.getText();
+        ObservableList<Stile> nuovaLista = FXCollections.observableArrayList();
+        for (Stile stile : copiaStili){
+            if(stile.getNome().toLowerCase().contains(nome.toLowerCase())) 
+                nuovaLista.add(stile);
+        }
+        stili.setAll(nuovaLista);
     }
     
     public static void setRicettaController(ModificaRicettaController ricettaController) {

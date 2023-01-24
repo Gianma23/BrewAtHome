@@ -1,8 +1,15 @@
 package it.unipi.brewathome.utils;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 // classe statica, simile a java.lang.Math
 public class BeerMath {
     
+    private static final Logger logger =LogManager.getLogger(BeerMath.class.getName());
     
     private BeerMath() {}
     
@@ -14,18 +21,26 @@ public class BeerMath {
     
     // volume in litri e rendimento in %
     static public double CalcolaOG(int sumGU, double rendimento, double volume) {
-        double OG = Math.round(sumGU*rendimento*0.04546/volume);
-        return OG/1000 + 1;
+        if(volume==0)
+            return 0;
+        double OG = (sumGU*rendimento*0.00004546/volume) + 1;
+        
+        DecimalFormat df = new DecimalFormat("#.000", new DecimalFormatSymbols(Locale.ENGLISH));
+        return (double) Double.valueOf(df.format(OG));
     }
     
     static public double CalcolaFG(double OG, double attenuazione) {
-        double FG = Math.round((OG - 1) * (1 - attenuazione/100) * 1000);
-        return FG/1000 + 1; 
+        if(OG < 1)
+            return 0;
+        double FG = (OG - 1) * (1 - attenuazione/100) + 1;
+        
+        DecimalFormat df = new DecimalFormat("#.000", new DecimalFormatSymbols(Locale.ENGLISH));
+        return (double) Double.valueOf(df.format(FG));
     }
     
     static public double CalcolaABV(double OG, double FG) {
         double ABV = Math.round((OG - FG)*10000/7.6);
-        return ABV/10;
+        return ABV/10d;
     }
     
     // volumne in litri
@@ -40,7 +55,7 @@ public class BeerMath {
             totMCUs += ((arrayEBC[i]*0.375+0.5611) * arrayPeso[i]/453.6);
         }
         double SRM = totMCUs/volume*4.546;
-        return Math.round(1.49*Math.pow(SRM, 0.69)*1.97*10)/10.0;
+        return Math.round(1.49*Math.pow(SRM, 0.69)*1.97*10)/10.d;
     }
     
     static public double RagerIBU(double[] arrayAlpha, int[] arrayPeso, int[] arrayMinuti, double volume) {

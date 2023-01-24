@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="546.0" prefWidth="334.0" spacing="20.0" styleClass="container" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.brewathome.controllers.StiliController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="642.0" prefWidth="334.0" spacing="20.0" styleClass="container" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.brewathome.controllers.StiliController">
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headline-medium" text="Stili" />
+      <TextField fx:id="barraRicerca" onKeyTyped="#cerca" prefHeight="51.0" prefWidth="302.0" promptText="Cerca" styleClass="search-box">
+         <VBox.margin>
+            <Insets right="16.0" />
+         </VBox.margin>
+      </TextField>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body-medium" text="Doppio click per selezionare" />
-      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="476.0" prefWidth="318.0">
-         <content>
-            <ListView fx:id="listaStili" onMouseClicked="#seleziona" />
-         </content>
-      </ScrollPane>
+      <ListView fx:id="listaStili" onMouseClicked="#seleziona" />
    </children>
    <padding>
       <Insets bottom="24.0" left="16.0" top="24.0" />

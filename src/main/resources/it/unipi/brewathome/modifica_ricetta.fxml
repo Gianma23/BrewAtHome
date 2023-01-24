@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
@@ -27,7 +35,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane fx:id="grid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="900.0" prefWidth="1440.0" styleClass="grid" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="grid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="900.0" prefWidth="1440.0" styleClass="grid" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
     <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="10.833333" />
       <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="100.0" minWidth="10.0" percentWidth="5.0" />
@@ -77,7 +85,7 @@
                <children>
                   <AnchorPane GridPane.columnSpan="3">
                      <children>
-                        <Text fx:id="textNomeRicetta" layoutY="36.94921875" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="display-medium" text="Nome ricetta" AnchorPane.topAnchor="24.0" />
+                        <Text fx:id="textNomeRicetta" layoutY="36.94921875" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="display-medium" text="Nome ricetta" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="24.0" />
                         <HBox layoutX="722.0" layoutY="-6.0" spacing="12.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">
                            <children>
                               <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#eliminaRicetta" prefHeight="40.0" prefWidth="40.0" styleClass="icon_btn--alert">
@@ -229,7 +237,7 @@
          <children>
             <StackPane alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="56.0">
                <children>
-                  <TextField fx:id="fieldNomeRicetta" maxWidth="200.0" onKeyPressed="#aggiornaNome" onKeyTyped="#aggiornaNome" prefHeight="56.0" text="Nome ricetta">
+                  <TextField fx:id="fieldNomeRicetta" maxWidth="200.0" onKeyTyped="#aggiornaNome" prefHeight="56.0" text="Nome ricetta">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -330,6 +338,11 @@
                               <Insets left="17.0" />
                            </StackPane.margin>
                         </Label>
+                        <Label alignment="CENTER" style="-fx-background-color: transparent;" styleClass="label-medium" text="L" translateX="120.0" translateY="28.0">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
                      </children>
                   </StackPane>
                   <StackPane alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="56.0">
@@ -357,10 +370,16 @@
                               <Insets left="17.0" />
                            </StackPane.margin>
                         </Label>
+                        <Label alignment="CENTER" style="-fx-background-color: transparent;" styleClass="label-medium" text="\%" translateX="120.0" translateY="28.0">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
                      </children>
                   </StackPane>
                </children>
             </HBox>
+            <Text fx:id="errorMessage" strokeType="OUTSIDE" strokeWidth="0.0" />
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Separator prefWidth="200.0" />

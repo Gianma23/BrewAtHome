@@ -61,7 +61,13 @@ public class LuppoloController implements Initializable{
     @FXML
     private void salva() {
         try {
-            errorMessage.setText("");
+            //controllo input
+            if(!validInputs()) {
+                errorMessage.setText("Inserire numeri maggiori di 0");
+                return;
+            }
+            disableInputs();
+            errorMessage.setText("Salvataggio in corso...");
             
             Luppolo request = new Luppolo(id,
                                         ricettaController.getRicettaId(),
@@ -135,7 +141,36 @@ public class LuppoloController implements Initializable{
         };
         new Thread(task).start();
     }
-
+    
+    /* =========== UTILITA =========== */
+    
+    private void disableInputs() {
+        fieldNome.setDisable(true);
+        fieldQuantita.setDisable(true);
+        fieldFornitore.setDisable(true);
+        fieldProvenienza.setDisable(true);
+        fieldTipo.setDisable(true);
+        fieldTempo.setDisable(true);
+        fieldAlpha.setDisable(true);
+    }
+    
+    private void enableInputs() {
+        fieldNome.setDisable(false);
+        fieldQuantita.setDisable(false);
+        fieldFornitore.setDisable(false);
+        fieldProvenienza.setDisable(false);
+        fieldTipo.setDisable(false);
+        fieldTempo.setDisable(false);
+        fieldAlpha.setDisable(false);
+    }
+    
+    private boolean validInputs() {
+        return !(Integer.valueOf(fieldQuantita.getText()) <= 0 || Integer.valueOf(fieldAlpha.getText()) <= 0 ||
+                 Double.valueOf(fieldTempo.getText()) <= 0);
+    }
+    
+    /* =========== SETTERS =========== */
+    
     public void setRicettaController(ModificaRicettaController ricettaController) {
         this.ricettaController = ricettaController;
     }
