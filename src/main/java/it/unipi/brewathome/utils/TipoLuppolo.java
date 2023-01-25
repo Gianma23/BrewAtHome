@@ -1,9 +1,6 @@
 package it.unipi.brewathome.utils;
 
-/**
- *
- * @author Utente
- */
+
 public enum TipoLuppolo {
     
     PELLET("Pellet"),

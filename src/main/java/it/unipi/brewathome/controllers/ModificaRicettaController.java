@@ -6,11 +6,11 @@ import com.google.gson.JsonElement;
 import it.unipi.brewathome.utils.TipoRicetta;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.HttpConnector;
-import it.unipi.brewathome.connection.requests.Fermentabile;
-import it.unipi.brewathome.connection.requests.Luppolo;
-import it.unipi.brewathome.connection.requests.Ricetta;
-import it.unipi.brewathome.connection.responses.HttpResponse;
-import it.unipi.brewathome.connection.responses.Stile;
+import it.unipi.brewathome.connection.data.Fermentabile;
+import it.unipi.brewathome.connection.data.Luppolo;
+import it.unipi.brewathome.connection.data.Ricetta;
+import it.unipi.brewathome.connection.data.HttpResponse;
+import it.unipi.brewathome.connection.data.Stile;
 import it.unipi.brewathome.utils.BeerMath;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -44,6 +44,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -54,7 +55,6 @@ public class ModificaRicettaController implements Initializable {
     private static final Logger logger =LogManager.getLogger(ModificaRicettaController.class.getName());
     private ObservableList<Fermentabile> fermentabili;
     private ObservableList<Luppolo> luppoli;
-    private List<Luppolo> luppoliList;
     private Ricetta ricetta;
     private Stile stile;
     
@@ -117,7 +117,6 @@ public class ModificaRicettaController implements Initializable {
 
             luppoli = FXCollections.observableArrayList();
             tableLuppoli.setItems(luppoli);
-            luppoliList = new ArrayList();
             
             // sistemo dimensioni delle tabelle
             setDimensionTableFermentabili();
@@ -179,12 +178,8 @@ public class ModificaRicettaController implements Initializable {
             stage.setScene(scene);
             stage.setTitle("Fermentabile");
             stage.setResizable(false);
-            stage.show();
-            
-            // chiudo la finestra quando cambio pagina
-            grid.getScene().rootProperty().addListener((observable, oldValue, newValue) -> {
-                stage.close();
-            });
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
         }
         catch (IOException ioe) {
             logger.error(ioe);
@@ -208,12 +203,8 @@ public class ModificaRicettaController implements Initializable {
             stage.setScene(scene);
             stage.setTitle("Luppolo");
             stage.setResizable(false);
-            stage.show();
-            
-            // listener sul cambio di root
-            grid.getScene().rootProperty().addListener((observable, oldValue, newValue) -> {
-                stage.close();
-            });
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
         }
         catch (IOException ioe) {
             logger.error(ioe);
@@ -249,8 +240,9 @@ public class ModificaRicettaController implements Initializable {
 
             stage.setScene(scene);
             stage.setTitle("Stile");
-            stage.setResizable(false);
-            stage.show();
+            stage.setResizable(false);        
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
         }
         catch (IOException ioe) {
             logger.error(ioe);
@@ -322,6 +314,7 @@ public class ModificaRicettaController implements Initializable {
         }   
         catch(NumberFormatException ne) {
             logger.error(ne);
+            errorMessage.setText("inserire valori nel formato corretto.");
         }
     }
 
@@ -382,8 +375,6 @@ public class ModificaRicettaController implements Initializable {
                         for(JsonElement luppolo : luppoliArray) {
                             Luppolo luppoloTable = gson.fromJson(luppolo, Luppolo.class);
                             luppoli.add(luppoloTable);
-                            Luppolo lup = gson.fromJson(luppolo, Luppolo.class);
-                            luppoliList.add(lup);
                         }
                     });
                 }

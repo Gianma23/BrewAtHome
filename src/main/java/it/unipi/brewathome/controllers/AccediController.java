@@ -2,9 +2,9 @@ package it.unipi.brewathome.controllers;
 
 import com.google.gson.Gson;
 import it.unipi.brewathome.App;
-import it.unipi.brewathome.connection.requests.AuthRequest;
+import it.unipi.brewathome.connection.data.AuthRequest;
 import it.unipi.brewathome.connection.HttpConnector;
-import it.unipi.brewathome.connection.responses.HttpResponse;
+import it.unipi.brewathome.connection.data.HttpResponse;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import javafx.application.Platform;

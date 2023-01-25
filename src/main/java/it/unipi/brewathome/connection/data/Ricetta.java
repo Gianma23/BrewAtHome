@@ -1,4 +1,4 @@
-package it.unipi.brewathome.connection.requests;
+package it.unipi.brewathome.connection.data;
 
 import java.io.Serializable;
 

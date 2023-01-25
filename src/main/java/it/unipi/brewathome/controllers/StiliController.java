@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import it.unipi.brewathome.connection.HttpConnector;
-import it.unipi.brewathome.connection.responses.HttpResponse;
-import it.unipi.brewathome.connection.responses.Stile;
+import it.unipi.brewathome.connection.data.HttpResponse;
+import it.unipi.brewathome.connection.data.Stile;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -75,7 +75,7 @@ public class StiliController implements Initializable{
                     });
                 }
                 catch (IOException ioe) {
-                    logger.error(ioe.getMessage());
+                    logger.error(ioe);
                 }
                 return null;
             }

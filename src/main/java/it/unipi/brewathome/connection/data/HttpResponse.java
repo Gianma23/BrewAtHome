@@ -1,4 +1,4 @@
-package it.unipi.brewathome.connection.responses;
+package it.unipi.brewathome.connection.data;
 
 public class HttpResponse {
     

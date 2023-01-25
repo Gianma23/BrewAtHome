@@ -6,7 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.unipi.brewathome.connection.HttpConnector;
-import it.unipi.brewathome.connection.responses.HttpResponse;
+import it.unipi.brewathome.connection.data.HttpResponse;
 import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -51,7 +51,7 @@ public class App extends Application {
             App.addStyle(scene, "global.css");
         }
         catch (IOException ioe) {
-            logger.error(ioe.getMessage());
+            logger.error(ioe);
         }     
         
         // listener sul cambio di root
@@ -146,9 +146,9 @@ public class App extends Application {
         
         File file = new File(this.getClass().getResource("/styles").getPath(), "style.css");
 
-        PrintWriter out = new PrintWriter(file);
-        out.println(cssString);
-        out.close();
+        try (PrintWriter out = new PrintWriter(file)) {
+            out.println(cssString);
+        }
     }
     
     /* ================ GETTERS & SETTERS ================ */

@@ -1,7 +1,7 @@
 package it.unipi.brewathome.controllers;
 
 import it.unipi.brewathome.App;
-import it.unipi.brewathome.connection.requests.Ricetta;
+import it.unipi.brewathome.connection.data.Ricetta;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

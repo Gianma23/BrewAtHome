@@ -1,6 +1,6 @@
 package it.unipi.brewathome.connection;
 
-import it.unipi.brewathome.connection.responses.HttpResponse;
+import it.unipi.brewathome.connection.data.HttpResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

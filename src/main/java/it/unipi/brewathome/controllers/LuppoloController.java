@@ -3,8 +3,8 @@ package it.unipi.brewathome.controllers;
 import com.google.gson.Gson;
 import it.unipi.brewathome.App;
 import it.unipi.brewathome.connection.HttpConnector;
-import it.unipi.brewathome.connection.requests.Luppolo;
-import it.unipi.brewathome.connection.responses.HttpResponse;
+import it.unipi.brewathome.connection.data.Luppolo;
+import it.unipi.brewathome.connection.data.HttpResponse;
 import it.unipi.brewathome.utils.TipoLuppolo;
 import java.io.IOException;
 import java.net.URL;
@@ -134,7 +134,7 @@ public class LuppoloController implements Initializable{
                     });
                 }
                 catch (IOException ioe) {
-                    logger.error(ioe.getMessage());
+                    logger.error(ioe);
                 }
                 return null;
             }
