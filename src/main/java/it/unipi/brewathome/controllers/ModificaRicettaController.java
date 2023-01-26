@@ -35,6 +35,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -61,6 +62,13 @@ public class ModificaRicettaController implements Initializable {
     @FXML private GridPane grid;
     @FXML private TableView tableFermentabili;
     @FXML private TableView tableLuppoli;
+    
+    @FXML private Button buttonElimina;
+    @FXML private Button buttonSalva;
+    @FXML private Button buttonAnnulla;
+    @FXML private Button buttonFermentabile;
+    @FXML private Button buttonLuppolo;
+    @FXML private Button buttonStile;
     
     @FXML private TableColumn columnPesoFermentabile;
     @FXML private TableColumn columnNomeFermentabile;
@@ -260,6 +268,9 @@ public class ModificaRicettaController implements Initializable {
     
     @FXML
     private void eliminaRicetta() {
+        disableInputs();
+        errorMessage.setText("Eliminazione in corso...");
+        
         Task task = new Task<Void>() {
             @Override public Void call() {
                 try {
@@ -268,6 +279,7 @@ public class ModificaRicettaController implements Initializable {
                 }
                 catch (IOException ioe) {
                     logger.error(ioe);
+                    enableInputs();
                 } 
                 return null;
             }
@@ -284,7 +296,9 @@ public class ModificaRicettaController implements Initializable {
             if(volume <= 0 || rendimento <= 0) {
                 errorMessage.setText("inserire valori maggiori di 0.");
                 return;
-            }
+            }            
+            disableInputs();
+            errorMessage.setText("Salvataggio in corso...");
             
             Ricetta request = new Ricetta(ricetta.getId(),
                                           fieldNomeRicetta.getText(),
@@ -306,6 +320,7 @@ public class ModificaRicettaController implements Initializable {
                     }
                     catch (IOException ioe) {
                         logger.error(ioe);
+                        enableInputs();
                     }
                     return null;
                 }
@@ -313,8 +328,8 @@ public class ModificaRicettaController implements Initializable {
             new Thread(task).start();
         }   
         catch(NumberFormatException ne) {
-            logger.error(ne);
             errorMessage.setText("inserire valori nel formato corretto.");
+            enableInputs();
         }
     }
 
@@ -533,6 +548,36 @@ public class ModificaRicettaController implements Initializable {
         // sistemo altezza tabella
         tableLuppoli.setFixedCellSize(28);
         tableLuppoli.prefHeightProperty().bind(tableLuppoli.fixedCellSizeProperty().multiply(Bindings.size(tableLuppoli.getItems()).add(1.3)));
+    }
+    
+    private void disableInputs() {
+        fieldNomeRicetta.setDisable(true);
+        fieldAutore.setDisable(true);
+        fieldTipo.setDisable(true);
+        fieldDescrizione.setDisable(true);
+        fieldVolume.setDisable(true);
+        fieldRendimento.setDisable(true);
+        buttonElimina.setDisable(true);
+        buttonSalva.setDisable(true);
+        buttonAnnulla.setDisable(true);
+        buttonFermentabile.setDisable(true);
+        buttonLuppolo.setDisable(true);
+        buttonStile.setDisable(true);
+    }
+    
+    private void enableInputs() {
+        fieldNomeRicetta.setDisable(false);
+        fieldAutore.setDisable(false);
+        fieldTipo.setDisable(false);
+        fieldDescrizione.setDisable(false);
+        fieldVolume.setDisable(false);
+        fieldRendimento.setDisable(false);
+        buttonElimina.setDisable(false);
+        buttonSalva.setDisable(false);
+        buttonAnnulla.setDisable(false);
+        buttonFermentabile.setDisable(false);
+        buttonLuppolo.setDisable(false);
+        buttonStile.setDisable(false);
     }
     
     /* =========== GETTERS & SETTERS =========== */

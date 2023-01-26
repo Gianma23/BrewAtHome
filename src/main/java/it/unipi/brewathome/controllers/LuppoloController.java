@@ -14,6 +14,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -29,6 +30,8 @@ public class LuppoloController implements Initializable{
     private static Luppolo updateLuppolo;
     private int id;
     
+    @FXML private Button buttonSalva;
+    @FXML private Button buttonElimina;
     @FXML private TextField fieldQuantita;
     @FXML private TextField fieldNome;
     @FXML private TextField fieldFornitore;
@@ -70,14 +73,14 @@ public class LuppoloController implements Initializable{
             errorMessage.setText("Salvataggio in corso...");
             
             Luppolo request = new Luppolo(id,
-                                        ricettaController.getRicettaId(),
-                                        fieldNome.getText(),
-                                        Integer.parseInt(fieldTempo.getText()),
-                                        Integer.parseInt(fieldQuantita.getText()),
-                                        fieldFornitore.getText(),
-                                        fieldProvenienza.getText(),
-                                        fieldTipo.getSelectionModel().getSelectedItem().toString(),
-                                        Double.parseDouble(fieldAlpha.getText()));                                                   
+                                          ricettaController.getRicettaId(),
+                                          fieldNome.getText(),
+                                          Integer.parseInt(fieldTempo.getText()),
+                                          Integer.parseInt(fieldQuantita.getText()),
+                                          fieldFornitore.getText(),
+                                          fieldProvenienza.getText(),
+                                          fieldTipo.getSelectionModel().getSelectedItem().toString(),
+                                          Double.parseDouble(fieldAlpha.getText()));                                                   
             //serializzazione dati
             Gson gson = new Gson();
             String body = gson.toJson(request);
@@ -104,6 +107,7 @@ public class LuppoloController implements Initializable{
                     }
                     catch (IOException ioe) {
                         logger.error(ioe);
+                        enableInputs();
                     }
                     return null;
                 }
@@ -112,11 +116,15 @@ public class LuppoloController implements Initializable{
         }
         catch(NumberFormatException ne) {
             errorMessage.setText("Inserire i dati nel formato corretto.");
+            enableInputs();
         }
     }
     
     @FXML
     private void elimina() {
+        disableInputs();
+        errorMessage.setText("Eliminazione in corso...");
+        
         Task task = new Task<Void>() {
             @Override public Void call() {
                 try {
@@ -135,6 +143,7 @@ public class LuppoloController implements Initializable{
                 }
                 catch (IOException ioe) {
                     logger.error(ioe);
+                    enableInputs();
                 }
                 return null;
             }
@@ -152,6 +161,8 @@ public class LuppoloController implements Initializable{
         fieldTipo.setDisable(true);
         fieldTempo.setDisable(true);
         fieldAlpha.setDisable(true);
+        buttonElimina.setDisable(true);
+        buttonSalva.setDisable(true);
     }
     
     private void enableInputs() {
@@ -162,6 +173,8 @@ public class LuppoloController implements Initializable{
         fieldTipo.setDisable(false);
         fieldTempo.setDisable(false);
         fieldAlpha.setDisable(false);
+        buttonElimina.setDisable(false);
+        buttonSalva.setDisable(false);
     }
     
     private boolean validInputs() {

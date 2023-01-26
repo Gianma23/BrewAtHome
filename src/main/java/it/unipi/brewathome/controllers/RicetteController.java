@@ -48,7 +48,7 @@ public class RicetteController implements Initializable {
         Task task = new Task<Void>() {
             @Override public Void call() {
                 try {
-                    HttpResponse response = HttpConnector.postRequestWithToken("/recipes/add", "", App.getToken());
+                    HttpResponse response = HttpConnector.getRequestWithToken("/recipes/add", "", App.getToken());
                     Gson gson = new Gson();
                     Ricetta ricetta = gson.fromJson(response.getResponseBody(), Ricetta.class);
                     

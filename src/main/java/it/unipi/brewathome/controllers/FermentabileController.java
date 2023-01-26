@@ -15,6 +15,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -30,6 +31,8 @@ public class FermentabileController implements Initializable{
     private static Fermentabile updateFermentabile;
     private int id;
     
+    @FXML private Button buttonSalva;
+    @FXML private Button buttonElimina;
     @FXML private TextField fieldQuantita;
     @FXML private TextField fieldNome;
     @FXML private ChoiceBox fieldCategoria;
@@ -130,6 +133,9 @@ public class FermentabileController implements Initializable{
     
     @FXML
     private void elimina() {
+        disableInputs();
+        errorMessage.setText("Salvataggio in corso...");
+            
         Task task = new Task<Void>() {
             @Override public Void call() {
                 try {
@@ -168,6 +174,8 @@ public class FermentabileController implements Initializable{
         fieldColore.setDisable(true);
         fieldPotenziale.setDisable(true);
         fieldRendimento.setDisable(true);
+        buttonElimina.setDisable(false);
+        buttonSalva.setDisable(false);
     }
     
     private void enableInputs() {
@@ -180,6 +188,8 @@ public class FermentabileController implements Initializable{
         fieldColore.setDisable(false);
         fieldPotenziale.setDisable(false);
         fieldRendimento.setDisable(false);
+        buttonElimina.setDisable(false);
+        buttonSalva.setDisable(false);
     }
     
     private boolean validInputs() {
