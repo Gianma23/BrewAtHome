@@ -138,9 +138,10 @@ public class FermentabileController implements Initializable{
         if(updateFermentabile==null) {
             Stage stage = (Stage) fieldQuantita.getScene().getWindow();
             stage.close();
+            return;
         }
         disableInputs();
-        errorMessage.setText("Salvataggio in corso...");
+        errorMessage.setText("Eliminazione in corso...");
             
         Task task = new Task<Void>() {
             @Override public Void call() {

@@ -126,6 +126,7 @@ public class LuppoloController implements Initializable{
         if(updateLuppolo==null) {
             Stage stage = (Stage) fieldQuantita.getScene().getWindow();
             stage.close();
+            return;
         }
         disableInputs();
         errorMessage.setText("Eliminazione in corso...");
