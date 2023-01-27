@@ -48,10 +48,7 @@ public class RegistratiController {
         Gson gson = new Gson();
         AuthRequest request = new AuthRequest(email.getText(), password.getText());
                 
-        buttonRegistrati.setDisable(true);
-        email.setDisable(true);
-        password.setDisable(true);
-        confirmPassword.setDisable(true);
+        disableInputs();
         errorMessage.setText("Registrazione in corso...");
         
         Task task = new Task<Void>() {
@@ -70,16 +67,15 @@ public class RegistratiController {
                                 throw new UncheckedIOException(e);
                             }
                         else {
-                                buttonRegistrati.setDisable(false);
-                                email.setDisable(false);
-                                password.setDisable(false);
-                                confirmPassword.setDisable(false);
+                                enableInputs();
                                 errorMessage.setText(responseBody);
                         }
                     });
                 }
                 catch (IOException ioe) {
                     logger.error(ioe);
+                    enableInputs();
+                    errorMessage.setText("Connessione fallita, riprovare più tardi.");
                 }
                 return null;
             }
@@ -95,5 +91,19 @@ public class RegistratiController {
         catch (IOException ioe) {
             logger.error(ioe);
         }  
+    }
+    
+    private void enableInputs() {
+        buttonRegistrati.setDisable(false);
+        email.setDisable(false);
+        password.setDisable(false);
+        confirmPassword.setDisable(false);
+    }
+    
+    private void disableInputs() {
+        buttonRegistrati.setDisable(true);
+        email.setDisable(true);
+        password.setDisable(true);
+        confirmPassword.setDisable(true);
     }
 }

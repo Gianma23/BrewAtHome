@@ -35,9 +35,7 @@ public class AccediController {
         Gson gson = new Gson();
         AuthRequest request = new AuthRequest(email.getText(), password.getText());
         
-        buttonAccedi.setDisable(true);
-        email.setDisable(true);
-        password.setDisable(true);
+        disableInputs();
         message.setText("Accesso in corso...");
         
         Task task = new Task<Void>() {
@@ -60,7 +58,7 @@ public class AccediController {
                             }
                             
                             Rectangle2D screen = Screen.getPrimary().getBounds();
-                            if(screen.getHeight() < 900 && screen.getWidth() < 1500)
+                            if(screen.getHeight() < 1500 && screen.getWidth() < 2000)
                                 stage.setMaximized(true);
                             else {
                                 stage.setWidth(1440);
@@ -69,15 +67,15 @@ public class AccediController {
                             }
                         }
                         else {
-                            buttonAccedi.setDisable(false);
-                            email.setDisable(false);
-                            password.setDisable(false);
+                            enableInputs();
                             message.setText(responseBody);
                         }
                     });
                 }
                 catch (IOException ioe) {
                     logger.error(ioe);
+                    enableInputs();
+                    message.setText("Connessione fallita, riprovare più tardi.");
                 }
                 return null;
             } 
@@ -93,5 +91,17 @@ public class AccediController {
         catch (IOException ioe) {
             logger.error(ioe);
         }      
+    }
+    
+    private void enableInputs() {
+        buttonAccedi.setDisable(false);
+        email.setDisable(false);
+        password.setDisable(false);
+    }
+    
+    private void disableInputs() {
+        buttonAccedi.setDisable(true);
+        email.setDisable(true);
+        password.setDisable(true);
     }
 }
