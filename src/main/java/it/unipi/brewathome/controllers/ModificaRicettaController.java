@@ -301,7 +301,7 @@ public class ModificaRicettaController implements Initializable {
             errorMessage.setText("Salvataggio in corso...");
             
             Ricetta request = new Ricetta(ricetta.getId(),
-                                          fieldNomeRicetta.getText(),
+                                          textNomeRicetta.getText(),
                                           fieldDescrizione.getText(),
                                           fieldAutore.getText(),
                                           fieldTipo.getSelectionModel().getSelectedItem().toString(),

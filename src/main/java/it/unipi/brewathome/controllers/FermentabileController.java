@@ -119,6 +119,7 @@ public class FermentabileController implements Initializable{
                     }
                     catch (IOException ioe) {
                         logger.error(ioe);
+                        enableInputs();
                     }
                     return null;
                 }
@@ -133,6 +134,11 @@ public class FermentabileController implements Initializable{
     
     @FXML
     private void elimina() {
+        
+        if(updateFermentabile==null) {
+            Stage stage = (Stage) fieldQuantita.getScene().getWindow();
+            stage.close();
+        }
         disableInputs();
         errorMessage.setText("Salvataggio in corso...");
             
@@ -155,6 +161,7 @@ public class FermentabileController implements Initializable{
                 }
                 catch (IOException ioe) {
                     logger.error(ioe);
+                    enableInputs();
                 }
                 return null;
             }

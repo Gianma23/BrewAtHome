@@ -122,6 +122,11 @@ public class LuppoloController implements Initializable{
     
     @FXML
     private void elimina() {
+        
+        if(updateLuppolo==null) {
+            Stage stage = (Stage) fieldQuantita.getScene().getWindow();
+            stage.close();
+        }
         disableInputs();
         errorMessage.setText("Eliminazione in corso...");
         
@@ -139,6 +144,7 @@ public class LuppoloController implements Initializable{
 
                         Stage stage = (Stage) fieldQuantita.getScene().getWindow();
                         stage.close();
+                        updateLuppolo = null;
                     });
                 }
                 catch (IOException ioe) {

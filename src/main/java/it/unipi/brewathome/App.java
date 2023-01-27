@@ -141,7 +141,7 @@ public class App extends Application {
             cssString.append(colorId).append(": ").append(colorValue).append(";\n");
         }
         cssString.append("}");
-        
+
         /* Salvo il file style.css creato nella cartella style */
         
         File file = new File(this.getClass().getResource("/styles").getPath(), "style.css");

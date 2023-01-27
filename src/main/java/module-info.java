@@ -1,4 +1,4 @@
-module it.brewathome.brewathome {
+module it.unipi.brewathome {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.base;
