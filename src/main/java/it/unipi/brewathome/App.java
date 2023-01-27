@@ -85,21 +85,25 @@ public class App extends Application {
         for(ColumnConstraints col : cols) {
             colsWidth[i++] = col.getPercentWidth();
         }
-
+        
         // listener sul cambio di dimensione della finestra
         ChangeListener<Number> stageSizeListener = (obv, oldv, newv) -> {
-
-            if(stage.getWidth() > 1800)
-                for(ColumnConstraints col : cols) 
-                    col.setPercentWidth(-1);
-            else {
-                int j = 0;
-                for(ColumnConstraints col : cols) {
-                    col.setPercentWidth(colsWidth[j++]);
-                }
-            }
+            resizeColumns(stage, cols, colsWidth);
         };
         stage.widthProperty().addListener(stageSizeListener);
+        resizeColumns(stage, cols, colsWidth);
+    }
+    
+    private void resizeColumns(Stage stage, ObservableList<ColumnConstraints> cols, double[] colsWidth) {
+        if(stage.getWidth() > 1800)
+            for(ColumnConstraints col : cols) 
+                col.setPercentWidth(-1);
+        else {
+            int j = 0;
+            for(ColumnConstraints col : cols) {
+                col.setPercentWidth(colsWidth[j++]);
+            }
+        }
     }
       
     public static void addStyle(Scene scene, String stylesheet) {

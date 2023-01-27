@@ -10,10 +10,12 @@ import java.io.UncheckedIOException;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -56,10 +58,15 @@ public class AccediController {
                             catch (IOException e) {
                                 throw new UncheckedIOException(e);
                             }
-
-                            stage.setWidth(1480);
-                            stage.setHeight(900);
-                            stage.centerOnScreen();
+                            
+                            Rectangle2D screen = Screen.getPrimary().getBounds();
+                            if(screen.getHeight() < 900 && screen.getWidth() < 1500)
+                                stage.setMaximized(true);
+                            else {
+                                stage.setWidth(1440);
+                                stage.setHeight(900);
+                                stage.centerOnScreen();
+                            }
                         }
                         else {
                             buttonAccedi.setDisable(false);

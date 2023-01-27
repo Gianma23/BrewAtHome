@@ -104,6 +104,8 @@ public class RicetteController implements Initializable {
                                 stile.setText(stileText);
 
                                 String descText = ricetta.getDescrizione();
+                                if(descText != null && descText.length()>90)
+                                    descText = descText.substring(0,90) + "...";
                                 Text descrizione = (Text) card.lookup(".descrizione");
                                 descrizione.setText(descText);
 
